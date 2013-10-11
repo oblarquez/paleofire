@@ -143,14 +143,14 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
     
     if(zoom=="Sites"|zoom=="sites"){
       # Draw map
-#       xl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,4])
-#       yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,3])
-#       
-#       xlim=range(xl[!is.na(xl) & is.finite(xl)])
-#       ylim=range(yl[!is.na(yl) & is.finite(yl)])
+      xl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,4])
+      yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,3])
       
-      plot(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,4],paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,3],bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
-      points(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue")
+      xlim=range(xl[!is.na(xl) & is.finite(xl)])
+      ylim=range(yl[!is.na(yl) & is.finite(yl)])
+    
+      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
+      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,4],paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,3],bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)}
   }
 }
