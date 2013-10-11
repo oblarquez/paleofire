@@ -1,8 +1,8 @@
 Package: paleofire
 Type: Package
 Title: Analysis methods applied to the Global Charcoal Database
-Version: 0.1
-Date: 2013-05-23
+Version: 1.0
+Date: 2013-10-11
 Author: Global Paleofire Working Group <paleofire@gmail.com>
 Maintainer: Olivier Blarquez <blarquez@gmail.com>
 Description: The paleofire package provides tools to extract and analyse charcoal sedimentary data stored in the Global Charcoal Database. Main functionalities includes data extraction and sites selection, transformation and interpolation of the charcoal records as well as compositing.
