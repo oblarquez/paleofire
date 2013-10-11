@@ -7,21 +7,23 @@ Produce a composite serie from multiple charcoal records using a local regressio
 Produce a composite serie from multiple charcoal local fits produced using the locfit procedure on bootstraped series subsamples, the sites charcoal values are prebinned prior to sites resampling. This procedure is equivalent to Daniau et al. 2012.
 }
 \usage{
-pfCompositeLF(TR, hw = 250, bins = NULL, nboot = 1000, conf =
-                 c(0.05, 0.95), pseudodata = FALSE)
+pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=10,nboot=1000,conf=c(0.05,0.95),
+                       pseudodata=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{TR}{
 An object returned by pfTransform()}
-  \item{bins}{
-The sequence for prebinning given in years (e.g. bins=seq(0,10000,20)) 
-If unspecified the sequence is defined as bins=seq(from=min age, to=max Age, by=median resolution) 
+  \item{tarAge}{
+The target ages for prebinning given in years (e.g. tarAge=seq(0,10000,20)) 
+If unspecified the sequence is defined as tarAge=seq(from=min age, to=max Age, by=median resolution) 
 }
+ \item{binhw}{
+Bin half width for the prebinning procedure (use the same value as tarAge intervals for overlapping bins or tarAge intervals/2 for non-overlapping bins)}
   \item{nboot}{
 A number specifying the number of bootstrap resamplings}
   \item{hw}{
-The half window width for the locfit procedure}
+The half window width for the locfit procedure (in years)}
 \item{conf}{
 Define confidence levels}
   \item{pseudodata}{
@@ -52,8 +54,8 @@ ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","ZScore"),
 BasePeriod=c(200,2000),QuantType="INFL")
 
-COMP1=pfCompositeLF(TR, bins=seq(-50,2000,10), hw=200, nboot=100)
-COMP2=pfCompositeLF(TR, bins=seq(-50,2000,10), hw=200, nboot=100, pseudodata=TRUE)
+COMP1=pfCompositeLF(TR, tarAge=seq(-50,2000,10), hw=200, nboot=100)
+COMP2=pfCompositeLF(TR, tarAge=seq(-50,2000,10), hw=200, nboot=100, pseudodata=TRUE)
 
 dev.off()
 par(mfrow=c(2,1))

@@ -97,7 +97,7 @@ write.csv(COMP$Result,file="temp.csv")
 
 ## Compositing: Using the locfit package equivalent procedure to Daniau et al. 2012
 
-COMP2=pfCompositeLF(TR1, bins=seq(-50,12000,20), hw=500,nboot=100)
+COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save

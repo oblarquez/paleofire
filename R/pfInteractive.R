@@ -1,7 +1,9 @@
 pfInteractive=function(addata=NULL){
   
   ## Avoid no visible binding for global variable
-  paleofiresites=coast=NULL
+  paleofiresites=NULL; rm(paleofiresites)
+  coast=NULL; rm(coast)
+  
   
   ## Load data  
   data(paleofiresites)

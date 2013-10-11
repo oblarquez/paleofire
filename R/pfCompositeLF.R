@@ -1,5 +1,5 @@
 pfCompositeLF=function(TR,hw=250,
-                       bins=NULL,
+                       tarAge=NULL,binhw=10,
                        nboot=1000,conf=c(0.05,0.95),
                        pseudodata=FALSE)
 {
@@ -27,7 +27,7 @@ pfCompositeLF=function(TR,hw=250,
   
   ## Prebinning procedure
   # Define the sequence for binning if unspecified
-  if(is.null(bins)){
+  if(is.null(tarAge)){
     AgeRes=matrix(nrow=length(TR$Age[,1])-1,ncol=length(TR$Age[1,]))
     for (i in 1:length(TR$Age[1,])){
       AgeRes[,i]=c(diff(TR$Age[,i]))
@@ -35,14 +35,7 @@ pfCompositeLF=function(TR,hw=250,
     width=ceiling(median(na.omit(AgeRes))/10)*10
     binI=floor(min(na.omit(TR$Age))/10)*10
     binF=ceiling(max(na.omit(TR$Age))/10)*10
-    bins=seq(binI,binF,width)
-  }
-  
-  # If specified, values for binning are:
-  if(is.null(bins)==FALSE){
-    width=bins[2]-bins[1]
-    binI=bins[1]
-    binF=bins[length(bins)]
+    tarAge=seq(binI,binF,width)
   }
   
   m=length(TR$TransData[,1])
@@ -64,34 +57,42 @@ pfCompositeLF=function(TR,hw=250,
   #   }
   
   # Matrix to store results
-  result=matrix(ncol=length(TR$Age[1,]),nrow=length(bins)-1)
-  #sm_result=matrix(ncol=length(IDn),nrow=length(bins)-1)
+  result=matrix(ncol=length(TR$Age[1,]),nrow=length(tarAge))
+  #sm_result=matrix(ncol=length(IDn),nrow=length(tarAge)-1)
   
   ## Binning procedure
+#   for (k in 1:n){
+#     c1 <- cut(TR$Age[,k], breaks = tarAge)
+#     tmean=tapply(TR$TransData[,k], c1, median)
+#     #tmean=tapply(Stransdata[,i], c1, mean)
+#     result[,k]=c(as.numeric(tmean))
+  #   } 
   for (k in 1:n){
-    c1 <- cut(TR$Age[,k], breaks = bins)
-    tmean=tapply(TR$TransData[,k], c1, mean)
-    #tmean=tapply(Stransdata[,i], c1, mean)
-    result[,k]=c(as.numeric(tmean))
-  } 
+    for (i in 1:length(tarAge)){
+      t=cbind(as.numeric(na.omit(TR$Age[,k])),as.numeric(na.omit(TR$TransData[,k])))
+      result[i,k]=mean(t[t[,1]>tarAge[i]-binhw & t[,1]<tarAge[i]+binhw,2])
+    }
+  }
+  
   # suppres Inf values occuring with specific charcoal series (binary series)
   result[!is.finite(result)]=NA
   
   # Target Ages:
-  centres=bins[1:length(bins)-1]+width/2
-  
+  centres=tarAge
+    
   # Matrix to strore boot results
   mboot=matrix(nrow=length(centres),ncol=nboot)
   
   #plot(NULL, xlab = "age", ylab = "locfit_500", ylim = c(-1, 1), xlim = c(0, 8000),type="n")
+  set.seed(1)
   
   ## Bootstrap procedure (with locfit)
   for (i in 1:nboot){
     ne=sample(seq(1,length(result[1,]),1),length(result[1,]),replace=TRUE)
-    y=c(result[,ne])
-    x=rep(centres,length(ne))
+    y=as.vector(result[,ne])
+    x=as.vector(rep(centres,length(ne)))
     dat=na.omit(data.frame(x=x,y=y))
-    dat=dat[ order(dat$x), ]
+    #dat=dat[ order(dat$x), ]
     
     if (pseudodata==TRUE){
       ## Pseudodata part:
