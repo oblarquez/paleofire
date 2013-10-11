@@ -1,0 +1,54 @@
+\name{pfCircular}
+\alias{pfCircular}
+\title{
+Circular block bootstrap procedure applied to charcoal composite}
+\description{
+Block bootstrap has been proposed to test the significances of changes in stationary time series (Kunsch 1989). This procedure consists of splitting each charcoal series into n-b+1 overlapping blocks of data, where n is sample size and b the block size. These blocks are used to reconstruct resampled individual charcoal series that are in turn used to estimate the confidence intervals around the charcoal series composite mean. }
+\usage{
+pfCircular(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{comp}{
+pfComposite() object}
+  \item{b}{
+block size, if NULL the optimal block size for a given series is given by: b= 2x(-1
+/log(p)), where p is the lag one autocorrelation coefficient of that series (Adams,
+Mann & Ammann 2003).}
+  \item{conf}{
+confidence intervals}
+  \item{nboot}{
+number of bootstrap replicates}
+  \item{AgeLim}{
+restrict the analysis to a given period}
+}
+
+\value{
+%%  ~Describe the value returned
+%%  If it is a LIST, use
+  \item{out}{A pfCircular object with estimated confidence intervals}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
+\references{
+Kunsch, H. R. 1989. The jackknife and the bootstrap for general stationary observation
+s. The Annals of Statistics 17:1217-1241.
+
+Adams, J. B., M. E. Mann, and C. M. Ammann. 2003. Proxy evidence for an El Nino-like
+response to volcanic forcing. Nature 426:274-278.
+}
+\author{
+O. Blarquez}
+
+\examples{
+
+ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
+TR1=pfTransform(ID, method=c("MinMax","Box-Cox","ZScore"),BasePeriod=c(200,2000))
+
+## Circular block bootstrapp
+
+COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
+circ=pfCircular(COMP,b=3,conf=c(0.005,0.025,0.975,0.995),nboot=100)
+plot(circ)
+
+}

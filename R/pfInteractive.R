@@ -1,0 +1,64 @@
+pfInteractive=function(addata=NULL){
+  
+  ## Avoid no visible binding for global variable
+  paleofiresites=coast=NULL
+  
+  ## Load data  
+  data(paleofiresites)
+  data(coast)
+  ## Define vectors
+  yy=cbind(coast[,2],coast[,1])
+  pp=cbind(paleofiresites$LONGITUDE,paleofiresites$LATITUDE)
+  
+  ## Use imap for interactive plot
+  cat("You can zoom the map by left clicking in two different locations
+on the figure to define a rectangle that will be zoomed into. Left
+clicking outside the plot region (but somewhere in the figure region)
+will zoom out. Double left clicking on the same spot will reset the plot.
+Rignt click or click finish when ready.")
+  plot(pp,bg="blue",col = "black",pch = 21,ylim=c(-90,90),xlim=c(-180,180), ylab="Latitude",xlab="Longitude")
+  par(bg="white")
+  imap(yy,fill=F,zoom=T,col="black",poly = rgb(238/255,220/255,130/255),add.all=T,grid=T)
+  points(pp,bg="blue",col = "black",pch = 21,ylim=c(-90,90))
+  if (is.matrix(addata)){
+    lines(addata[,1],addata[,2])
+  }
+  ## Use select.pts for selection
+  cat("\n")
+  cat("\nInteractively select points by drawing a polygon composed of at least 
+three vertices. Right click or click finish when ready.")
+  a=select.pts(pp)
+  
+  
+  ## Plot selected points
+  if (length(a)>2){
+    plot(pp,bg="blue",col = "black",pch = 21,xlim=c(min(a[,1])-10,max(a[,1])+10),ylim=c(min(a[,2])-10,max(a[,2])+10))
+    ## Retrive site IDs ans site names
+    IDs=paleofiresites[paleofiresites$LATITUDE %in% a[,2] & paleofiresites$LONGITUDE %in% a[,1], 1]
+    points(a,bg="red",col = "black",pch = 21)
+    
+  }
+  if (length(a)==2) {plot(pp,bg="blue",col = "black",pch = 21,xlim=c((a[1])-10,(a[1])+10),ylim=c((a[2])-10,(a[2])+10))
+                     ## Retrive site IDs ans site names
+                     IDs=paleofiresites[paleofiresites$LATITUDE %in% a[2] & paleofiresites$LONGITUDE %in% a[1], 1]
+                     points(a[1],a[2],bg="red",col = "black",pch = 21)
+                     
+  }
+  lines(yy)
+  if (is.matrix(addata)){
+    lines(addata[,1],addata[,2])
+  }
+  
+  ## Retrive site IDs ans site names
+  
+  SiteNames=as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% IDs])
+  ## Return output IDn list
+  output=list(SitesIDS=IDs,SiteNames=SiteNames)
+  class(output)="pfSiteSel"
+  ## Remove data
+  #rm(paleofiresites,envir = globalenv())
+  #rm(coast,envir = globalenv())
+  ## Return output
+  return(output)
+  
+}
