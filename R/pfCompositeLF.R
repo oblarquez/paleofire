@@ -67,13 +67,18 @@ pfCompositeLF=function(TR,hw=250,
 #     #tmean=tapply(Stransdata[,i], c1, mean)
 #     result[,k]=c(as.numeric(tmean))
   #   } 
+  cat("Prebinning site: ")
   for (k in 1:n){
-    for (i in 1:length(tarAge)){
-      t=cbind(as.numeric(na.omit(TR$Age[,k])),as.numeric(na.omit(TR$TransData[,k])))
-      result[i,k]=mean(t[t[,1]>tarAge[i]-binhw & t[,1]<tarAge[i]+binhw,2])
+    if(length(TR$TransData[is.na(TR$TransData[,k])==FALSE,k])!=0){
+      for (i in 1:length(tarAge)){
+        t=cbind(as.numeric(na.omit(TR$Age[,k])),as.numeric(na.omit(TR$TransData[,k])))
+        result[i,k]=mean(t[t[,1]>tarAge[i]-binhw & t[,1]<tarAge[i]+binhw,2])
+      }
     }
+    ## print
+    cat("", k )
   }
-  
+  cat("\n")
   # suppres Inf values occuring with specific charcoal series (binary series)
   result[!is.finite(result)]=NA
   
@@ -85,7 +90,7 @@ pfCompositeLF=function(TR,hw=250,
   
   #plot(NULL, xlab = "age", ylab = "locfit_500", ylim = c(-1, 1), xlim = c(0, 8000),type="n")
   set.seed(1)
-  
+  cat("# of Bootstrap:")
   ## Bootstrap procedure (with locfit)
   for (i in 1:nboot){
     ne=sample(seq(1,length(result[1,]),1),length(result[1,]),replace=TRUE)
@@ -123,7 +128,7 @@ pfCompositeLF=function(TR,hw=250,
     mboot[, i] <- predboot$fit
     # note plotting lines is slowww
     #lines(centres, mboot[, i], lwd = 2, col = rgb(0.5, 0.5, 0.5, 0.1))
-    if(i %in% seq(0,nboot,10)) print(paste("# of Bootstrap:", i,sep=" "))
+    if(i %in% seq(0,nboot,10)) cat("", i)
   }
   
   bootci=t(apply(mboot, 1, quantile, probs = conf,  na.rm = TRUE))
@@ -177,7 +182,7 @@ pfCompositeLF=function(TR,hw=250,
   output=structure(list(BinnedData=structure(result,row.names = as.character(centres),col.names=colnames(TR$TransData), class = "matrix"),
                         Result=result2,
                         BinCentres=centres,    
-                        BinWidth=width,
+                        BinWidth=binhw*2,
                         nboot=nboot,
                         halfwidth=hw,
                         conf=conf,
