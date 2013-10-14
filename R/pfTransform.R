@@ -18,6 +18,11 @@ pfTransform=function(IDn,
   # Value for warnings
   IDChar=IDn
   
+  # Check methods
+  methods=c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle")
+  warnmethod=method[(method %in% methods)==FALSE]
+  if(length(warnmethod)!=0){stop(paste(warnmethod, "is not a valid method for pfTransform",sep=" "))}
+  
   ## 0 Save parameters
   params=list(IDn=IDn,
               Interpolate=Interpolate,
@@ -220,7 +225,7 @@ pfTransform=function(IDn,
           stlResult=stl(x,"per")$time.series[,2]
           transI[,k]=approx(agesI,stlResult,Ages[,k])$y
         }
-        if (methodj=="Z-Score" | methodj=="ZScore" | methodj=="Z-score" | methodj=="Zscore") {
+        if (methodj=="Z-Score") {
           mu=mean(tmp[tmp[,1]>=BasePeriod[1] & tmp[,1]<=BasePeriod[2],2])
           sigma=sd(tmp[tmp[,1]>=BasePeriod[1] & tmp[,1]<=BasePeriod[2],2])
           # No data in BasePeriod return scale:
@@ -229,7 +234,7 @@ pfTransform=function(IDn,
           # Z-Score otherwise
           else {transI[,k]=approx(tmp[,1],(tmp[,2]-mu)/sigma,Ages[,k])$y}            
         }
-        if (methodj=="Box-Cox" | methodj=="BoxCox" | methodj=="boxcox" | methodj=="box-cox") {
+        if (methodj=="Box-Cox") {
           transI[,k]=approx(tmp[,1],pfBoxCox(tmp[,2],alpha=alpha,type=type),Ages[,k])$y
         }
         if (methodj=="LOESS") {
