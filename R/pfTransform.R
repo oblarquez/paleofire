@@ -229,7 +229,7 @@ pfTransform=function(IDn,
           # Z-Score otherwise
           else {transI[,k]=approx(tmp[,1],(tmp[,2]-mu)/sigma,Ages[,k])$y}            
         }
-        if (methodj=="Box-Cox") {
+        if (methodj=="Box-Cox" | methodj=="BoxCox" | methodj=="boxcox" | methodj=="box-cox") {
           transI[,k]=approx(tmp[,1],pfBoxCox(tmp[,2],alpha=alpha,type=type),Ages[,k])$y
         }
         if (methodj=="LOESS") {
