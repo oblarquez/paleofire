@@ -80,7 +80,7 @@ ID=pfSiteSel(Biome=8)
 
 # Print a diagnostic pdf for Box-Cox, Smoothed and Z-score tranformed data 
 # (base period = 200-2000 BP)
-pfDiagnostic(ID,method=c("Box-Cox", "SmoothSpline","Z-score"),
+pfDiagnostic(ID,method=c("Box-Cox", "SmoothSpline","Z-Score"),
              span=0.3,BasePeriod=c(200,4000))
 
 }

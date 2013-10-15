@@ -51,7 +51,7 @@ O.Blarquez}
 
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 
-TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","ZScore"),
+TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
 BasePeriod=c(200,2000),QuantType="INFL")
 
 COMP1=pfCompositeLF(TR, tarAge=seq(-50,2000,10), hw=200, nboot=100)

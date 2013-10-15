@@ -103,7 +103,7 @@ pfCompositeLF=function(TR,hw=250,
       ## Pseudodata part:
       # Generate a mirror of data series at top and bottom
       # Only reflect 10% of the data
-      pseudo_n=round(length(dat$x)/10)
+      pseudo_n=round(length(dat$x)*0.3)
       
       ## Upper part
       pseudo_up=-((dat$x)-rep((min(dat$x)),length(dat$x)))+min(dat$x)
@@ -144,7 +144,7 @@ pfCompositeLF=function(TR,hw=250,
     ## Pseudodata part:
     # Generate a mirror of data series at top and bottom
     # Only reflect 10% of the data
-    pseudo_n=round(length(dat$x)/10)
+    pseudo_n=round(length(dat$x)*0.3)
     
     ## Upper part
     pseudo_up=-((dat$x)-rep((min(dat$x)),length(dat$x)))+min(dat$x)
@@ -181,6 +181,7 @@ pfCompositeLF=function(TR,hw=250,
   colnames(result)=colnames(TR$TransData)
   output=structure(list(BinnedData=structure(result,row.names = as.character(centres),col.names=colnames(TR$TransData), class = "matrix"),
                         Result=result2,
+                        mboot=mboot,
                         BinCentres=centres,    
                         BinWidth=binhw*2,
                         nboot=nboot,
@@ -198,23 +199,78 @@ pfCompositeLF=function(TR,hw=250,
 
 ######PLOT########
 
-plot.pfCompositeLF=function(x,type="ci",...){
+plot.pfCompositeLF=function(x,type="ci",conf=c(0.05,0.95),palette="jet",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
   if (type=="ci"){
+    bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
-    plot(x$BinCentres,x$locfitAll, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(x$BootCi,na.rm=T),max(x$BootCi,na.rm=T)), axes=F, mgp=c(2,0,0),
+    plot(x$BinCentres,x$BootMean, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T)), axes=F, mgp=c(2,0,0),
          main=paste("Composite"), font.main=1, lab=c(8,5,5), 
-         ylab="Composite", xlab="Age", cex.lab=0.8, cex=0.5, type="l",lwd=2)
+         ylab="Composite", xlab="Age (cal yr BP)", cex.lab=1, pch=16, cex=0.5, type="l")
     axis(1); axis(2, cex.axis=1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
          labels = FALSE, tcl = -0.2)  
-    for (i in 1:length(x$BootCi[1,])){
-      lines(x$BinCentres,x$BootCi[,i],lty=2)
-      pos=which.min(is.na(x$BootCi[,i]))
-      text(min(x$BinCentres)-200,x$BootCi[pos,i],paste(x$conf[i]*100,"%",sep=""),col="black")
+    for (i in 1:length(conf)){
+      lines(x$BinCentres,bootci1[,i],lty=2)
+      pos=which.min(is.na(bootci1[,i]))
+      text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
     }
+    
   }
+  if (type=="prctile"){
+    bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
+    bins1=x$BinCentres[is.na(bootci1[,1])==FALSE]
+    bootci1=bootci1[is.na(bootci1[,1])==FALSE,]
+    n=length(bootci1[1,])
+    ## PLOT
+    plot(NULL, type = "n", xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim = range(bootci1),axes=FALSE,ylab="Composite",xlab="Age",main="Percentiles")
+    if(palette=="jet"){pal = colorRampPalette(rev(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
+    if(palette=="BW"){
+      pal = colorRampPalette(rev(c("white","black")))}
+    xx=cbind(bins1,rev(bins1))
+    coli=pal(50)
+    for (i in 1:floor(n/2)) {
+      yy <- cbind(as.vector(bootci1[,i]), rev(as.vector(bootci1[, n - i + 1])))
+      polygon(xx, yy, col =coli[floor(n/2) - i + 1], border =coli[floor(n/2) - i + 1])  
+    }
+    for (i in c(2,11,51,91,100)){
+      lines(bins1,bootci1[,i],col="grey",lty=2)
+      text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
+    }
+    axis(1)
+    axis(side = 1, at = seq(0, 99000, by = 500), 
+         labels = FALSE, tcl = -0.2) 
+    axis(2)
+  }
+  
+  if (type=="density"){
+    seqI=seq(min(na.omit(x$mboot)),max(na.omit(x$mboot)),len=1000)
+    img=matrix(nrow=1000,ncol=length(x$mboot[,1]))
+    
+    id=seq(1,length(x$mboot[,1]),1)[rowSums(x$mboot,na.rm=T)!=0]
+    id[rowSums(x$mboot,na.rm=T)!=0]
+    
+    for (i in seq(1,length(x$mboot[,1]),1)[rowSums(x$mboot,na.rm=T)!=0]){
+      kd=density(x$mboot[i,],na.rm=T)
+      img[,i]=c(approx(kd$x,kd$y,seqI)$y)
+    }
+    layout(matrix(c(1,1,1,2), 1, 4, byrow = TRUE))
+    if(palette=="jet"){pal = colorRampPalette((c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
+    if(palette=="BW"){
+      pal = colorRampPalette((c("white","black")))}
+    image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main="Density plot",axes=F, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w))
+    axis(1, cex.axis=1, xaxp=c(0,99000,99)); axis(2, cex.axis=1)
+    lines(x$BinCentres,rowMeans(x$mboot, na.rm=T))
+    z=matrix(1:100,nrow=1)
+    x=1
+    y=seq(min(img,na.rm=T),max(img,na.rm=T),len=100)
+    image(x,y,z,col=pal(100),axes=FALSE,xlab="Density",ylab="")
+    axis(2)
+    axis(side = 1, at = seq(0, 99000, by = 500), 
+         labels = FALSE, tcl = -0.2) 
+  }
+  
 }
 

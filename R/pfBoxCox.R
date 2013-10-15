@@ -1,5 +1,8 @@
 pfBoxCox=function(serie,alpha=0.01,type="BoxCox1964")
   {
+  types=c("BoxCox1964", "JohnDraper")
+  warntype=type[(type %in% types)==FALSE]
+  if(length(warntype)!=0){stop(paste(warntype, "is not a valid type for pfBoxCox", sep=" "))}
 
 # initial minimax rescaling of data, and addition of "shift" parameter (alpha)
 # value used in DP1

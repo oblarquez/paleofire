@@ -24,15 +24,11 @@ Date of the first, last sample for accumulation rate calculation, if NULL first,
   \item{yrInterp}{
 Temporal resolution of the interpolated accumulation rates, if NULL, yrInterp is automatically specified as the median resolution of the record}
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 Return an output structure with the following:
 \item{cmI}{interpolated depths}
 \item{ybpI}{interpolated ages}
 \item{accI}{accumulation rates}
-\item{plot}{if plotit=TRUE}
 }
 
 \author{
@@ -53,6 +49,7 @@ P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume
 
 ## Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)
 CHAR=pretreatment(params=P_,serie=C_,Int=TRUE)
+plot(CHAR)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

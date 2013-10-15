@@ -21,7 +21,12 @@ pfTransform=function(IDn,
   # Check methods
   methods=c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle")
   warnmethod=method[(method %in% methods)==FALSE]
-  if(length(warnmethod)!=0){stop(paste(warnmethod, "is not a valid method for pfTransform",sep=" "))}
+  if(length(warnmethod)!=0){stop(paste(warnmethod, "is not a valid method for pfTransform", sep=" "))}
+  
+  types=c("BoxCox1964", "JohnDraper")
+  warntype=type[(type %in% types)==FALSE]
+  if(length(warntype)!=0){stop(paste(warntype, "is not a valid type for pfBoxCox", sep=" "))}
+  
   
   ## 0 Save parameters
   params=list(IDn=IDn,

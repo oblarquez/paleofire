@@ -63,7 +63,7 @@ ID=pfSiteSel(ID=1)
 plot(ID)
 
 # Transformation to data
-TR=pfTransform(ID,method=c("MinMax", "BoxCox", "Zscore"))
+TR=pfTransform(ID,method=c("MinMax", "Box-Cox", "Z-Score"))
 
 # Plot Transformed and raw data
 # First retrieve raw data for Cygnet using pfExtract
@@ -81,10 +81,10 @@ plot(TR$Age,TR$TransData,type="l")
 ## Example 1: Usage as in Power et al. 2008
 ## Data transformation
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
-TR1=pfTransform(ID, method=c("MinMax","Box-Cox","ZScore"),BasePeriod=c(200,2000))
+TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Diagnostic pdf file with transformed series:
-pfDiagnostic(ID, method=c("MinMax","Box-Cox","ZScore"),BasePeriod=c(200,2000))
+pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 
 ## Compositing: basic binning procedure

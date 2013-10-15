@@ -6,8 +6,8 @@ plot.pfComposite}
 \description{
 Plot a pfComposite object}
 \usage{
-\method{plot}{pfComposite}(x, type = "ci", conf = c(0.05, 0.95), palette = "jet", smoothing = FALSE, spar = 0.3, \dots)
-
+\method{plot}{pfComposite}(x, type = "ci", conf = c(0.05, 0.95), palette = "jet",
+                 add = "NONE", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,11 +19,8 @@ Type of plot among "ci", "prctile", "density"}
 Confidence levels}
   \item{palette}{
 Color palette used with type=c("prctile", "density")}
-  \item{smoothing}{
-If true smooth the resulting density from type="density"
-}
-  \item{spar}{
-Smoothin parameter}
+ \item{add}{
+add="NONE" by default, add="sitenum" could be specified to plot the sites number in eah bin along with the composite curve}
   \item{\dots}{
 Other arguments passed to plot...
 }

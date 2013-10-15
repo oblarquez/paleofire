@@ -91,6 +91,7 @@ pfComposite=function(TR,
   colnames(result)=colnames(TR$TransData)
   
   output=structure(list(BinnedData=structure(result,row.names = as.character(centres),col.names=colnames(TR$TransData), class = "matrix"),
+                        mboot=mboot,
                         BinCentres=centres,    
                         Result=result2,
                         BinWidth=width,
@@ -106,66 +107,45 @@ pfComposite=function(TR,
 
 ######PLOT########
 
-plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",smoothing=FALSE,spar=0.3,...){
+plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
   if (type=="ci"){
-    par(mfrow=c(2,1))
     
-    mboot=matrix(nrow=length(x$BinCentres),ncol=x$nboot)
-    for (i in 1:x$nboot){
-      ne=sample(seq(1,length(x$BinnedData[1,]),1),length(x$BinnedData[1,]),replace=T)
-      if (smoothing==FALSE){
-        mboot[,i]=c(rowMeans(x$BinnedData[,ne],na.rm=TRUE))} 
-      if (smoothing==TRUE){
-        y=c(rowMeans(x$BinnedData[,ne],na.rm=TRUE))
-        ys=smooth.spline(x$BinCentres[is.na(y)==FALSE], na.omit(y), spar=spar)
-        mboot[,i]=c(approx(ys$x,ys$y, x$BinCentres)$y)
-      }
-    }
-    bootci1=t(apply(mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
+    if(add=="sitenum")
+    par(mfrow=c(2,1))
+   
+    bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
     plot(x$BinCentres,x$BootMean, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T)), axes=F, mgp=c(2,0,0),
          main=paste("Composite"), font.main=1, lab=c(8,5,5), 
-         ylab="Composite", xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
+         ylab="Composite", xlab="Age (cal yr BP)", cex.lab=1, pch=16, cex=0.5, type="o")
     axis(1); axis(2, cex.axis=1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
          labels = FALSE, tcl = -0.2)  
     for (i in 1:length(conf)){
-      lines(x$BinCentres,bootci1[,i])
+      lines(x$BinCentres,bootci1[,i],lty=2)
       pos=which.min(is.na(bootci1[,i]))
       text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
     }
     
     # Plot site number
+    if(add=="sitenum"){
     sitenum=length(x$BinnedData[1,])-rowSums(is.na(x$BinnedData))
     plot(x$BinCentres,sitenum,xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(sitenum,na.rm=T),max(sitenum,na.rm=T)), axes=F, mgp=c(2,0,0),
          main=paste("Sites #"), font.main=1, lab=c(8,5,5), 
          ylab="Sites #", xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
     axis(1); axis(2, cex.axis=1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
-         labels = FALSE, tcl = -0.2) 
-  }
-  
-  if (type=="prctile" | type=="density"){
-    ## Bootstrap procedure
-    mboot=matrix(nrow=length(x$BinCentres),ncol=x$nboot)
-    for (i in 1:x$nboot){
-      ne=sample(seq(1,length(x$BinnedData[1,]),1),length(x$BinnedData[1,]),replace=T)
-      if (smoothing==FALSE){
-        mboot[,i]=c(rowMeans(x$BinnedData[,ne],na.rm=TRUE))} 
-      if (smoothing==TRUE){
-        y=c(rowMeans(x$BinnedData[,ne],na.rm=TRUE))
-        ys=smooth.spline(x$BinCentres[is.na(y)==FALSE], na.omit(y), spar=spar)
-        mboot[,i]=c(approx(ys$x,ys$y, x$BinCentres)$y)
-      }
+         labels = FALSE, tcl = -0.2)
     }
   }
   
   
+  
   if (type=="prctile"){
-    bootci1=t(apply(mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
+    bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
     bins1=x$BinCentres[is.na(bootci1[,1])==FALSE]
     bootci1=bootci1[is.na(bootci1[,1])==FALSE,]
     n=length(bootci1[1,])
@@ -182,7 +162,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",smoothing=
     }
     for (i in c(2,11,51,91,100)){
       lines(bins1,bootci1[,i],col="grey",lty=2)
-      text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])/10),i]),paste(i-1,"%",sep=""),col="grey")
+      text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
     }
     axis(1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
@@ -191,14 +171,14 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",smoothing=
   }
   
   if (type=="density"){
-    seqI=seq(min(na.omit(mboot)),max(na.omit(mboot)),len=1000)
-    img=matrix(nrow=1000,ncol=length(mboot[,1]))
+    seqI=seq(min(na.omit(x$mboot)),max(na.omit(x$mboot)),len=1000)
+    img=matrix(nrow=1000,ncol=length(x$mboot[,1]))
     
-    id=seq(1,length(mboot[,1]),1)[rowSums(mboot,na.rm=T)!=0]
-    id[rowSums(mboot,na.rm=T)!=0]
+    id=seq(1,length(x$mboot[,1]),1)[rowSums(x$mboot,na.rm=T)!=0]
+    id[rowSums(x$mboot,na.rm=T)!=0]
     
-    for (i in seq(1,length(mboot[,1]),1)[rowSums(mboot,na.rm=T)!=0]){
-      kd=density(mboot[i,],na.rm=T)
+    for (i in seq(1,length(x$mboot[,1]),1)[rowSums(x$mboot,na.rm=T)!=0]){
+      kd=density(x$mboot[i,],na.rm=T)
       img[,i]=c(approx(kd$x,kd$y,seqI)$y)
     }
     layout(matrix(c(1,1,1,2), 1, 4, byrow = TRUE))
@@ -207,7 +187,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",smoothing=
       pal = colorRampPalette((c("white","black")))}
     image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main="Density plot",axes=F, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w))
     axis(1, cex.axis=1, xaxp=c(0,99000,99)); axis(2, cex.axis=1)
-    lines(x$BinCentres,rowMeans(mboot, na.rm=T))
+    lines(x$BinCentres,rowMeans(x$mboot, na.rm=T))
     z=matrix(1:100,nrow=1)
     x=1
     y=seq(min(img,na.rm=T),max(img,na.rm=T),len=100)

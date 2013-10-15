@@ -55,9 +55,9 @@ mydata=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 
 ## Transform and compositing:
-TR1=pfTransform(ID,add=mydata,method=c("MinMax","Box-Cox","ZScore"),
+TR1=pfTransform(ID,add=mydata,method=c("MinMax","Box-Cox","Z-Score"),
 BasePeriod=c(200,2000))
-COMP2=pfCompositeLF(TR1, bins=seq(-50,12000,20), hw=500,nboot=100)
+COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,20), hw=500, nboot=100)
 plot(COMP2)
 
 }

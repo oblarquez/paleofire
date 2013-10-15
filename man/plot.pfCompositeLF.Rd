@@ -6,15 +6,21 @@ plot.pfCompositeLF}
 \description{
 Plot pfCompositeLF object}
 \usage{
-\method{plot}{pfCompositeLF}(x, type = "ci", \dots)
+\method{plot}{pfCompositeLF}(x, type = "ci", conf = c(0.05, 0.95), palette = "jet",
+                 ...)
 }
 \arguments{
   \item{x}{
 pfCompositeLF object}
-  \item{type}{
-Simple "ci" is implemented (more to come)}
+ \item{type}{
+Type of plot among "ci", "prctile", "density"}
+  \item{conf}{
+Confidence levels}
+  \item{palette}{
+Color palette used with type=c("prctile", "density")}
   \item{\dots}{
-Other arguments passed to plot...}
+Other arguments passed to plot...
+}
 }
 
 \author{

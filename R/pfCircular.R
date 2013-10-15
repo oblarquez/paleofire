@@ -30,6 +30,7 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   ## Declare values for the boot process
   y_m=matrix(ncol=nboot,nrow=length(T[,1]))
+  cat("# of Bootstrap:")
   
   for(k in 1:nboot){
     y_n=matrix(nrow=length(T[,1]),ncol=length(T[1,]))
@@ -47,7 +48,7 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
     }
     y_m[,k]=rowMeans(y_n,na.rm=TRUE)
     
-    if(k %in% seq(0,nboot,100)) print(paste("# of Bootstrap:", k,sep=" "))
+    if(k %in% seq(0,nboot,10)) cat("", k)
   }
   
   ## Compile conf intervals
@@ -80,8 +81,8 @@ plot.pfCircular=function(x,...){
   min(x$BootMean,na.rm=TRUE)
   plot(x$yr,x$BootMean,type="o",
        ylim=c(min(x$BootCirc,na.rm=TRUE),max(x$BootCirc,na.rm=TRUE)),
-       xlim=c(max(x$yr),min(x$yr)),xlab="Age",ylab="Composite",font.main=1, lab=c(8,5,5), 
-       cex.lab=0.8, pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
+       xlim=c(max(x$yr),min(x$yr)),xlab="Age (cal yr BP)",ylab="Composite",font.main=1, lab=c(8,5,5), 
+       cex.lab=1, pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
   for (i in 1:length(x$BootCirc[1,])){
     lines(x$yr,x$BootCirc[,i],lty=2)
     text(min(x$yr)-200,x$BootCirc[1,i],paste(x$conf[i]*100,"%",sep=""),col="black")

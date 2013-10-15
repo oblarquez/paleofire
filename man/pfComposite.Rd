@@ -43,13 +43,9 @@ O.Blarquez}
 ID=pfSiteSel(Region=c("ENA0","WNA0"))
 
 ## Transform data
-res=pfTransform(ID,method="MinMax",Interpolate=FALSE)
-res2=pfTransform(res,method="Box-Cox",Interpolate=FALSE)
-res3=pfTransform(res2,method="Z-score",BasePeriod=c(200,4000),Interpolate=FALSE)
-
-## Or use
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
 ## Composite
-cis=pfComposite(res3,bins=seq(0,20000,200))
+comp=pfComposite(res3,bins=seq(0,20000,200))
+plot(comp)
 }
