@@ -22,7 +22,7 @@ O. Blarquez}
 
 \examples{
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
-TR1=pfTransform(ID, method=c("MinMax","Box-Cox","ZScore"),BasePeriod=c(200,2000))
+TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
 sea1=pfCircular(COMP,b=3,conf=c(0.005,0.025,0.975,0.995),nboot=100)
 plot(sea1)

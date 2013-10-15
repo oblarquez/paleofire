@@ -28,8 +28,8 @@ O. Blarquez}
 
 \examples{
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
-TR1=pfTransform(ID, method=c("MinMax","Box-Cox","ZScore"),BasePeriod=c(200,2000))
-COMP2=pfCompositeLF(TR1, bins=seq(-50,12000,20), hw=500,nboot=100)
+TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
+COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,10), hw=500,nboot=100)
 plot(COMP2)
 
 }

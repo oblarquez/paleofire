@@ -14,7 +14,7 @@ pfInteractive=function(addata=NULL){
   
   ## Use imap for interactive plot
   cat("You can zoom the map by left clicking in two different locations
-on the figure to define a rectangle that will be zoomed into. Left
+on the figure (upper left and bottom right corners) to define a rectangle that will be zoomed into. Left
 clicking outside the plot region (but somewhere in the figure region)
 will zoom out. Double left clicking on the same spot will reset the plot.
 Rignt click or click finish when ready.")
