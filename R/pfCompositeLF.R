@@ -1,5 +1,5 @@
 pfCompositeLF=function(TR,hw=250,
-                       tarAge=NULL,binhw=10,
+                       tarAge=NULL,binhw=NULL,
                        nboot=1000,conf=c(0.05,0.95),
                        pseudodata=FALSE)
 {
@@ -36,6 +36,8 @@ pfCompositeLF=function(TR,hw=250,
     binI=floor(min(na.omit(TR$Age))/10)*10
     binF=ceiling(max(na.omit(TR$Age))/10)*10
     tarAge=seq(binI,binF,width)
+    if(is.null(binhw))
+      binhw=(tarAge[2]-tarAge[1])/2
   }
   
   m=length(TR$TransData[,1])
@@ -60,7 +62,11 @@ pfCompositeLF=function(TR,hw=250,
   result=matrix(ncol=length(TR$Age[1,]),nrow=length(tarAge))
   #sm_result=matrix(ncol=length(IDn),nrow=length(tarAge)-1)
   
-  ## Binning procedure
+  ## Use non-overlapping bins by default if unspecified
+  if(is.null(binhw))
+    binhw=(tarAge[2]-tarAge[1])/2
+  
+  ## Prebinning procedure
 #   for (k in 1:n){
 #     c1 <- cut(TR$Age[,k], breaks = tarAge)
 #     tmean=tapply(TR$TransData[,k], c1, median)
