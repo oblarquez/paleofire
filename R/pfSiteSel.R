@@ -13,7 +13,7 @@ pfSiteSel=function(
 )
 {
   #Parameters and data
-  data(paleofiresites, envir = environment() )
+  data(paleofiresites)
   
   ## ID_SITE
   if(is.null(ID)){ID=unique(paleofiresites$ID_SITE)}
