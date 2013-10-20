@@ -1,10 +1,9 @@
 CheckVersionFirst <- function() {
   # Check to see if installed
-  if (!"GCD" %in% installed.packages()[, 1]) {
+  if (!"GCD" %in% utils::installed.packages()[, 1]) {
     Checks <- "Failed"
   } else {
     # Compare version numbers
-    require(RCurl)
     temp <- getURL("https://raw.github.com/paleofire/GCD/master/DESCRIPTION")    
     CurrentVersion <- gsub("^\\s|\\s$", "", 
                            gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
@@ -25,8 +24,7 @@ CheckVersionFirst <- function() {
         "'GCD is either outdated or not installed. Update now? (y/n) ")
       if (ans != "y")
         return(invisible())
-      require(devtools)
-      install_github("paleofire", "GCD")
+      install_github("GCD", "paleofire")
     })
   # Some cool things you want to do after you are sure the data is there
 }
