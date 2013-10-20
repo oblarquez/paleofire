@@ -19,7 +19,7 @@ CheckVersionFirst <- function() {
   
   switch(
     Checks,
-    Passed = { message("Everything looks OK! GCD data up to date") },
+    Passed = { message("Everything looks OK! GCD up to date: v",CurrentVersion) },
     Failed = {
       ans = readline(
         "'GCD is either outdated or not installed. Update now? (y/n) ")
