@@ -1,6 +1,8 @@
 exportPattern("^[[:alpha:]]+")
 import(locfit, gtools, caTools, pscl, Imap)
 importFrom(utils)
+importFrom(Rcurl)
+importFrom(devtools)
 
 S3method(plot,pfCircular)
 S3method(plot,CHAR)
