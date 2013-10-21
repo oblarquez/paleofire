@@ -9,6 +9,6 @@ Description: The paleofire package provides tools to extract and analyse charcoa
 URL: http://gpwg.org
 License:  GPL (>= 2)
 Imports: locfit, gtools, caTools, pscl, Imap, RCurl, devtools
-Depends: R(>= 2.10.0), methods, GCD
+Depends: R(>= 2.10.0), methods
 LazyLoad: yes
 LazyData: no
