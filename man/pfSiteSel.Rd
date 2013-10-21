@@ -9,7 +9,7 @@ Main function used for site selection, uses data strored in data(paleofiresites)
 pfSiteSel(ID = NULL, Latlim = c(-360, 360), Longlim = c(-360,
                  360), Biome = NULL, DateInt = NULL, Country = NULL,
                  Region = NULL, SiteName = NULL, PrefUnit = NULL,
-                 Elevation = c(-1e+05, 1e+05), QuantType = NULL)
+                 Elevation = c(-1e+05, 1e+05), QuantType = NULL, L12=NULL, RF99=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -39,6 +39,9 @@ Site elevation}
   \item{QuantType}{
 Define the quantity type measure e.g. QuantType="INFL" for influx}
 }
+  \item{RF99}{Potential Natural Vegetation following Ramankutty and Foley (1999), see ?paleofiresites for details}
+  \item{L12}{Potential Natural Vegetation following Levavasseur et al. (2012), see ?paleofiresites for details}
+    
 \details{
 The criterion values could be inspected by accessing data(paleofiresites)}
 \value{
