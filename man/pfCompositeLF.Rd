@@ -7,7 +7,7 @@ Produce a composite serie from multiple charcoal records using a local regressio
 Produce a composite serie from multiple charcoal local fits produced using the locfit procedure on bootstraped series subsamples, the sites charcoal values are prebinned prior to sites resampling. This procedure is equivalent to Daniau et al. 2012.
 }
 \usage{
-pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=10,nboot=1000,conf=c(0.05,0.95),
+pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=NULL,nboot=1000,conf=c(0.05,0.95),
                        pseudodata=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.

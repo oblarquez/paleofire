@@ -45,8 +45,8 @@ pfTransform=function(IDn,
   if(is.null(IDn)==FALSE){
     if (is.list(IDn) & length(IDn)==2){
       
-      data(paleofiredata)
-      data(paleofiresites)
+      data(paleofiredata,envir = environment())
+      data(paleofiresites,envir = environment())
       
       #paleofiredata=na.omit(paleofiredata)
       # Sites are:

@@ -1,9 +1,9 @@
 .onAttach <- function(lib, pkg) {
   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
-  CheckVersionFirst()
+  checkGCDversion()
 } 
 
-CheckVersionFirst <- function() {
+checkGCDversion <- function() {
   # Check to see if installed
   if (!"GCD" %in% utils::installed.packages()[, 1]) {
     Checks <- "Failed"

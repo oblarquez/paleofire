@@ -19,8 +19,8 @@ pfDiagnostic=function(IDn,
   
   ## Load data
   if (is.list(IDn) & length(IDn)==2){
-    data(paleofiredata)
-    data(paleofiresites)
+    data(paleofiredata,envir = environment())
+    data(paleofiresites,envir = environment())
     #paleofiredata=na.omit(paleofiredata)
     IDn=IDn$SitesIDS
     # Use only paleofiredata corresponding to IDn
@@ -29,7 +29,7 @@ pfDiagnostic=function(IDn,
     ## Convert data to influx------
     if(QuantType=="INFL"){
       for(i in unique(IDn))  
-        if( paleofiresites[paleofiresites$ID_SITE==i,21]!="INFL" & 
+        if( paleofiresites[paleofiresites$ID_SITE==i,]$QTYPE!="INFL" & 
               is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
           temp=paleofiredata[paleofiredata[,1]==i,]
           ## Calculate Sed Acc
@@ -137,10 +137,10 @@ pfDiagnostic=function(IDn,
     data(coast)  
     # Draw map
     plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",
-         xlim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,4]-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,4]+20),  
-         ylim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,3]-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,3]+20),
+         xlim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE+20),  
+         ylim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE+20),
          xlab="Longitude",ylab="Latitude")
-    points(paleofiresites[paleofiresites$ID_SITE %in% IDt,4],paleofiresites[paleofiresites$ID_SITE %in% IDt,3],
+    points(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE,
            bg="red",col = "red",pch = 21)
     lines(coast$X,coast$Y)
     
@@ -158,9 +158,6 @@ pfDiagnostic=function(IDn,
   }
   
   dev.off()
-  rm(paleofiresites,envir = globalenv())
-  rm(paleofiredata,envir = globalenv())
-  
 }
 
 

@@ -6,8 +6,8 @@ pfInteractive=function(addata=NULL){
   
   
   ## Load data  
-  data(paleofiresites)
-  data(coast)
+  data(paleofiresites,envir = environment())
+  data(coast,envir = environment())
   ## Define vectors
   yy=cbind(coast[,2],coast[,1])
   pp=cbind(paleofiresites$LONGITUDE,paleofiresites$LATITUDE)
