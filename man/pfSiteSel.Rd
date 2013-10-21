@@ -38,9 +38,9 @@ Charcoal units}
 Site elevation}
   \item{QuantType}{
 Define the quantity type measure e.g. QuantType="INFL" for influx}
-}
   \item{RF99}{Potential Natural Vegetation following Ramankutty and Foley (1999), see ?paleofiresites for details}
   \item{L12}{Potential Natural Vegetation following Levavasseur et al. (2012), see ?paleofiresites for details}
+    }
     
 \details{
 The criterion values could be inspected by accessing data(paleofiresites)}
@@ -52,6 +52,8 @@ An object of the class pfSiteSel
 O. Blarquez}
 
 \examples{
+library(paleofire)
+require(GCD)
 
 ## Sites selection examples
 

@@ -37,6 +37,10 @@ Temporal resolution of the interpolated accumulation rates, if NULL, yrInterp is
 O. Blarquez}
 
 \examples{
+rm(list=ls())
+
+library(paleofire)
+require(GCD)
 
 ## Ad user own data from CharAnalysis file (csv)
 ## In this example we will use data from:

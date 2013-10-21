@@ -25,6 +25,9 @@ A vector of charcoal values}
 O. Blarquez}
 
 \examples{
+library(paleofire)
+require(GCD)
+
 ## Retrieve a site
 ID=pfSiteSel(SiteName="Pas-de-Fond")
 ## Or a group of sites (Western North America)

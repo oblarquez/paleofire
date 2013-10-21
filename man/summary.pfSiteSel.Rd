@@ -25,6 +25,9 @@ Returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","
 O. Blarquez}
 
 \examples{
+library(paleofire)
+require(GCD)
+
 ID=pfSiteSel(ID=2)
 summary(ID)
 }

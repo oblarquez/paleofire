@@ -35,7 +35,7 @@ pfSiteSel=function(
   ## RF99
   if(is.null(RF99)){RF99=unique(paleofiresites$RF99)}
   ## L12
-  if(is.null(L12)){RF99=unique(paleofiresites$L12)}
+  if(is.null(L12)){L12=unique(paleofiresites$L12)}
   # Date Numbers
   paleofiresites=cbind(paleofiresites,(paleofiresites$MAX_EST_AGE-paleofiresites$MIN_EST_AGE)/paleofiresites$NUM_DATING)
   colnames(paleofiresites)[coln+1] <- "DATE_MEAN"
@@ -88,13 +88,15 @@ summary.pfSiteSel=function(object,...){
   
   data(paleofiresites,envir = environment())
   data(paleofiredata,envir = environment())
+  coln=length(paleofiresites[1,])
+  
   NUM_SAMP=c()
   for (i in 1:length(object$SitesIDS)){
     NUM_SAMP[i]=c(length(paleofiredata[paleofiredata[,1]==object$SitesIDS[i],1]))
   }
   table=cbind(paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,],NUM_SAMP)
   rownames(table)=table$SITE_NAME
-  table=subset(table, select=c(1,3,4,5,16,17,18,22))
+  table=subset(table, select=c(1,3,4,5,16,17,18,coln+1))
   print(table)
   return(table)
 }
@@ -148,7 +150,8 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
     if(zoom=="World"|zoom=="world"){
       plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude")
       lines(coast$X,coast$Y)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")}
+      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
+    }
     
     if(zoom=="Sites"|zoom=="sites"){
       # Draw map
@@ -159,7 +162,7 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
       ylim=range(yl[!is.na(yl) & is.finite(yl)])
     
       plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,$LATITUDE],bg="red",col = "red",pch = 21)
+      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)}
   }
 }

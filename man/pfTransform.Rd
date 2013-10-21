@@ -67,6 +67,9 @@ O. Blarquez
 }
 
 \examples{
+library(paleofire)
+require(GCD)
+
 ## Select sites from the biome 8
 ID=pfSiteSel(Biome=8)
 

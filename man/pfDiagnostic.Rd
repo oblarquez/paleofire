@@ -75,8 +75,13 @@ O. Blarquez}
 
 
 \examples{
-# Select sites from the biome #8
-ID=pfSiteSel(Biome=8)
+rm(list=ls())
+
+library(paleofire)
+require(GCD)
+
+# Select boreal sites from Levavasseur 2012 PNV
+ID=pfSiteSel(L12=1)
 
 # Print a diagnostic pdf for Box-Cox, Smoothed and Z-score tranformed data 
 # (base period = 200-2000 BP)

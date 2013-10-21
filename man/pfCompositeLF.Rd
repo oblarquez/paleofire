@@ -48,6 +48,10 @@ O.Blarquez}
 
 
 \examples{
+rm(list=ls())
+
+library(paleofire)
+require(GCD)
 
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 

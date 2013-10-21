@@ -27,6 +27,9 @@ Other arguments passed to plot...
 O. Blarquez}
 
 \examples{
+library(paleofire)
+require(GCD)
+
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,10), hw=500,nboot=100)

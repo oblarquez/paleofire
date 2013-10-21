@@ -41,6 +41,10 @@ response to volcanic forcing. Nature 426:274-278.
 O. Blarquez}
 
 \examples{
+rm(list=ls())
+
+library(paleofire)
+require(GCD)
 
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
