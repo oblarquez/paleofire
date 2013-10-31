@@ -30,9 +30,6 @@ Other arguments passed to plot...
 O. Blarquez}
 
 \examples{
-library(paleofire)
-require(GCD)
-
 ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,20))

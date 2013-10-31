@@ -38,8 +38,6 @@ O. Blarquez translated from P. Higuera CharPretreatment.m function}
 
 
 \examples{
-rm(list=ls())
-
 ## In this example we will use the charcoal record of the Lac du Loup (Blarquez et al. 2010)
 ## Load raw charcoal data in mm^2
 A=read.csv("http://blarquez.com/public/code/loupchar.csv")

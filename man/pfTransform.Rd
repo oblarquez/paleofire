@@ -67,15 +67,11 @@ O. Blarquez
 }
 
 \examples{
-library(paleofire)
-require(GCD)
+## Select sites from the temperate deciduous/broadleaf forest (PNV 3 and 5 in Ramankutty and Foley 1999)
+ID=pfSiteSel(RF99=c(3,5))
 
-## Select sites from the biome 8
-ID=pfSiteSel(Biome=8)
-
-# Transform data sequentially using pfTransform function with interpolation
-# Input could be a serie of sites (e.g. ID list) or an already tranformed data output (e.g. res list)
-res=pfTransform(ID,method="MinMax",Interpolate=FALSE)
+# Transform data sequentially using pfTransform function
+res=pfTransform(ID,method="MinMax")
 head(res$TransData)
 res2=pfTransform(res,method="Box-Cox",Age=seq(0,10000,10),Interpolate=TRUE)
 head(res2$TransData)

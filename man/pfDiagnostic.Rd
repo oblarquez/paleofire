@@ -75,11 +75,6 @@ O. Blarquez}
 
 
 \examples{
-rm(list=ls())
-
-library(paleofire)
-require(GCD)
-
 # Select boreal sites from Levavasseur 2012 PNV
 ID=pfSiteSel(L12=1)
 

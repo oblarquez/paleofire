@@ -33,9 +33,6 @@ John, J. A. & Draper N. R. (1980) Analternative family of transformations, Appli
 \author{
 P. Bartlein}
 \examples{
-library(paleofire)
-require(GCD)
-
 # Select a site
 ID=pfSiteSel(SiteName="Pas-de-Fond")
 

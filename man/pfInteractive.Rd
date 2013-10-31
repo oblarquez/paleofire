@@ -24,10 +24,6 @@ An object of the class pfSiteSel
 O. Blarquez}
 
 \examples{
-
-library(paleofire)
-require(GCD)
-
 ## Type 
 #ID=pfInteractive()
 ## And follow text instructions

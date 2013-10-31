@@ -25,9 +25,6 @@ Other arguments to be passed to plot}
 O. Blarquez}
 
 \examples{
-library(paleofire)
-require(GCD)
-
 ID=pfSiteSel(ID=c(1,3,13,67))
 plot(ID)
 plot(ID,type="Chronology")

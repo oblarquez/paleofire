@@ -32,11 +32,6 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 \url{http://gpwg.org}
 }
 \examples{
-rm(list=ls())
-
-library(paleofire)
-require(GCD)
-
 ## Interactive sites selection:
 # ID=pfInteractive()
 

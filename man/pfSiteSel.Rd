@@ -52,9 +52,6 @@ An object of the class pfSiteSel
 O. Blarquez}
 
 \examples{
-library(paleofire)
-require(GCD)
-
 ## Sites selection examples
 
 ## Select all sites

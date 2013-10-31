@@ -27,10 +27,6 @@ O. Blarquez}
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-
-library(paleofire)
-require(GCD)
-
 ## Retrieve a site
 ID=pfSiteSel(SiteName="Pas-de-Fond")
 ## Or a group of sites (Western North America)

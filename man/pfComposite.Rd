@@ -38,11 +38,6 @@ Define confidence levels}
 O.Blarquez}
 
 \examples{
-rm(list=ls())
-
-library(paleofire)
-require(GCD)
-
 ## Composite charcoal record for North America:
 ID=pfSiteSel(Region=c("ENA0","WNA0"))
 
