@@ -34,3 +34,8 @@ checkGCDversion <- function() {
   # Some cool things you want to do after you are sure the data is there
   library(GCD)
 }
+
+
+## Test for daily branch
+
+
