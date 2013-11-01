@@ -10,7 +10,7 @@ pfTransform=function(IDn,
                      stlYears=500,
                      type="BoxCox1964",
                      alpha=0.01,
-                     QuantType="ALL"
+                     QuantType="INFL"
 ){
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
