@@ -77,7 +77,7 @@ pfCompositeLF=function(TR,hw=250,
   for (k in 1:n){
     if(length(TR$TransData[is.na(TR$TransData[,k])==FALSE,k])!=0){
       for (i in 1:length(tarAge)){
-        t=cbind(as.numeric(na.omit(TR$Age[,k])),as.numeric(na.omit(TR$TransData[,k])))
+        t=na.omit(cbind(as.numeric(TR$Age[,k]),as.numeric(TR$TransData[,k])))
         result[i,k]=mean(t[t[,1]>tarAge[i]-binhw & t[,1]<tarAge[i]+binhw,2])
       }
     }
