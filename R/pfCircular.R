@@ -75,12 +75,13 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   return(output)  
 }
 
+##--------------------------------------------------------------------------------------------------------
 plot.pfCircular=function(x,...){
   ## Plot
-  x$BootMean
-  min(x$BootMean,na.rm=TRUE)
+
+  t=c(x$BootMean,x$BootCirc)
   plot(x$yr,x$BootMean,type="o",
-       ylim=c(min(x$BootCirc,na.rm=TRUE),max(x$BootCirc,na.rm=TRUE)),
+       ylim=c(min(t,na.rm=TRUE),max(t,na.rm=TRUE)),
        xlim=c(max(x$yr),min(x$yr)),xlab="Age (cal yr BP)",ylab="Composite",font.main=1, lab=c(8,5,5), 
        cex.lab=1, pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
   for (i in 1:length(x$BootCirc[1,])){
