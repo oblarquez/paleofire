@@ -129,7 +129,7 @@ pfCompositeLF=function(TR,hw=250,
     ##
     x=as.vector(dat$x)
     y=as.vector(dat$y)
-    locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 1000, family = "qrgauss")
+    locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 2000, family = "qrgauss")
     predboot <- predict(locboot, newdata = centres, se.fit = TRUE)
     mboot[, i] <- predboot$fit
     # note plotting lines is slowww
