@@ -10,8 +10,7 @@ pfTransform=function(IDn,
                      stlYears=500,
                      type="BoxCox1964",
                      alpha=0.01,
-                     QuantType="INFL",
-                     MethodType=NULL
+                     QuantType="ALL"
 ){
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
@@ -42,22 +41,6 @@ pfTransform=function(IDn,
               type=type,
               alpha=alpha)
   
-  influx=function(x){
-    ## Calculate Sed Acc
-    d1=c()
-    t1=c()
-    for(k in 2:(length(x[,1])-1)){
-      d1[k]=x[k+1,2]-x[k-1,2]
-      t1[k]=x[k+1,3]-x[k-1,3] 
-    }
-    sedacc=(d1*100)/t1
-    sedacc[1]=sedacc[2]
-    sedacc=c(sedacc,sedacc[length(sedacc)])
-    ## Calculate Influx
-    infl=(x[,4]*sedacc)
-    return(infl)
-  }
-  
   ## 1 Load charcoal paleofiredata
   if(is.null(IDn)==FALSE){
     if (is.list(IDn) & length(IDn)==2){
@@ -71,49 +54,27 @@ pfTransform=function(IDn,
       # Use only paleofiredata corresponding to IDn
       paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
       
-      ## 1 Use Pref_Units 
-      if(is.null(MethodType)){
-        # Drop Non pref Units  
-        for(i in IDn){
-          paleofiredata[paleofiredata[,1] %in% i &
-                          !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),
-                        7]=NA
-        }
-        paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
-        ## Convert data to influx------
-        if(QuantType=="INFL"){
-          for(i in IDn)  
-            if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
-                  is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
-              infl=influx(paleofiredata[paleofiredata[,1]==i,])
-              paleofiredata[paleofiredata[,1]==i,4]=c(infl)
+      ## Convert data to influx------
+      if(QuantType=="INFL"){
+        for(i in unique(IDn))  
+          if( paleofiresites[paleofiresites$ID_SITE==i,21]!="INFL" & 
+                is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
+            temp=paleofiredata[paleofiredata[,1]==i,]
+            ## Calculate Sed Acc
+            d1=c()
+            t1=c()
+            for(k in 2:(length(temp[,1])-1)){
+              d1[k]=temp[k+1,2]-temp[k-1,2]
+              t1[k]=temp[k+1,3]-temp[k-1,3] 
             }
-        }
-      } else {
-      ## 2 User defined Method
-        ## Drop duplicate units and keep only pref_unit in desired method
-        paleofiredata=paleofiredata[paleofiredata[,6] %in% MethodType,]
-        for(i in IDn){
-          if (length(unique(paleofiredata[paleofiredata[,1] %in% i,5]))>=2){
-            paleofiredata[paleofiredata[,1] %in% i &
-                            !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),7]=NA
+            sedacc=(d1*100)/t1
+            sedacc[1]=sedacc[2]
+            sedacc=c(sedacc,sedacc[length(sedacc)])
+            ## Calculate Influx
+            infl=(temp[,4]*sedacc)
+            ## Replace in the matrix
+            paleofiredata[paleofiredata[,1]==i,4]=c(infl)
           }
-        }
-        paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
-        # Print which sites are dropped from the analysis
-        cat(IDChar$SiteNames[!(IDChar$SitesIDS %in% unique(paleofiredata[,1]))],"\n")
-        cat(length(IDChar$SiteNames)-length(unique(paleofiredata[,1])), 
-            " sites were excluded from the analysis")
-        IDn=unique(paleofiredata[,1])
-        if(QuantType=="INFL"){
-          for(i in IDn)  
-            if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
-                  is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
-              infl=influx(paleofiredata[paleofiredata[,1]==i,])
-              paleofiredata[paleofiredata[,1]==i,4]=c(infl)
-            }
-        }
-      
       }
       ##-----
       ## Add users data
