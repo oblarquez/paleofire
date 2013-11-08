@@ -29,7 +29,7 @@ checkGCDversion <- function() {
         "'GCD is either outdated or not installed. Update now? (y/n) ")
       if (ans != "y")
         return(invisible())
-      install_github("paleofire",username="paleofire",ref="daily")
+      install_github("GCD",username="paleofire",ref="daily")
     })
   # Some cool things you want to do after you are sure the data is there
   library(GCD)
