@@ -9,7 +9,7 @@ checkGCDversion <- function() {
     Checks <- "Failed"
   } else {
     # Compare version numbers
-    temp <- getURL("https://raw.github.com/paleofire/GCD/master/DESCRIPTION")      
+    temp <- getURL("https://raw.github.com/paleofire/GCD/daily/DESCRIPTION")      
     CurrentVersion <- gsub("^\\s|\\s$", "", 
                            gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
     
@@ -29,7 +29,7 @@ checkGCDversion <- function() {
         "'GCD is either outdated or not installed. Update now? (y/n) ")
       if (ans != "y")
         return(invisible())
-      install_github("GCD", "paleofire")
+      install_github("paleofire",username="paleofire",ref="daily")
     })
   # Some cool things you want to do after you are sure the data is there
   library(GCD)
