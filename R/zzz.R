@@ -35,7 +35,7 @@ checkGCDversion <- function() {
       install_github("GCD",username="paleofire",ref="master")
     })
   # Some cool things you want to do after you are sure the data is there
-  # require(GCD)
+  require(GCD)
 }
 
 
