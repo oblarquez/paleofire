@@ -2,6 +2,9 @@
   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
   checkGCDversion()
 } 
+.onLoad <- function(lib, pkg) {
+  checkGCDversion()
+}
 
 checkGCDversion <- function() {
   # Check to see if installed
@@ -32,7 +35,7 @@ checkGCDversion <- function() {
       install_github("GCD",username="paleofire",ref="master")
     })
   # Some cool things you want to do after you are sure the data is there
-  library(GCD)
+  # require(GCD)
 }
 
 
