@@ -1,7 +1,7 @@
 install.packages("devtools")
 library(devtools)
 
-install_github("paleofiRe","oblarquez")
+install_github("paleofire","paleofire")
 library(paleofire)
 
 ## Simple test
