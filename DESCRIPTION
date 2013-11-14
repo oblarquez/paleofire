@@ -1,6 +1,6 @@
 Package: paleofire
 Type: Package
-Title: Analysis methods applied to the Global Charcoal Database
+Title: paleofire: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning
 Version: 1.0
 Date: 2013-10-11
 Author: Global Paleofire Working Group <paleofire@gmail.com>
@@ -10,5 +10,6 @@ URL: http://gpwg.org
 License:  GPL (>= 2)
 Imports: locfit, gtools, caTools, pscl, Imap, RCurl, devtools
 Depends: R(>= 2.10.0), methods
+Suggests: GCD
 LazyLoad: yes
 LazyData: no

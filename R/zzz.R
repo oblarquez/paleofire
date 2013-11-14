@@ -1,7 +1,10 @@
 .onAttach <- function(lib, pkg) {
-  packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
   checkGCDversion()
 } 
+# .onLoad <- function(lib, pkg) {
+#   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
+#   checkGCDversion()
+# }
 
 checkGCDversion <- function() {
   # Check to see if installed
@@ -9,7 +12,8 @@ checkGCDversion <- function() {
     Checks <- "Failed"
   } else {
     # Compare version numbers
-    temp <- getURL("https://raw.github.com/paleofire/GCD/daily/DESCRIPTION")      
+    temp <- getURL("https://raw.github.com/paleofire/GCD/daily/DESCRIPTION",
+                   ssl.verifypeer = FALSE)      
     CurrentVersion <- gsub("^\\s|\\s$", "", 
                            gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
     
@@ -26,16 +30,16 @@ checkGCDversion <- function() {
     Passed = { message("Everything looks OK! GCD up to date: v",CurrentVersion) },
     Failed = {
       ans = readline(
-        "'GCD is either outdated or not installed. Update now? (y/n) ")
+        "GCD is either outdated or not installed. Update now? (y/n) ")
       if (ans != "y")
         return(invisible())
       install_github("GCD",username="paleofire",ref="daily")
     })
-  # Some cool things you want to do after you are sure the data is there
+  # Load the GCD:
   library(GCD)
+  packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 }
 
 
 ## Test for daily branch daily
-
 
