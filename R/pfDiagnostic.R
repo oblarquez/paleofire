@@ -27,27 +27,27 @@ pfDiagnostic=function(IDn,
     paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
     
     ## Convert data to influx------
-    if(QuantType=="INFL"){
-      for(i in unique(IDn))  
-        if( paleofiresites[paleofiresites$ID_SITE==i,]$QTYPE!="INFL" & 
-              is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
-          temp=paleofiredata[paleofiredata[,1]==i,]
-          ## Calculate Sed Acc
-          d1=c()
-          t1=c()
-          for(k in 2:(length(temp[,1])-1)){
-            d1[k]=temp[k+1,2]-temp[k-1,2]
-            t1[k]=temp[k+1,3]-temp[k-1,3] 
-          }
-          sedacc=(d1*100)/t1
-          sedacc[1]=sedacc[2]
-          sedacc=c(sedacc,sedacc[length(sedacc)])
-          ## Calculate Influx
-          infl=(temp[,4]*sedacc)
-          ## Replace in the matrix
-          paleofiredata[paleofiredata[,1]==i,4]=c(infl)
-        }
-    }
+#     if(QuantType=="INFL"){
+#       for(i in unique(IDn))  
+#         if( paleofiresites[paleofiresites$ID_SITE==i,]$QTYPE!="INFL" & 
+#               is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
+#           temp=paleofiredata[paleofiredata[,1]==i,]
+#           ## Calculate Sed Acc
+#           d1=c()
+#           t1=c()
+#           for(k in 2:(length(temp[,1])-1)){
+#             d1[k]=temp[k+1,2]-temp[k-1,2]
+#             t1[k]=temp[k+1,3]-temp[k-1,3] 
+#           }
+#           sedacc=(d1*100)/t1
+#           sedacc[1]=sedacc[2]
+#           sedacc=c(sedacc,sedacc[length(sedacc)])
+#           ## Calculate Influx
+#           infl=(temp[,4]*sedacc)
+#           ## Replace in the matrix
+#           paleofiredata[paleofiredata[,1]==i,4]=c(infl)
+#         }
+#     }
     ##-----
     ## Add users data
     if(is.null(add)==FALSE){
@@ -105,10 +105,10 @@ pfDiagnostic=function(IDn,
                   add1=c()
                   add1$data=paleofiredata[paleofiredata$ID_SITE %in% ID1,]}
     
-    for (i in 1:length(method)){
+
       tr=pfTransform(IDn=tr,add=add1,
                      Interpolate=Interpolate,
-                     method=method[i],
+                     method=method,
                      stlYears=stlYears,
                      Age=Age,
                      BasePeriod=BasePeriod,
@@ -117,21 +117,23 @@ pfDiagnostic=function(IDn,
                      RunQParam=RunQParam,
                      type=type,
                      alpha=alpha)
-    }
     
     # plot transformed data
-    #par(new=T, fig=c(0,1,.4,.65), mar=c(3.1, 4.1, 2.1, 4.1))
-    plot(tr$Age, tr$TransData,xlim=c(20000,-100), axes=F, mgp=c(2,0,0), lab=c(10,5,5),
-         ylab=paste(method,"transformed data",sep=" "), xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
+    if(sum(is.na(tr$TransData))!=length(tr$TransData)){
+      #par(new=T, fig=c(0,1,.4,.65), mar=c(3.1, 4.1, 2.1, 4.1))
+      plot(tr$Age, tr$TransData,xlim=c(20000,-100), axes=F, mgp=c(2,0,0), lab=c(10,5,5),
+           ylab=paste(method,"transformed data",sep=" "), xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
     axis(1, cex.axis=0.8, xaxp=c(0,22000,22)); axis(2, cex.axis=0.8); axis(4, cex.axis=0.8)
+    } else plot.new()
     
     # plot histograms of raw and transformed data, and likelhood profile
     #par(new=T, fig=c(0,.4,.0,.35), mar=c(7.1, 4.1, 2.1, 2.1))
     hist(paleofiredata[paleofiredata[,1]==ID1,4], xlab=paste("Char", siteinfo$PREF_UNITS,sep=" "), cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL)
     
-    #par(new=T, fig=c(.3,.7,.0,.35), mar=c(7.1, 4.1, 1.1, 2.1))
-    hist(tr$TransData, xlab=paste(method,"transformed data",sep=" "), cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL)
-    
+    if(sum(is.na(tr$TransData))!=length(tr$TransData)){
+      #par(new=T, fig=c(.3,.7,.0,.35), mar=c(7.1, 4.1, 1.1, 2.1))
+      hist(tr$TransData, xlab=paste(method,"transformed data",sep=" "), cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL)
+    } else plot.new()
     # MAP
     #data(paleofiresites)
     data(coast)  

@@ -12,7 +12,8 @@ checkGCDversion <- function() {
     Checks <- "Failed"
   } else {
     # Compare version numbers
-    temp <- getURL("https://raw.github.com/paleofire/GCD/master/DESCRIPTION")      
+    temp <- getURL("https://raw.github.com/paleofire/GCD/master/DESCRIPTION",
+                   ssl.verifypeer = FALSE)      
     CurrentVersion <- gsub("^\\s|\\s$", "", 
                            gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
     
@@ -34,7 +35,7 @@ checkGCDversion <- function() {
         return(invisible())
       install_github("GCD",username="paleofire",ref="master")
     })
-  # Some cool things you want to do after you are sure the data is there
+  # Load the GCD:
   require(GCD)
 }
 

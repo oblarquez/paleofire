@@ -1,5 +1,7 @@
 install.packages("devtools")
 library(devtools)
+remove.packages("GCD")
+remove.packages("paleofire")
 
 install_github("paleofire","paleofire")
 library(paleofire)
