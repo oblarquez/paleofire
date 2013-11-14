@@ -36,7 +36,7 @@ checkGCDversion <- function() {
       install_github("GCD",username="paleofire",ref="master")
     })
   # Load the GCD:
-  require(GCD)
+  library(GCD)
   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 }
 
