@@ -4,7 +4,7 @@ pfResolution=function(ID,AgeLim=NULL){
   
   paleofiredata=NULL; rm(paleofiredata)
   
-  data(paleofiredata)
+  data(paleofiredata, envir = environment())
   IDn=ID$SitesIDS
   # Use only paleofiredata corresponding to IDn
   if (is.null(AgeLim)){

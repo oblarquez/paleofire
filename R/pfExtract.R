@@ -3,8 +3,7 @@ pfExtract=function(IDn){
   paleofiredata=NULL; rm(paleofiredata)
   
   # Extract data for sites
-  data(paleofiredata)
+  data(paleofiredata, envir = environment())
   if(is.numeric(IDn)){  Ext=paleofiredata[paleofiredata[,1] %in% IDn,] } else Ext=paleofiredata[paleofiredata[,1] %in% IDn$SitesIDS,]
-  rm(paleofiredata,envir = globalenv())
   return(Ext)
 }

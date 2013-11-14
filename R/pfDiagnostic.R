@@ -136,7 +136,7 @@ pfDiagnostic=function(IDn,
     } else plot.new()
     # MAP
     #data(paleofiresites)
-    data(coast)  
+    data(coast, envir = environment())  
     # Draw map
     plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",
          xlim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE+20),  

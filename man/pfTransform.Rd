@@ -67,17 +67,15 @@ O. Blarquez
 }
 
 \examples{
-## Select sites from the temperate deciduous/broadleaf forest (PNV 3 and 5 in Ramankutty and Foley 1999)
+## Select sites from the temperate deciduous/broadleaf forest
+# (PNV 3 and 5 in Ramankutty and Foley 1999)
 ID=pfSiteSel(RF99=c(3,5))
 
 # Transform data sequentially using pfTransform function
-res=pfTransform(ID,method="MinMax")
-head(res$TransData)
-res2=pfTransform(res,method="Box-Cox",Age=seq(0,10000,10),Interpolate=TRUE)
-head(res2$TransData)
+tr=pfTransform(ID,method=c("MinMax","Box-Cox"))
 
 ## Plot transformed data for the first site
-plot(res2$Age[,1],res2$TransData[,1],type="l")
+plot(tr$Age[,1],tr$TransData[,1],type="l")
 
 }
 
