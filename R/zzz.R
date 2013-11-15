@@ -25,10 +25,11 @@ checkGCDversion <- function() {
     Checks,
     Passed = { message("Everything looks OK! GCD up to date: v",CurrentVersion) },
     Failed = {
-      ans = readline(
-        "GCD is either outdated or not installed. Update now? (y/n) ")
-      if (ans != "y")
-        return(invisible())
+#       ans = readline(
+#         "GCD is either outdated or not installed. Update now? (y/n) ")
+#       if (ans != "y")
+#         return(invisible())
+      packageStartupMessage("GCD is either outdated or not installed. Installing...")
       install_github("GCD",username="paleofire",ref="master")
     })
   # Load the GCD:
