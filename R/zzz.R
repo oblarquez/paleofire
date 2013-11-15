@@ -1,10 +1,6 @@
 .onAttach <- function(lib, pkg) {
   checkGCDversion()
 } 
-# .onLoad <- function(lib, pkg) {
-#   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
-#   checkGCDversion()
-# }
 
 checkGCDversion <- function() {
   # Check to see if installed
@@ -36,10 +32,6 @@ checkGCDversion <- function() {
       install_github("GCD",username="paleofire",ref="master")
     })
   # Load the GCD:
-  library(GCD)
+  require(GCD)
   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 }
-
-
-## Test for daily branch daily
-
