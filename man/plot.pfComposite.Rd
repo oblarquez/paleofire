@@ -12,18 +12,16 @@ Plot a pfComposite object}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A pfComposite object}
+A "pfComposite" object.}
   \item{type}{
-Type of plot among "ci", "prctile", "density"}
+Character, type of plot among "ci", "prctile", "density"}
   \item{conf}{
-Confidence levels}
+Numeric, confidence levels.}
   \item{palette}{
-Color palette used with type=c("prctile", "density")}
+Character, color palette used with type=c("prctile", "density") among "jet" and "BW".}
  \item{add}{
-add="NONE" by default, add="sitenum" could be specified to plot the sites number in eah bin along with the composite curve}
-  \item{\dots}{
-Other arguments passed to plot...
-}
+Character, add="NONE" by default, add="sitenum" could be specified to plot the sites number in eah bin along with the composite curve.}
+\item{\dots}{\dots}
 }
 
 \author{

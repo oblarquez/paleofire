@@ -4,7 +4,7 @@
 \title{
 Calculates age resolution indicators for charcoal records}
 \description{
-Calculates age resolution indicators for charcoal records selected using pfSiteSel or pfInteractive functions}
+Calculates age resolution indicators for charcoal records selected using \code{\link{pfSiteSel}} or \code{\link{pfInteractive}} functions.}
 \usage{
 pfResolution(ID, AgeLim = NULL)
 }
@@ -13,7 +13,7 @@ pfResolution(ID, AgeLim = NULL)
   \item{ID}{
 An object of the class "pfSiteSel"}
   \item{AgeLim}{
-Define age limits for age resolution calculations (e.g. AgeLim=c(-50,6000))}
+Numeric, defines age limits for age resolution calculations (e.g. AgeLim=c(-50,6000))}
 }
 
 \value{

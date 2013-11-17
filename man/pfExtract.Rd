@@ -3,20 +3,20 @@
 \title{
 Extract charcoal data for a list of sites}
 \description{
-Extract charcoal data from an IDn object obtained by pfSiteSel()}
+Extract charcoal data from an IDn object obtained by \code{\link{pfSiteSel}}}
 \usage{
 pfExtract(IDn)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{IDn}{
-pfSiteSel() object}
+An object returned by \code{\link{pfSiteSel}}.}
 }
 
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-  \item{out }{A matrix of charcoal data with the following structure: out[,1]=Site identifiers,  out[,2]=Depths,  out[,3]=Estimated ages,  out[,4]=Charcoal data }
+  \item{out}{A matrix of charcoal data with the following structure: out[,1]=Site identifiers,  out[,2]=Depths,  out[,3]=Estimated ages,  out[,4]=Charcoal data.}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }

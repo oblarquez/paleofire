@@ -11,16 +11,14 @@ Plot pfCompositeLF object}
 }
 \arguments{
   \item{x}{
-pfCompositeLF object}
- \item{type}{
-Type of plot among "ci", "prctile", "density"}
+A "pfCompositeLF" object.}
+  \item{type}{
+Character, type of plot among "ci", "prctile", "density"}
   \item{conf}{
-Confidence levels}
+Numeric, confidence levels.}
   \item{palette}{
-Color palette used with type=c("prctile", "density")}
-  \item{\dots}{
-Other arguments passed to plot...
-}
+Character, color palette used with type=c("prctile", "density") among "jet" and "BW".}
+  \item{\dots}{\dots}
 }
 
 \author{

@@ -10,17 +10,17 @@ pfMinMax(serie)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{serie}{
-A vector of charcoal values}
+Numeric, a vector of charcoal values.}
 }
 
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-\item{out}{A vector of Minimax transformed values}
+\item{out}{A vector of minimax transformed values.}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
-
+\seealso{\code{\link{pfTransform}}}
 \author{
 O. Blarquez}
 

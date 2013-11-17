@@ -12,13 +12,12 @@ Plot an object of the class "pfSiteSel"}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-An object of the class "pfSiteSel"}
+An object of the class "pfSiteSel".}
   \item{type}{
-"Map" or "Chronology"}
+Character, type of plot among "Map" or "Chronology".}
   \item{zoom}{
-Zooming factor for type="Map": "Sites" or "World"}
-  \item{\dots}{
-Other arguments to be passed to plot}
+Character, zooming factor for type="Map": "Sites" or "World"}
+  \item{\dots}{\dots}
 }
 
 \author{

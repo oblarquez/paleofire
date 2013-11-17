@@ -4,7 +4,7 @@
 \title{
 plot.pfCircular}
 \description{
-Plot circular block bootstrap percentiles
+Plot circular block bootstrap percentiles.
 }
 \usage{
 \method{plot}{pfCircular}(x, \dots)
@@ -12,10 +12,10 @@ Plot circular block bootstrap percentiles
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A pfCircular object
+A "pfCircular" object.
 }
-  \item{\dots}{
-Other rgument to be passed to plot}
+\item{\dots}{\dots}
+
 }
 \author{
 O. Blarquez}

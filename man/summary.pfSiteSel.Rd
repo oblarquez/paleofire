@@ -11,14 +11,14 @@ Return a summary table for an object of the class "pfSiteSel"}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
- An object of the class "pfSiteSel"
+ An object of the class "pfSiteSel".
  }
   \item{\dots}{
-...}
+\dots}
 }
 
 \value{
-Returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","MIN_EST_AGE", "MAX_EST_AGE", "NUM_DATING", "NUM_SAMP"  
+Returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","MIN_EST_AGE", "MAX_EST_AGE", "NUM_DATING", "NUM_SAMP".
 }
 
 \author{

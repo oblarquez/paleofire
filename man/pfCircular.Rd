@@ -1,7 +1,7 @@
 \name{pfCircular}
 \alias{pfCircular}
 \title{
-Circular block bootstrap procedure applied to charcoal composite}
+Circular block bootstrap procedure applied to charcoal records compositing results}
 \description{
 Block bootstrap has been proposed to test the significances of changes in stationary time series (Kunsch 1989). This procedure consists of splitting each charcoal series into n-b+1 overlapping blocks of data, where n is sample size and b the block size. These blocks are used to reconstruct resampled individual charcoal series that are in turn used to estimate the confidence intervals around the charcoal series composite mean. }
 \usage{
@@ -10,23 +10,20 @@ pfCircular(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{comp}{
-pfComposite() object}
+A "pfComposite" object}
   \item{b}{
-block size, if NULL the optimal block size for a given series is given by: b= 2x(-1
+A numeric giving block size, if NULL the optimal block size for a given series is given by: b= 2x(-1
 /log(p)), where p is the lag one autocorrelation coefficient of that series (Adams,
 Mann & Ammann 2003).}
-  \item{conf}{
-confidence intervals}
-  \item{nboot}{
-number of bootstrap replicates}
-  \item{AgeLim}{
-restrict the analysis to a given period}
+  \item{conf}{Numeric, calculated confidence intervals.}
+  \item{nboot}{Numeric, number of bootstrap replicates.}
+  \item{AgeLim}{Numeric, years defining a period to restrict the analysis to.}
 }
 
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-  \item{out}{A pfCircular object with estimated confidence intervals}
+  \item{out}{A "pfCircular" object with estimated confidence intervals.}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }

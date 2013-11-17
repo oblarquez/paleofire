@@ -12,11 +12,11 @@ pfBoxCox(serie, alpha = 0.01, type = "BoxCox1964")
 }
 \arguments{
   \item{serie}{
-A vector of charcoal values}
+A vector of charcoal values.}
   \item{alpha}{
-The "shift" parameter}
+Numeric, the "shift" parameter, default=0.01.}
   \item{type}{
-The Box-Cox transformation formulation, can be either "BoxCox1964" (default) for the original Box & Cox (1964) formulation, or "JohnDraper" for the John & Draper (1980) modulus transformation.}
+Character, the Box-Cox transformation formulation, can be either "BoxCox1964" (default) for the original Box & Cox (1964) formulation, or "JohnDraper" for the John & Draper (1980) modulus transformation.}
 }
 \value{
 %%  ~Describe the value returned
@@ -26,12 +26,15 @@ The Box-Cox transformation formulation, can be either "BoxCox1964" (default) for
 %% ...
 }
 \references{
-Venables, W. N., Ripley, B. D., & Venables, W. N. (1994). Modern applied statistics with S-PLUS (Vol. 250). New York: Springer-verlag.\\
-Box, G.E.P. & Cox, D. R.(1964) An analysis of transformations, Journal of the Royal Statistical Society, Series B, 26, 211-252.\\
+Venables, W. N., Ripley, B. D., & Venables, W. N. (1994). Modern applied statistics with S-PLUS (Vol. 250). New York: Springer-verlag.
+
+Box, G.E.P. & Cox, D. R.(1964) An analysis of transformations, Journal of the Royal Statistical Society, Series B, 26, 211-252.
+
 John, J. A. & Draper N. R. (1980) Analternative family of transformations, Applied Statistics, 29, 190-197.
 }
 \author{
 P. Bartlein}
+\seealso{\code{\link{pfTransform}} }
 \examples{
 # Select a site
 ID=pfSiteSel(SiteName="Pas-de-Fond")

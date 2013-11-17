@@ -17,11 +17,11 @@ An optional XY matrix of coordinates to specify a polygon to be drawn on the map
 }
 
 \value{
-An object of the class pfSiteSel
+An object of the class "pfSiteSel".
 }
-
 \author{
 O. Blarquez}
+\seealso{ \code{\link{pfSiteSel}}}
 
 \examples{
 ## Type 

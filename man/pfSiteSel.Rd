@@ -4,7 +4,7 @@
 \title{
 GCD sites selection methods}
 \description{
-Main function used for site selection, uses data strored in data(paleofiresites) to perform site selection according to multiple criterion, those criterions could be either geographic, based on series attributes (e.g. # of datings), or on sites attributes (e.g. biome)}
+Main function used for site selection, uses data strored in data(paleofiresites) to perform site selection according to multiple criterion, those criterions could be either geographic, based on series attributes (e.g. # of datings), or on sites attributes (e.g. biome).}
 \usage{
 pfSiteSel(ID = NULL, Latlim = c(-360, 360), Longlim = c(-360,
                  360), Biome = NULL, DateInt = NULL, Country = NULL,
@@ -14,40 +14,40 @@ pfSiteSel(ID = NULL, Latlim = c(-360, 360), Longlim = c(-360,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{ID}{
-Specify sites identifiers if known (ID_SITE in paleofiresites)}
+Numeric, specify sites identifiers if known (ID_SITE in paleofiresites).}
   \item{Latlim}{
-A vector specifying the latitudes limits
+Numeric, a vector specifying the latitudes limits.
 }
   \item{Longlim}{
-A vector specifying the longitudes limits
+Numeric, a vector specifying the longitudes limits.
 }
   \item{Biome}{
-A vector specifying the biome in wich the sites should be part
+Numeric, a vector specifying the biome in which the sites should be located.
 }
   \item{DateInt}{
-The mean dating interval (see above example)}
+Numeric, the mean dating interval (see example below).}
   \item{Country}{
-Country code}
+Factor, country code.}
   \item{Region}{
-Region code}
+Factor, region code.}
   \item{SiteName}{
-The site name}
+Character, the sites names.}
   \item{PrefUnit}{
-Charcoal units}
+Factor, charcoal units.}
   \item{Elevation}{
-Site elevation}
+Numeric, a vector specifying sites elevations limits.}
   \item{QuantType}{
-Define the quantity type measure e.g. QuantType="INFL" for influx}
-  \item{RF99}{Potential Natural Vegetation following Ramankutty and Foley (1999), see ?paleofiresites for details}
-  \item{L12}{Potential Natural Vegetation following Levavasseur et al. (2012), see ?paleofiresites for details}
+Character, define the quantity type measure e.g. QuantType="INFL" for influx.}
+  \item{RF99}{Numeric, Potential Natural Vegetation following Ramankutty and Foley (1999), see ?paleofiresites for details.}
+  \item{L12}{Numeric, Potential Natural Vegetation following Levavasseur et al. (2012), see ?paleofiresites for details.}
     }
     
 \details{
-The criterion values could be inspected by accessing data(paleofiresites)}
+The criterion values could be inspected by accessing data(paleofiresites) in GCD package.}
 \value{
 An object of the class pfSiteSel
 }
-
+\seealso{\code{\link[GCD]{paleofiresites}}}
 \author{
 O. Blarquez}
 

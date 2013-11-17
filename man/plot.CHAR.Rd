@@ -8,14 +8,13 @@ Plot an object of the class "CHAR" returned by the pretreatment function.
 Original accumulation rates are presented using grey bars, accumulation rates interpolated at equal time steps are presented by a black curve.}
 
 \usage{
-\method{plot}{CHAR}(x, \dots)
+\method{plot}{CHAR}(x,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A object of the class "CHAR"}
-  \item{\dots}{
-...}
+An object of the class "CHAR".}
+\item{\dots}{\dots}
 }
 
 \author{

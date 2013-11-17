@@ -57,7 +57,7 @@ plot(ID,zoom="sites")
 ID=pfSiteSel(ID=1)
 plot(ID)
 
-# Transformation to data
+# Transformation of data
 TR=pfTransform(ID,method=c("MinMax", "Box-Cox", "Z-Score"))
 
 # Plot Transformed and raw data
@@ -86,7 +86,7 @@ pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,12000,500))
 plot(COMP)
 
-## The resulting matrix can be saved
+## The result matrix can be saved
 write.csv(COMP$Result,file="temp.csv")
 
 
@@ -99,7 +99,7 @@ plot(COMP2)
 write.csv(COMP2$Result,file="temp2.csv")
 
 
-## Example 3; Circular block bootstrapp
+## Example 3: Circular block bootstrapp
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
 sea1=pfCircular(COMP,b=3,conf=c(0.005,0.025,0.975,0.995),nboot=100)
 

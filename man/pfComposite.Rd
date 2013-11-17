@@ -14,29 +14,31 @@ pfComposite(TR, bins = NULL, nboot = 1000, binning = TRUE, conf =
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{TR}{
-An object returned by pfTransform()}
+An object returned by \code{\link{pfTransform}}}
   \item{bins}{
-The sequence for binning given in years (e.g. bins=seq(0,10000,200)) 
-If unspecified the sequence is defined as bins=seq(from=min age, to=max Age, by=median resolution) 
+Numeric, the sequence for binning given in years (e.g. bins=seq(from=0,to=10000,by=200)).
+If unspecified the sequence is defined as bins=seq(from=min age, to=max age, by=median resolution).
 }
   \item{nboot}{
-A number specifying the number of bootstrap resamplings}
+Numeric, a number specifying the number of bootstrap replicates.}
 \item{binning}{
-Set to TRUE (default) for binning, if transformed data are first interpolated this agument can be set to FALSE (no binning)}
+Logical, set to TRUE (default) for binning, if transformed data are first interpolated this argument can be set to FALSE (no binning).}
 \item{conf}{
-Define confidence levels}
+Numeric, define confidence levels.}
 }
 
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-  \item{out}{A matrix containing the c(0.05 0.5 0.95) quantiles issued from the bootstrap procedure and associated bin centres}
+  \item{out}{A "pfComsposite" object.}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
 \author{
 O.Blarquez}
-
+\references{
+Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche, R. Bradshaw, C. Carcaillet, C. Cordova, S. Mooney, P. Moreno, I. Prentice, K. Thonicke, W. Tinner, C. Whitlock, Y. Zhang, Y. Zhao, A. Ali, R. Anderson, R. Beer, H. Behling, C. Briles, K. Brown, A. Brunelle, M. Bush, P. Camill, G. Chu, J. Clark, D. Colombaroli, S. Connor, A. L. Daniau, M. Daniels, J. Dodson, E. Doughty, M. Edwards, W. Finsinger, D. Foster, J. Frechette, M. J. Gaillard, D. Gavin, E. Gobet, S. Haberle, D. Hallett, P. Higuera, G. Hope, S. Horn, J. Inoue, P. Kaltenrieder, L. Kennedy, Z. Kong, C. Larsen, C. Long, J. Lynch, E. Lynch, M. McGlone, S. Meeks, S. Mensing, G. Meyer, T. Minckley, J. Mohr, D. Nelson, J. New, R. Newnham, R. Noti, W. Oswald, J. Pierce, P. Richard, C. Rowe, M. Sanchez Goni, B. Shuman, H. Takahara, J. Toney, C. Turney, D. Urrego-Sanchez, C. Umbanhowar, M. Vandergoes, B. Vanniere, E. Vescovi, M. Walsh, X. Wang, N. Williams, J. Wilmshurst, and J. Zhang. 2008. Changes in fire regimes since the Last Glacial Maximum: an assessment based on a global synthesis and analysis of charcoal data. Climate Dynamics 30:887-907.
+}
 \examples{
 ## Composite charcoal record for North America:
 ID=pfSiteSel(Region=c("ENA0","WNA0"))
