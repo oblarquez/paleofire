@@ -6,7 +6,7 @@
 paleofire: A package for the Global Charcoal Database 
 }
 \description{
-The paleofire package provides tools to extract and analyse charcoal sedimentary data stored in the Global Charcoal Database. Main functionalities includes data extraction and sites selection, transformation and interpolation of the charcoal records as well as compositing.
+The paleofire package provides tools to extract and analyse charcoal sedimentary data stored in the Global Charcoal Database. Main functionalities includes data extraction and sites selection, transformation and homogenization of the charcoal records as well as regional to global compositing.
 }
 \details{
 \tabular{ll}{
