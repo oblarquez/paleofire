@@ -205,11 +205,15 @@ pfCompositeLF=function(TR,hw=250,
 
 ######PLOT########
 
-plot.pfCompositeLF=function(x,type="ci",conf=c(0.05,0.95),palette="jet",...){
+plot.pfCompositeLF=function(x,type="ci",add=NULL,conf=c(0.05,0.95),palette="jet",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
   if (type=="ci"){
+    
+    if(add=="sitenum")
+      par(mfrow=c(2,1))
+    
     bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
     plot(x$BinCentres,x$BootMean, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T)), axes=F, mgp=c(2,0,0),
@@ -222,6 +226,16 @@ plot.pfCompositeLF=function(x,type="ci",conf=c(0.05,0.95),palette="jet",...){
       lines(x$BinCentres,bootci1[,i],lty=2)
       pos=which.min(is.na(bootci1[,i]))
       text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
+    }
+    # Plot site number
+    if(add=="sitenum"){
+      sitenum=length(x$BinnedData[1,])-rowSums(is.na(x$BinnedData))
+      plot(x$BinCentres,sitenum,xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(sitenum,na.rm=T),max(sitenum,na.rm=T)), axes=F, mgp=c(2,0,0),
+           main=paste("Sites #"), font.main=1, lab=c(8,5,5), 
+           ylab="Sites #", xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
+      axis(1); axis(2, cex.axis=1)
+      axis(side = 1, at = seq(0, 99000, by = 500), 
+           labels = FALSE, tcl = -0.2)
     }
     
   }

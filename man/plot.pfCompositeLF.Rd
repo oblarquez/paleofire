@@ -6,7 +6,7 @@ plot.pfCompositeLF}
 \description{
 Plot pfCompositeLF object}
 \usage{
-\method{plot}{pfCompositeLF}(x, type = "ci", conf = c(0.05, 0.95), palette = "jet",
+\method{plot}{pfCompositeLF}(x, type = "ci", add = NULL, conf = c(0.05, 0.95), palette = "jet",
                  ...)
 }
 \arguments{
@@ -14,6 +14,8 @@ Plot pfCompositeLF object}
 A "pfCompositeLF" object.}
   \item{type}{
 Character, type of plot among "ci", "prctile", "density"}
+\item{add}{
+Character, add=NULL by default, add="sitenum" could be specified to plot the sites number in eah bin along with the composite curve.}
   \item{conf}{
 Numeric, confidence levels.}
   \item{palette}{
