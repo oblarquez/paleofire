@@ -1,4 +1,4 @@
-pfAddData=function(files,metadata,type=NULL,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
+pfAddData=function(files,metadata,type="NULL",Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 
 ## Data part
   
@@ -18,7 +18,7 @@ if(type=="CharAnalysis"){
 }
 
 ## If data already specified as Influx (i.e. 3 columns csv's with Depth, Age, Influx)
-if(is.null(type))
+if(type=="NULL")
   all_data=do.call(rbind,lapply(1:length(files),function(i) rbind(cbind(1000+i,get(paste("data",i,sep=""))))))
 
 ## Set colnames

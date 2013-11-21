@@ -205,7 +205,7 @@ pfCompositeLF=function(TR,hw=250,
 
 ######PLOT########
 
-plot.pfCompositeLF=function(x,type="ci",add=NULL,conf=c(0.05,0.95),palette="jet",...){
+plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="jet",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
