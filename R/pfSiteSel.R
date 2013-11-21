@@ -54,6 +54,7 @@ pfSiteSel=function(
                        & paleofiresites$ELEV>=Elevation[1]
                        & paleofiresites$ELEV<=Elevation[2]
                        & paleofiresites$BIOME %in%  Biome 
+                       & paleofiresites$ID_COUNTRY %in%  Country 
                        & paleofiresites$RF99 %in%  RF99
                        & paleofiresites$L12 %in%  L12
                        & paleofiresites$ID_REGION %in% Region

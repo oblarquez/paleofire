@@ -6,7 +6,7 @@ Transform charcoal data for unique to multiple series}
 \description{
 Charcoal data transformation, background estimation and homogenization for unique to multiple series, accepts objects returned by \code{\link{pfSiteSel}}.}
 \usage{
-pfTransform(IDn, add = NULL, Interpolate = FALSE, Age = 0, method
+pfTransform(IDn, add = NULL, Interpolate = FALSE, Age = NULL, method
                  = "Z-Score", BasePeriod = c(-100, 1e+09), span = 0.3,
                  RunWidth = 500, RunQParam = 0.5, stlYears = 500, type
                  = "BoxCox1964", alpha = 0.01, QuantType = "ALL")
@@ -20,11 +20,11 @@ An object returned by \code{\link{pfSiteSel}} or \code{\link{pfTransform}}
 An object returned by \code{\link{pfAddData}}
 }
   \item{Interpolate}{
-Logical, idicates wether data should be interpolated or not}
+Logical, idicates wether data should be interpolated or not, default=FALSE}
   \item{Age}{
 Numeric, If Interpolate=TRUE, Age is used to specified the ages where the interpolation took place,
-If Age=0 the interpolated ages are automatically specified using the median resolution of the record(s)
-If Age is specified as a vector (e.g. Age=(from=0,to=10000, by=10)) the interpolation took place at specified ages}
+If Age=NULL (default) the interpolated ages are automatically specified using the median resolution of the record(s).
+If Age is specified as a vector (e.g. Age=(from=0,to=10000, by=10)) the interpolation took place at specified ages.}
   \item{method}{
 A character indicating the transformation method:
 "Z-Score", Z-Score, 
