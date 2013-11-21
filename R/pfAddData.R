@@ -1,4 +1,4 @@
-pfAddData=function(files,metadata,type="NONE",Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
+pfAddData=function(files,metadata,type=NULL,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 
 ## Data part
   
