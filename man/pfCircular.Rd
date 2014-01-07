@@ -38,13 +38,13 @@ response to volcanic forcing. Nature 426:274-278.
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
+ID=pfSiteSel(Latlim=c(49,75),Longlim=c(6,50))
+plot(ID,zoom="world")
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Circular block bootstrapp
 
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
-circ=pfCircular(COMP,b=3,conf=c(0.005,0.025,0.975,0.995),nboot=100)
+circ=pfCircular(COMP,conf=c(0.005,0.025,0.975,0.995),nboot=100)
 plot(circ)
-
 }

@@ -65,9 +65,8 @@ O. Blarquez
 }
 
 \examples{
-## Select sites from the temperate deciduous/broadleaf forest
-# (PNV 3 and 5 in Ramankutty and Foley 1999)
-ID=pfSiteSel(RF99=c(3,5))
+## Select the site Pas-de-Fond
+ID=pfSiteSel(SiteName="Pas-de-Fond")
 
 # Transform data sequentially using pfTransform function
 tr=pfTransform(ID,method=c("MinMax","Box-Cox"))

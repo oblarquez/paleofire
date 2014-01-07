@@ -24,10 +24,8 @@ Character, zooming factor for type="Map": "Sites" or "World"}
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(ID=c(1,3,13,67))
+ID=pfSiteSel(Region="ENA0")
 plot(ID)
-plot(ID,type="Chronology")
-
 
 }
 

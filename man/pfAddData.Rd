@@ -53,12 +53,11 @@ metadata=c("http://blarquez.com/public/data/metadata.csv")
 mydata=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
 
 ## GCD sites selection
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
+ID=pfSiteSel(Latlim=c(45,55),Longlim=c(-80,-75))
 
 ## Transform and compositing:
 TR1=pfTransform(ID,add=mydata,method=c("MinMax","Box-Cox","Z-Score"),
-BasePeriod=c(200,2000))
-COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,20), hw=500, nboot=100)
+                BasePeriod=c(200,2000))
+COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
 plot(COMP2)
-
 }

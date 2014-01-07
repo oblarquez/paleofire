@@ -28,8 +28,12 @@ Character, add="NONE" by default, add="sitenum" could be specified to plot the s
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
-TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
-COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,20))
-plot(COMP,type="density",smoothing=TRUE,spar=0.3)
+## Composite charcoal record for North America:
+ID=pfSiteSel(Region=c("WNA0"),L12=1)
+## Transform data
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+
+## Composite
+comp=pfComposite(res3,bins=seq(0,20000,200))
+plot(comp,type="density",smoothing=TRUE,spar=0.3)
 }

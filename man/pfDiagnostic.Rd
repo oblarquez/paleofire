@@ -72,8 +72,8 @@ O. Blarquez}
 
 
 \examples{
-# Select boreal sites from Levavasseur 2012 PNV
-ID=pfSiteSel(L12=1)
+# Select boreal sites from Levavasseur 2012 PNV in Western North America
+ID=pfSiteSel(Region=c("WNA0"),L12=1,Longlim=c(-160,-140))
 
 # Print a diagnostic pdf for Box-Cox, Smoothed and Z-score tranformed data 
 # (base period = 200-2000 BP)

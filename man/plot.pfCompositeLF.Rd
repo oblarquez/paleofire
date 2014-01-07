@@ -27,9 +27,16 @@ Character, color palette used with type=c("prctile", "density") among "jet" and 
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
-TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
-COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,10), hw=500,nboot=100)
-plot(COMP2)
+ID=pfSiteSel(Region=c("WNA0"),L12=1,Longlim=c(-160,-140))
+
+TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
+               BasePeriod=c(200,2000),QuantType="INFL")
+
+COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
+
+plot(COMP1)
+
+## Note: comparing confidence intervals based on 100 replicates is not recommended
+# (100 is used to decrease analysis time)
 
 }

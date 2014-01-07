@@ -40,8 +40,8 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 # dating points (ex 14C) for sites to be selected for a complete list of criterions
 # that can be used see pfSiteSel function
 
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50), DateInt=3000)
-plot(ID,zoom="sites")
+ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
+plot(ID,zoom="world")
 
 ## Filter sites based on sample number using summary function
 sumID=summary(ID)
@@ -75,15 +75,16 @@ plot(TR$Age,TR$TransData,type="l")
 ## Transforming and Compositing
 ## Example 1: Usage as in Power et al. 2008
 ## Data transformation
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
+ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Diagnostic pdf file with transformed series:
-pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
+# pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000), 
+# FileName = "Diagnostic.pdf")
 
 
 ## Compositing: basic binning procedure
-COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,12000,500))
+COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,8000,500))
 plot(COMP)
 
 ## The result matrix can be saved
@@ -92,7 +93,7 @@ write.csv(COMP$Result,file="temp.csv")
 
 ## Compositing: Using the locfit package equivalent procedure to Daniau et al. 2012
 
-COMP2=pfCompositeLF(TR1, tarAge=seq(-50,12000,20), binhw=20, hw=500,nboot=100)
+COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save

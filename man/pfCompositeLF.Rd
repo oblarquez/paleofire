@@ -53,18 +53,15 @@ O.Blarquez}
 
 
 \examples{
-ID=pfSiteSel(Latlim=c(30,70),Longlim=c(-100,-50))
+ID=pfSiteSel(Region=c("WNA0"),L12=1,Longlim=c(-160,-140))
 
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
-BasePeriod=c(200,2000),QuantType="INFL")
+               BasePeriod=c(200,2000),QuantType="INFL")
 
-COMP1=pfCompositeLF(TR, tarAge=seq(-50,2000,10), hw=200, nboot=100)
-COMP2=pfCompositeLF(TR, tarAge=seq(-50,2000,10), hw=200, nboot=100, pseudodata=TRUE)
+COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
 
-dev.off()
-par(mfrow=c(2,1))
 plot(COMP1)
-plot(COMP2)
+
 ## Note: comparing confidence intervals based on 100 replicates is not recommended
 # (100 is used to decrease analysis time)
 
