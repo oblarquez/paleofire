@@ -6,7 +6,7 @@ Add user defined charcoal data series to paleofire}
 This function is used to create a "pfAddData" object, from user defined csv files containing charcoal data, to be passed to pfTransform. Usually csv files should contain three columns with Depth, Age, Charcoal quantity in this same order. A metadata csv file should also be specified with sites location information (three columns with: SITE_NAME, LATITUDE, LONGITUDE). CharAnalysis data files could also be used, in this case the file must include the following informations: DepthTop, DepthBottom, AgeTop, AgeBottom, Volume and Charcoal value in this exact order. Then the files are passed to the pretreatment function in order to calculate Charcoal Accumulation Rates (see pretreatment for details).    
 }
 \usage{
-pfAddData(files, metadata, type = "NONE", Int = TRUE, first =
+pfAddData(files, metadata, type = "NULL", Int = TRUE, first =
                  NULL, last = NULL, yrInterp = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
