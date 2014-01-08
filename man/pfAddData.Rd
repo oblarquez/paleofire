@@ -39,6 +39,8 @@ O. Blarquez}
 \seealso{\code{\link{pretreatment}}}
 
 \examples{
+# not run
+
 ## Ad user own data from CharAnalysis file (csv)
 ## In this example we will use data from:
 # Senici, D., A. Lucas, H. Y. H. Chen, Y. Bergeron, A. Larouche, B. Brossier, O.
@@ -46,18 +48,18 @@ O. Blarquez}
 #differ between xeric and mesic boreal forests in central Canada. Journal of Ecology:
 #101, 356-367.
 
-files=c("http://blarquez.com/public/data//Ben.csv",
-        "http://blarquez.com/public/data/Small.csv")
-metadata=c("http://blarquez.com/public/data/metadata.csv")
+# files=c("http://blarquez.com/public/data//Ben.csv",
+#        "http://blarquez.com/public/data/Small.csv")
+# metadata=c("http://blarquez.com/public/data/metadata.csv")
 
-mydata=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
+# mydata=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
 
 ## GCD sites selection
-ID=pfSiteSel(Latlim=c(45,55),Longlim=c(-80,-75))
+# ID=pfSiteSel(Latlim=c(45,55),Longlim=c(-80,-75))
 
 ## Transform and compositing:
-TR1=pfTransform(ID,add=mydata,method=c("MinMax","Box-Cox","Z-Score"),
-                BasePeriod=c(200,2000))
-COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
-plot(COMP2)
+# TR1=pfTransform(ID,add=mydata,method=c("MinMax","Box-Cox","Z-Score"),
+#                 BasePeriod=c(200,2000))
+# COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
+# plot(COMP2)
 }

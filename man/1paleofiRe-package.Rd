@@ -99,11 +99,4 @@ plot(COMP2)
 ## And save
 write.csv(COMP2$Result,file="temp2.csv")
 
-
-## Example 3: Circular block bootstrapp
-COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
-sea1=pfCircular(COMP,b=3,conf=c(0.005,0.025,0.975,0.995),nboot=100)
-
-# Figure 
-plot(sea1)
 }
