@@ -103,8 +103,10 @@ summary.pfSiteSel=function(object,...){
 }
 
 ## Plot functions
-plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
+plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
+                        xlim=NULL,cex=1,...)
   
+  {
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)
@@ -122,13 +124,17 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
                         labels = as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% x$SitesIDS]))
     
     IDsorted=IDsorted[with(IDsorted, order(Lat)), ]
+    ## Xlim
+    if(is.null(xlim)) xlim=range(paleofiredata$EST_AGE)
     
+    ## Plot
     par(mar=c(4,14,2,8))
-    plot(NULL, type = "n", xlim=c(max(paleofiredata$EST_AGE),min(paleofiredata$EST_AGE)), ylim = c(1,length(x$SitesIDS)),axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
+    plot(NULL, type = "n", 
+         ylim = c(1,length(x$SitesIDS)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
     n=c()
     for(i in 1:length(x$SitesIDS)){
       samples=paleofiredata$EST_AGE[paleofiredata$ID_SITE %in% IDsorted$IDs[i]]
-      points(samples,rep(i,length(samples)),pch="|")
+      points(samples,rep(i,length(samples)),pch=pch,cex=cex)
       n[i]=length(samples)
     }
     axis(2, at=seq(1,length(IDsorted$IDs),1), labels = FALSE)   
