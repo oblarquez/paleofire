@@ -104,7 +104,7 @@ summary.pfSiteSel=function(object,...){
 
 ## Plot functions
 plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
-                        xlim=NULL,cex=1,...)
+                        xlim=NULL,cex=1, ...)
   
   {
   ## Avoid no visible binding for global variable
