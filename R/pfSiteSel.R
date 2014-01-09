@@ -104,7 +104,7 @@ summary.pfSiteSel=function(object,...){
 
 ## Plot functions
 plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
-                        xlim=NULL,cex=1,...)
+                        xlim=NULL, ylim=NULL, cex=1,...)
   
   {
   ## Avoid no visible binding for global variable
@@ -155,9 +155,12 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
   if(type=="Map"){
     
     if(zoom=="World"|zoom=="world"){
-      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude")
+      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,
+           col="blue",xlab="Longitude",ylab="Latitude")
       lines(coast$X,coast$Y)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
+      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,
+             paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, 
+             bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
     }
     
     if(zoom=="Sites"|zoom=="sites"){
@@ -165,9 +168,12 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
       xl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE)
       yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE)
       
+      if(is.null(xlim))
       xlim=range(xl[!is.na(xl) & is.finite(xl)])
+      if(is.null(ylim))
       ylim=range(yl[!is.na(yl) & is.finite(yl)])
-    
+      
+      
       plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
       points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)}
