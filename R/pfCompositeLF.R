@@ -67,11 +67,11 @@ pfCompositeLF=function(TR,hw=250,
     binhw=(tarAge[2]-tarAge[1])/2
   
   ## Prebinning procedure
-#   for (k in 1:n){
-#     c1 <- cut(TR$Age[,k], breaks = tarAge)
-#     tmean=tapply(TR$TransData[,k], c1, median)
-#     #tmean=tapply(Stransdata[,i], c1, mean)
-#     result[,k]=c(as.numeric(tmean))
+  #   for (k in 1:n){
+  #     c1 <- cut(TR$Age[,k], breaks = tarAge)
+  #     tmean=tapply(TR$TransData[,k], c1, median)
+  #     #tmean=tapply(Stransdata[,i], c1, mean)
+  #     result[,k]=c(as.numeric(tmean))
   #   } 
   cat("Prebinning site: ")
   for (k in 1:n){
@@ -90,7 +90,7 @@ pfCompositeLF=function(TR,hw=250,
   
   # Target Ages:
   centres=tarAge
-    
+  
   # Matrix to strore boot results
   mboot=matrix(nrow=length(centres),ncol=nboot)
   
@@ -205,9 +205,16 @@ pfCompositeLF=function(TR,hw=250,
 
 ######PLOT########
 
-plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="jet",...){
+plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="jet",xlim=NULL,
+                            ylim=NULL,main="Composite",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
+  
+  # Lims
+  if (type=="ci") bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE)) 
+  if (type=="prctile") bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
+  if(is.null(xlim)) xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w)
+  if(is.null(ylim)) ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T))
   
   if (type=="ci"){
     
@@ -216,8 +223,9 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     
     bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
-    plot(x$BinCentres,x$BootMean, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T)), axes=F, mgp=c(2,0,0),
-         main=paste("Composite"), font.main=1, lab=c(8,5,5), 
+    plot(x$BinCentres,x$BootMean, 
+         xlim=xlim, ylim=ylim, axes=F, mgp=c(2,0,0),
+         main=main, font.main=1, lab=c(8,5,5), 
          ylab="Composite", xlab="Age (cal yr BP)", cex.lab=1, pch=16, cex=0.5, type="l")
     axis(1); axis(2, cex.axis=1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
@@ -230,7 +238,8 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     # Plot site number
     if(add=="sitenum"){
       sitenum=length(x$BinnedData[1,])-rowSums(is.na(x$BinnedData))
-      plot(x$BinCentres,sitenum,xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(sitenum,na.rm=T),max(sitenum,na.rm=T)), axes=F, mgp=c(2,0,0),
+      plot(x$BinCentres,sitenum,xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), 
+           ylim= c(min(sitenum,na.rm=T),max(sitenum,na.rm=T)), axes=F, mgp=c(2,0,0),
            main=paste("Sites #"), font.main=1, lab=c(8,5,5), 
            ylab="Sites #", xlab="Age", cex.lab=0.8, pch=16, cex=0.5, type="o")
       axis(1); axis(2, cex.axis=1)
@@ -245,7 +254,9 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     bootci1=bootci1[is.na(bootci1[,1])==FALSE,]
     n=length(bootci1[1,])
     ## PLOT
-    plot(NULL, type = "n", xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim = range(bootci1),axes=FALSE,ylab="Composite",xlab="Age",main="Percentiles")
+    plot(NULL, type = "n", 
+         xlim=xlim, 
+         ylim=ylim,axes=FALSE,ylab="Composite",xlab="Age",main=main)
     if(palette=="jet"){pal = colorRampPalette(rev(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
     if(palette=="BW"){
       pal = colorRampPalette(rev(c("white","black")))}
@@ -280,7 +291,8 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     if(palette=="jet"){pal = colorRampPalette((c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
     if(palette=="BW"){
       pal = colorRampPalette((c("white","black")))}
-    image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main="Density plot",axes=F, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w))
+    image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main=main,axes=F,
+          xlim=xlim)
     axis(1, cex.axis=1, xaxp=c(0,99000,99)); axis(2, cex.axis=1)
     lines(x$BinCentres,rowMeans(x$mboot, na.rm=T))
     z=matrix(1:100,nrow=1)

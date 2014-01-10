@@ -63,8 +63,8 @@ pfSiteSel=function(
                        & paleofiresites$SITE_NAME %in% SiteName, 1]
   
   if(is.na(DateInt)==FALSE)
-  IDn=paleofiresites[paleofiresites$ID_SITE %in% IDn & 
-                   paleofiresites$DATE_MEAN<DateInt,1] 
+    IDn=paleofiresites[paleofiresites$ID_SITE %in% IDn & 
+                         paleofiresites$DATE_MEAN<DateInt,1] 
   
   #& paleofiresites$ID_COUNTRY %in% Country 
   
@@ -103,10 +103,10 @@ summary.pfSiteSel=function(object,...){
 }
 
 ## Plot functions
-plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
+plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
                         xlim=NULL, ylim=NULL, cex=1,...)
   
-  {
+{
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)
@@ -161,6 +161,10 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
       points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,
              paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, 
              bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
+      if(is.null(add)==FALSE)
+        points(add$metadata$LONGITUDE,
+               add$metadata$LATITUDE, 
+               bg="red",col = "red",pch = 21)
     }
     
     if(zoom=="Sites"|zoom=="sites"){
@@ -169,14 +173,20 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
       yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE)
       
       if(is.null(xlim))
-      xlim=range(xl[!is.na(xl) & is.finite(xl)])
+        xlim=range(xl[!is.na(xl) & is.finite(xl)])
       if(is.null(ylim))
-      ylim=range(yl[!is.na(yl) & is.finite(yl)])
+        ylim=range(yl[!is.na(yl) & is.finite(yl)])
       
       
       plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
       points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE,bg="red",col = "red",pch = 21)
-      lines(coast$X,coast$Y)}
+      lines(coast$X,coast$Y)
+      if(is.null(add)==FALSE)
+        points(add$metadata$LONGITUDE,
+               add$metadata$LATITUDE, 
+               bg="red",col = "red",pch = 21)
+      
+    }
   }
 }
 
