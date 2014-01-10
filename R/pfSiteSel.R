@@ -53,10 +53,10 @@ pfSiteSel=function(
                        & paleofiresites$LATITUDE<=Latlim[2]  
                        & paleofiresites$ELEV>=Elevation[1]
                        & paleofiresites$ELEV<=Elevation[2]
-                       & paleofiresites$BIOME %in%  Biome 
-                       & paleofiresites$ID_COUNTRY %in%  Country 
+                       & paleofiresites$ID_COUNTRY %in%  Country
                        & paleofiresites$RF99 %in%  RF99
                        & paleofiresites$L12 %in%  L12
+                       & paleofiresites$BIOME %in%  Biome 
                        & paleofiresites$ID_REGION %in% Region
                        & paleofiresites$PREF_UNITS %in% PrefUnit
                        & paleofiresites$QTYPE %in% QuantType 
@@ -103,8 +103,10 @@ summary.pfSiteSel=function(object,...){
 }
 
 ## Plot functions
-plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
+plot.pfSiteSel=function(x,type="Map",zoom="Sites",pch="|",
+                        xlim=NULL, ylim=NULL, cex=1,...)
   
+  {
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)
@@ -122,13 +124,17 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
                         labels = as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% x$SitesIDS]))
     
     IDsorted=IDsorted[with(IDsorted, order(Lat)), ]
+    ## Xlim
+    if(is.null(xlim)) xlim=range(paleofiredata$EST_AGE)
     
+    ## Plot
     par(mar=c(4,14,2,8))
-    plot(NULL, type = "n", xlim=c(max(paleofiredata$EST_AGE),min(paleofiredata$EST_AGE)), ylim = c(1,length(x$SitesIDS)),axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
+    plot(NULL, type = "n", 
+         ylim = c(1,length(x$SitesIDS)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
     n=c()
     for(i in 1:length(x$SitesIDS)){
       samples=paleofiredata$EST_AGE[paleofiredata$ID_SITE %in% IDsorted$IDs[i]]
-      points(samples,rep(i,length(samples)),pch="|")
+      points(samples,rep(i,length(samples)),pch=pch,cex=cex)
       n[i]=length(samples)
     }
     axis(2, at=seq(1,length(IDsorted$IDs),1), labels = FALSE)   
@@ -149,9 +155,12 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
   if(type=="Map"){
     
     if(zoom=="World"|zoom=="world"){
-      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude")
+      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,
+           col="blue",xlab="Longitude",ylab="Latitude")
       lines(coast$X,coast$Y)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
+      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,
+             paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, 
+             bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
     }
     
     if(zoom=="Sites"|zoom=="sites"){
@@ -159,9 +168,12 @@ plot.pfSiteSel=function(x,type="Map",zoom="Sites",...){
       xl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE)
       yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE)
       
+      if(is.null(xlim))
       xlim=range(xl[!is.na(xl) & is.finite(xl)])
+      if(is.null(ylim))
       ylim=range(yl[!is.na(yl) & is.finite(yl)])
-    
+      
+      
       plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
       points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)}
