@@ -42,7 +42,7 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
     meta=cbind(unique(all_data[,1]),meta)
     colnames(meta)[1]="ID_SITE"
   }
-  
+
   ## Output
   output=structure(list(data=all_data,
                         metadata=meta))
