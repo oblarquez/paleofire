@@ -64,7 +64,7 @@ pfSiteSel=function(
                        & paleofiresites$PREF_UNITS %in% PrefUnit
                        & paleofiresites$QTYPE %in% QuantType 
                        & paleofiresites$SITE_NAME %in% SiteName
-                       & paleofiresites$$ID_LANDS_DESC %in% LandDesc, 1]
+                       & paleofiresites$ID_LANDS_DESC %in% LandDesc, 1]
   
   if(is.na(DateInt)==FALSE)
     IDn=paleofiresites[paleofiresites$ID_SITE %in% IDn & 
