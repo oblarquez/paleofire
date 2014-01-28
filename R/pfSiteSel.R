@@ -11,7 +11,8 @@ pfSiteSel=function(
   Elevation=c(-100000,100000),
   QuantType=NULL,
   L12=NULL,
-  RF99=NULL
+  RF99=NULL,
+  LandDesc=NULL
 )
 {
   #Parameters and data
@@ -36,6 +37,8 @@ pfSiteSel=function(
   if(is.null(RF99)){RF99=unique(paleofiresites$RF99)}
   ## L12
   if(is.null(L12)){L12=unique(paleofiresites$L12)}
+  ## Land Description
+  if(is.null(LandDesc)){LandDesc=unique(paleofiresites$ID_LANDS_DESC)}
   # Date Numbers
   paleofiresites=cbind(paleofiresites,(paleofiresites$MAX_EST_AGE-paleofiresites$MIN_EST_AGE)/paleofiresites$NUM_DATING)
   colnames(paleofiresites)[coln+1] <- "DATE_MEAN"
@@ -60,7 +63,8 @@ pfSiteSel=function(
                        & paleofiresites$ID_REGION %in% Region
                        & paleofiresites$PREF_UNITS %in% PrefUnit
                        & paleofiresites$QTYPE %in% QuantType 
-                       & paleofiresites$SITE_NAME %in% SiteName, 1]
+                       & paleofiresites$SITE_NAME %in% SiteName
+                       & paleofiresites$$ID_LANDS_DESC %in% LandDesc, 1]
   
   if(is.na(DateInt)==FALSE)
     IDn=paleofiresites[paleofiresites$ID_SITE %in% IDn & 
