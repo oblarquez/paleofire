@@ -1,4 +1,3 @@
-## SEA function
 pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   ## R function developped from SEA.m   
@@ -78,7 +77,7 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
 ##--------------------------------------------------------------------------------------------------------
 plot.pfCircular=function(x,...){
   ## Plot
-
+  
   t=c(x$BootMean,x$BootCirc)
   plot(x$yr,x$BootMean,type="o",
        ylim=c(min(t,na.rm=TRUE),max(t,na.rm=TRUE)),

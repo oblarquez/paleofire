@@ -10,8 +10,9 @@ pfTransform=function(IDn=NULL,
                      stlYears=500,
                      type="BoxCox1964",
                      alpha=0.01,
-                     QuantType="ALL"
-){
+                     QuantType="ALL",
+                     verbose=TRUE){
+  
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   
@@ -42,6 +43,10 @@ pfTransform=function(IDn=NULL,
               alpha=alpha)
   
   ## 1 Load charcoal paleofiredata
+  if(verbose==TRUE){
+    cat("Loading and preparing data...")
+    cat("\n")}
+  
   if(is.null(IDn)==FALSE){
     if (is.list(IDn) & length(IDn)==2){
       
@@ -90,7 +95,7 @@ pfTransform=function(IDn=NULL,
   }
   
   
-  
+  ## Is IDn a character (i.e. csv file name)
   if (is.character(IDn)){
     paleofiredata = read.csv(IDn)
     IDn=unique(paleofiredata[,1])
@@ -207,8 +212,17 @@ pfTransform=function(IDn=NULL,
     ## End No Int
   }
   
+  ## % Cat to see where we are
+  if(verbose==TRUE){
+    percent=seq(10,100,by=10)
+    values=round(percent*length(IDn)/100)
+    cat("Transforming...")
+    cat("\n")
+    cat("Percentage done: ")
+  }
   
   # Play with transformations!
+  # for (k in 1:length(IDn)){   
   for (j in 1:length(method)){
     methodj=method[j]
     if (j>=2){rawI=transI}
@@ -285,9 +299,14 @@ pfTransform=function(IDn=NULL,
           transI[,k]=approx(tmp[,1],hurdle(tmp[,2]~tmp[,1])$fitted.values,Ages[,k])$y
         }
       }
-    }
-    ## j loop end
-  }
+      if(k %in% values & verbose==TRUE & j==length(method)){
+        cat(percent[values==k])
+        cat(" ")
+      }
+      ## k loop end 
+    }  
+  }   
+  
   
   ### End Return Results
   colnames(transI)=IDn

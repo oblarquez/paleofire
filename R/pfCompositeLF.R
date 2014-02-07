@@ -1,7 +1,7 @@
 pfCompositeLF=function(TR,hw=250,
                        tarAge=NULL,binhw=NULL,
                        nboot=1000,conf=c(0.05,0.95),
-                       pseudodata=FALSE)
+                       pseudodata=FALSE,verbose=TRUE)
 {
   
   ## IF TR is a matrix
@@ -21,8 +21,7 @@ pfCompositeLF=function(TR,hw=250,
     colnames(TransData)=ID
     colnames(Age)=ID
     TR=structure(list(Age=structure(Age,class="matrix") ,TransData=structure
-                      (TransData,class="matrix"),Method="unspecified"))
-    
+                      (TransData,class="matrix"),Method="unspecified")) 
   }
   
   ## Prebinning procedure
@@ -43,37 +42,23 @@ pfCompositeLF=function(TR,hw=250,
   m=length(TR$TransData[,1])
   n=length(TR$TransData[1,])
   
-  #   #   ## Smmoth before prebinning
-  #   Stransdata=matrix(ncol=n,nrow=m)
-  #   for (i in 1:n){
-  #     tmp=cbind(TR$Age[,i],TR$TransData[,i])
-  #     tmp=na.omit(tmp)
-  #     x=as.vector(tmp[,1])
-  #     y=as.vector(tmp[,2])
-  #     locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 500, family = "qrgauss")
-  #     predboot <- predict(locboot, newdata = x, se.fit = TRUE)
-  #     Stransdata[,i]=c(predboot$fit,rep(NA,m-length(predboot$fit)))    
-  #     #plot(TR$Age[,i],TR$TransData[,i])
-  #     #points(TR$Age[,i],Stransdata[,i],col="red")
-  #     #q=cbind(TR$Age[,i],Stransdata[,i])
-  #   }
-  
   # Matrix to store results
   result=matrix(ncol=length(TR$Age[1,]),nrow=length(tarAge))
-  #sm_result=matrix(ncol=length(IDn),nrow=length(tarAge)-1)
   
   ## Use non-overlapping bins by default if unspecified
   if(is.null(binhw))
     binhw=(tarAge[2]-tarAge[1])/2
   
   ## Prebinning procedure
-  #   for (k in 1:n){
-  #     c1 <- cut(TR$Age[,k], breaks = tarAge)
-  #     tmean=tapply(TR$TransData[,k], c1, median)
-  #     #tmean=tapply(Stransdata[,i], c1, mean)
-  #     result[,k]=c(as.numeric(tmean))
-  #   } 
-  cat("Prebinning site: ")
+
+  if(verbose==TRUE){
+    percent=seq(10,100,by=10)
+    values=round(percent*n/100)
+    cat("Prebinning...")
+    cat("\n")
+    cat("Percentage done: ")
+  }
+  
   for (k in 1:n){
     if(length(TR$TransData[is.na(TR$TransData[,k])==FALSE,k])!=0){
       for (i in 1:length(tarAge)){
@@ -82,9 +67,12 @@ pfCompositeLF=function(TR,hw=250,
       }
     }
     ## print
-    cat("", k )
+    if(k %in% values & verbose==TRUE)
+      cat(percent[values==k]," ",sep="")
   }
-  cat("\n")
+  if(verbose==TRUE) 
+    cat("\n")
+  
   # suppres Inf values occuring with specific charcoal series (binary series)
   result[!is.finite(result)]=NA
   
@@ -94,9 +82,16 @@ pfCompositeLF=function(TR,hw=250,
   # Matrix to strore boot results
   mboot=matrix(nrow=length(centres),ncol=nboot)
   
-  #plot(NULL, xlab = "age", ylab = "locfit_500", ylim = c(-1, 1), xlim = c(0, 8000),type="n")
   set.seed(1)
-  cat("# of Bootstrap:")
+  
+  if(verbose==TRUE){
+    percent=seq(10,100,by=10)
+    values=round(percent*nboot/100)
+    cat("Bootstrapping...")
+    cat("\n")
+    cat("Percentage done: ")
+  }
+  
   ## Bootstrap procedure (with locfit)
   for (i in 1:nboot){
     ne=sample(seq(1,length(result[1,]),1),length(result[1,]),replace=TRUE)
@@ -132,9 +127,10 @@ pfCompositeLF=function(TR,hw=250,
     locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 2000, family = "qrgauss")
     predboot <- predict(locboot, newdata = centres, se.fit = TRUE)
     mboot[, i] <- predboot$fit
-    # note plotting lines is slowww
-    #lines(centres, mboot[, i], lwd = 2, col = rgb(0.5, 0.5, 0.5, 0.1))
-    if(i %in% seq(0,nboot,10)) cat("", i)
+    
+    # Verbose
+    if(i %in% values & verbose==TRUE)
+      cat(percent[values==i]," ",sep="")
   }
   
   bootci=t(apply(mboot, 1, quantile, probs = conf,  na.rm = TRUE))
@@ -172,11 +168,6 @@ pfCompositeLF=function(TR,hw=250,
   locbootA <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 500, family = "qrgauss")
   predbootA <- predict(locbootA, newdata = centres, se.fit = TRUE)
   locfitAll <- predbootA$fit
-  
-  
-  #lines(centres, bootci[,1], lwd = 2, col = "black")
-  #lines(centres, bootci[,3], lwd = 2, col ="black")
-  #lines(centres, bootmean, lwd = 2, col = "black")
   
   # write out the transformed data
   result2=as.data.frame(cbind(centres,locfitAll,t(bootmean),bootci))
