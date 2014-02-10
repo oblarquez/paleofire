@@ -12,7 +12,9 @@ pfSiteSel=function(
   QuantType=NULL,
   L12=NULL,
   RF99=NULL,
-  LandDesc=NULL
+  LandDesc=NULL,
+  MinAge=-200,
+  MaxAge=1e+12
 )
 {
   #Parameters and data
@@ -64,6 +66,8 @@ pfSiteSel=function(
                        & paleofiresites$PREF_UNITS %in% PrefUnit
                        & paleofiresites$QTYPE %in% QuantType 
                        & paleofiresites$SITE_NAME %in% SiteName
+                       & paleofiresites$MIN_EST_AGE<=MinAge
+                       & paleofiresites$MAX_EST_AGE>=MaxAge
                        & paleofiresites$ID_LANDS_DESC %in% LandDesc, 1]
   
   if(is.na(DateInt)==FALSE)
