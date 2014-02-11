@@ -66,8 +66,8 @@ pfSiteSel=function(
                        & paleofiresites$PREF_UNITS %in% PrefUnit
                        & paleofiresites$QTYPE %in% QuantType 
                        & paleofiresites$SITE_NAME %in% SiteName
-                       & paleofiresites$MIN_EST_AGE<=MinAge
-                       & paleofiresites$MAX_EST_AGE>=MaxAge
+                       & paleofiresites$MIN_EST_AGE>=MinAge
+                       & paleofiresites$MAX_EST_AGE<=MaxAge
                        & paleofiresites$ID_LANDS_DESC %in% LandDesc, 1]
   
   if(is.na(DateInt)==FALSE)
