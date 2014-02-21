@@ -189,6 +189,8 @@ pfCompositeLF=function(TR,hw=250,
                         BootCi=structure(bootci,row.names = as.character(centres),class = "matrix") ))
   class(output)="pfCompositeLF"
   return(output)  
+  if(verbose==TRUE) 
+    cat("\n")
 }
 
 ######SUMMARY########

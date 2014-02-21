@@ -321,4 +321,6 @@ pfTransform=function(IDn=NULL,
   return(output)
   
   ###
+  if(verbose==TRUE) 
+    cat("\n")
 }
