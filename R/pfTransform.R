@@ -10,7 +10,7 @@ pfTransform=function(IDn=NULL,
                      stlYears=500,
                      type="BoxCox1964",
                      alpha=0.01,
-                     QuantType="ALL",
+                     QuantType="INFL",
                      verbose=TRUE){
   
   ## Avoid no visible binding for global variable
