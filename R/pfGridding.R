@@ -29,6 +29,8 @@ pfGridding=function(data,cell_sizex=NULL,
         char=c(data$TransData))
       ,file='NUL')
     data=na.omit(data)
+    ## Remove extreme outliers i.e. 3*sd (sometimes happens... why? probably baseperiod related)
+    data=data[data[,4]<3*sd(data[,4]) & data[,4]>-(3*sd(data[,4])) ,]
   }
   
   
@@ -85,7 +87,7 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(elevation_range)==FALSE){
     temp=rasterToPoints(dem1)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=median)
-    z=sp::intersect(temp1,r)
+    z=raster::intersect(temp1,r)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
