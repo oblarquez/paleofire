@@ -11,7 +11,6 @@ pfTransform=function(IDn,
                      type="BoxCox1964",
                      alpha=0.01,
                      QuantType="INFL",
-                     verbose=TRUE){
                      MethodType=NULL
 ){
   ## Avoid no visible binding for global variable
@@ -43,10 +42,6 @@ pfTransform=function(IDn,
               type=type,
               alpha=alpha)
   
-  ## 1 Load charcoal paleofiredata
-  if(verbose==TRUE){
-    cat("Loading and preparing data...")
-    cat("\n")}
   influx=function(x){
     ## Calculate Sed Acc
     d1=c()
