@@ -1,7 +1,7 @@
-pfTransform=function(IDn=NULL,
+pfTransform=function(IDn,
                      add=NULL,
                      Interpolate=FALSE,
-                     Age=NULL,
+                     Age=0,
                      method="Z-Score",
                      BasePeriod=c(-100,1e+09),
                      span=0.3,
@@ -12,7 +12,8 @@ pfTransform=function(IDn=NULL,
                      alpha=0.01,
                      QuantType="INFL",
                      verbose=TRUE){
-  
+                     MethodType=NULL
+){
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   
@@ -46,7 +47,23 @@ pfTransform=function(IDn=NULL,
   if(verbose==TRUE){
     cat("Loading and preparing data...")
     cat("\n")}
+  influx=function(x){
+    ## Calculate Sed Acc
+    d1=c()
+    t1=c()
+    for(k in 2:(length(x[,1])-1)){
+      d1[k]=x[k+1,2]-x[k-1,2]
+      t1[k]=x[k+1,3]-x[k-1,3] 
+    }
+    sedacc=(d1*100)/t1
+    sedacc[1]=sedacc[2]
+    sedacc=c(sedacc,sedacc[length(sedacc)])
+    ## Calculate Influx
+    infl=(x[,4]*sedacc)
+    return(infl)
+  }
   
+  ## 1 Load charcoal paleofiredata
   if(is.null(IDn)==FALSE){
     if (is.list(IDn) & length(IDn)==2){
       
@@ -59,27 +76,49 @@ pfTransform=function(IDn=NULL,
       # Use only paleofiredata corresponding to IDn
       paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
       
-      ## Convert data to influx------
-      if(QuantType=="INFL"){
-        for(i in unique(IDn))  
-          if( paleofiresites[paleofiresites$ID_SITE==i,21]!="INFL" & 
-                is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
-            temp=paleofiredata[paleofiredata[,1]==i,]
-            ## Calculate Sed Acc
-            d1=c()
-            t1=c()
-            for(k in 2:(length(temp[,1])-1)){
-              d1[k]=temp[k+1,2]-temp[k-1,2]
-              t1[k]=temp[k+1,3]-temp[k-1,3] 
+      ## 1 Use Pref_Units 
+      if(is.null(MethodType)){
+        # Drop Non pref Units  
+        for(i in IDn){
+          paleofiredata[paleofiredata[,1] %in% i &
+                          !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),
+                        7]=NA
+        }
+        paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
+        ## Convert data to influx------
+        if(QuantType=="INFL"){
+          for(i in IDn)  
+            if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
+                  is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
+              infl=influx(paleofiredata[paleofiredata[,1]==i,])
+              paleofiredata[paleofiredata[,1]==i,4]=c(infl)
             }
-            sedacc=(d1*100)/t1
-            sedacc[1]=sedacc[2]
-            sedacc=c(sedacc,sedacc[length(sedacc)])
-            ## Calculate Influx
-            infl=(temp[,4]*sedacc)
-            ## Replace in the matrix
-            paleofiredata[paleofiredata[,1]==i,4]=c(infl)
+        }
+      } else {
+        ## 2 User defined Method
+        ## Drop duplicate units and keep only pref_unit in desired method
+        paleofiredata=paleofiredata[paleofiredata[,6] %in% MethodType,]
+        for(i in IDn){
+          if (length(unique(paleofiredata[paleofiredata[,1] %in% i,5]))>=2){
+            paleofiredata[paleofiredata[,1] %in% i &
+                            !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),7]=NA
           }
+        }
+        paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
+        # Print which sites are dropped from the analysis
+        cat(IDChar$SiteNames[!(IDChar$SitesIDS %in% unique(paleofiredata[,1]))],"\n")
+        cat(length(IDChar$SiteNames)-length(unique(paleofiredata[,1])), 
+            " sites were excluded from the analysis")
+        IDn=unique(paleofiredata[,1])
+        if(QuantType=="INFL"){
+          for(i in IDn)  
+            if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
+                  is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
+              infl=influx(paleofiredata[paleofiredata[,1]==i,])
+              paleofiredata[paleofiredata[,1]==i,4]=c(infl)
+            }
+        }
+        
       }
       ##-----
       ## Add users data
@@ -95,7 +134,7 @@ pfTransform=function(IDn=NULL,
   }
   
   
-  ## Is IDn a character (i.e. csv file name)
+  
   if (is.character(IDn)){
     paleofiredata = read.csv(IDn)
     IDn=unique(paleofiredata[,1])
@@ -125,7 +164,7 @@ pfTransform=function(IDn=NULL,
   # 2 Interpolate TRUE
   if (Interpolate==TRUE){
     # Interpolation procedure
-    if (is.null(Age)) {
+    if (length(Age)<=1) {
       res=matrix(ncol=1,nrow=length(IDn))
       # Find the median time resolution for each paleofiredataset
       for (k in 1:length(IDn)){
@@ -139,7 +178,7 @@ pfTransform=function(IDn=NULL,
       maxA=round(max(paleofiredata[,3]))
       AgeN=seq(minA,maxA,step)
     }
-    if (is.null(Ages)==FALSE) {
+    if (length(Age)>1) {
       AgeN=Age
       #paleofiredata=paleofiredata[paleofiredata[,3]>min(AgeN),]
       #paleofiredata=paleofiredata[paleofiredata[,3]<max(AgeN),]
@@ -212,17 +251,8 @@ pfTransform=function(IDn=NULL,
     ## End No Int
   }
   
-  ## % Cat to see where we are
-  if(verbose==TRUE){
-    percent=seq(10,100,by=10)
-    values=round(percent*length(IDn)/100)
-    cat("Transforming...")
-    cat("\n")
-    cat("Percentage done: ")
-  }
   
   # Play with transformations!
-  # for (k in 1:length(IDn)){   
   for (j in 1:length(method)){
     methodj=method[j]
     if (j>=2){rawI=transI}
@@ -299,14 +329,9 @@ pfTransform=function(IDn=NULL,
           transI[,k]=approx(tmp[,1],hurdle(tmp[,2]~tmp[,1])$fitted.values,Ages[,k])$y
         }
       }
-      if(k %in% values & verbose==TRUE & j==length(method)){
-        cat(percent[values==k])
-        cat(" ")
-      }
-      ## k loop end 
-    }  
-  }   
-  
+    }
+    ## j loop end
+  }
   
   ### End Return Results
   colnames(transI)=IDn
@@ -321,6 +346,4 @@ pfTransform=function(IDn=NULL,
   return(output)
   
   ###
-  if(verbose==TRUE) 
-    cat("\n")
 }
