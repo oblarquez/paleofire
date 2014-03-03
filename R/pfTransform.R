@@ -123,6 +123,9 @@ pfTransform=function(IDn,
       ##-----
       ## Add users data
       if(is.null(add)==FALSE){
+        # Add columns to match paleofiredata
+        add$data=cbind(add$data,UNIT=NA,METHOD=NA,TYPE="INFL")
+        # Then...
         paleofiredata=rbind(paleofiredata,add$data)
         IDn=c(IDn,unique(add$data[,1]))
       }
