@@ -11,7 +11,8 @@ pfTransform=function(IDn,
                      type="BoxCox1964",
                      alpha=0.01,
                      QuantType="INFL",
-                     MethodType=NULL
+                     MethodType=NULL,
+                     verbose=TRUE
 ){
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
@@ -59,6 +60,10 @@ pfTransform=function(IDn,
   }
   
   ## 1 Load charcoal paleofiredata
+  if(verbose==TRUE){
+    cat("Loading and preparing data...")
+    cat("\n")}
+  
   if(is.null(IDn)==FALSE){
     if (is.list(IDn) & length(IDn)==2){
       
@@ -246,6 +251,14 @@ pfTransform=function(IDn,
     ## End No Int
   }
   
+  ## % Cat to see where we are
+  if(verbose==TRUE){
+    percent=seq(10,100,by=10)
+    values=round(percent*length(IDn)/100)
+    cat("Transforming...")
+    cat("\n")
+    cat("Percentage done: ")
+  }
   
   # Play with transformations!
   for (j in 1:length(method)){
@@ -323,6 +336,10 @@ pfTransform=function(IDn,
           tmp[,2]=round(pfMinMax(tmp[,2])*100)
           transI[,k]=approx(tmp[,1],hurdle(tmp[,2]~tmp[,1])$fitted.values,Ages[,k])$y
         }
+      }
+      if(k %in% values & verbose==TRUE & j==length(method)){
+        cat(percent[values==k])
+        cat(" ")
       }
     }
     ## j loop end
