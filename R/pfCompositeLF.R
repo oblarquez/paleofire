@@ -125,8 +125,9 @@ pfCompositeLF=function(TR,hw=250,
     x=as.vector(dat$x)
     y=as.vector(dat$y)
     locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 2000, family = "qrgauss")
+    if(is.na( locboot$dp[7])==FALSE){
     predboot <- predict(locboot, newdata = centres, se.fit = TRUE)
-    mboot[, i] <- predboot$fit
+    mboot[, i] <- predboot$fit}
     
     # Verbose
     if(i %in% values & verbose==TRUE)
