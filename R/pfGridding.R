@@ -18,13 +18,6 @@ pfGridding=function(data,cell_sizex=NULL,
                     sea_mask=FALSE,
                     file=NULL,verbose=TRUE)
 {
-
-  require(RColorBrewer)
-  require(ggplot2)
-  require(rgdal)
-  require(raster)
-  require(paleofire)
-    
   
   ## pfTransform object
   if(class(data)=="pfTransform"){
@@ -45,8 +38,7 @@ pfGridding=function(data,cell_sizex=NULL,
   
   
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
-  ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
-  load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
+  data(dem)
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -98,7 +90,7 @@ pfGridding=function(data,cell_sizex=NULL,
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
   } else dat1=as.data.frame(rasterToPoints(r))
-
+  
   
   ## Initiate a percentage counter
   if(verbose==TRUE){
@@ -148,7 +140,7 @@ pfGridding=function(data,cell_sizex=NULL,
   
   r1=rasterize(dat1[, 1:2], r, dat1[,3], fun=mean) # Fill raster with mean value 
   #   plot(r1)
-
+  
   
   ## SEA MASK  
   if(sea_mask==TRUE){
@@ -207,7 +199,7 @@ pfGridding=function(data,cell_sizex=NULL,
   coast=data.frame(project(xy, proj4))
   colnames(coast)=c("x","y")
   # plot(round(coast$x),round(coast$y),type="l")
-
+  
   ## LIMITS
   if(is.null(xlim)){
     xplus=(e@xmax-e@xmin)*empty_space/100
@@ -218,8 +210,8 @@ pfGridding=function(data,cell_sizex=NULL,
     ylim=c(e@ymin-yplus,e@ymax+yplus)}
   
   ## Crop coast using limits
-#   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
-#                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
+  #   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
+  #                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
   #plot(coast[,1],coast[,2],type="l")
   
   dat2=data.frame(na.omit(dat2))

@@ -3,6 +3,9 @@ import(locfit, gtools, caTools, pscl, Imap, RCurl, devtools, methods, rgdal, lat
 importFrom(utils)
 importFrom(GCD)
 importFrom(latticeExtra)
+importFrom(ggplot2)
+importFrom(raster)
+
 
 S3method(plot,pfCircular)
 S3method(plot,CHAR)
