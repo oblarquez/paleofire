@@ -1,0 +1,318 @@
+## 
+pfGridding=function(data,cell_sizex=NULL,
+                    cell_sizey=NULL,
+                    age=0,
+                    cell_size=NULL,
+                    time_buffer=NULL,
+                    distance_buffer=NULL,
+                    threshold=0.5,
+                    raster_extent=NULL,
+                    elevation_range=NULL,
+                    continuous=TRUE,
+                    col_class=NULL,
+                    col_lim=NULL,
+                    proj4=NULL,
+                    xlim=NULL,ylim=NULL,empty_space=10,
+                    cpal="YlGn",
+                    anomalies=TRUE,
+                    sea_mask=FALSE,
+                    file=NULL,verbose=TRUE)
+{
+
+  require(RColorBrewer)
+  require(ggplot2)
+  require(rgdal)
+  require(raster)
+  require(paleofire)
+    
+  
+  ## pfTransform object
+  if(class(data)=="pfTransform"){
+    capture.output(
+      data<-data.frame(
+        x=rep(summary(data$params$IDn)$LONGITUDE,each=length(data$TransData[,1])),
+        y=rep(summary(data$params$IDn)$LATITUDE,each=length(data$TransData[,1])),
+        age=c(data$Age),
+        char=c(data$TransData))
+      ,file='NUL')
+    data=na.omit(data)
+  }
+  
+  
+  ## Limit the input to age+-time_buffer
+  if(is.null(time_buffer)) time_buffer=500
+  data=data[data[,3]>=age-time_buffer & data[,3]<=age+time_buffer,]
+  
+  
+  # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
+  ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
+  load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
+  
+  if(is.null(proj4))
+    proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+  
+  xy <-cbind(data[,1],data[,2])
+  
+  ### LOAD DEM if required
+  if(is.null(elevation_range)==FALSE){
+    cat("Preparing data and loading DEM...")
+    cat("\n")
+    load("/Users/Olivier/Documents/BorealTreeCover/final/GMTED2010.rda")
+    v=extent(xy)
+    dem=crop(dem,v)
+    dem1 <- projectRaster(dem, crs=proj4)
+    #plot(dem1)
+  }
+  ###
+  
+  
+  dat2=data.frame(project(xy, proj4))
+  colnames(dat2)=c("x","y")
+  if(is.null(raster_extent)) {
+    e <- extent(c(round(range(dat2$x)*2)/2,round(range(dat2$y)*2)/2))
+  } else e <- extent(raster_extent)
+  
+  # Cell sizes
+  if(is.null(cell_size)){
+    if(is.null(cell_sizex)) cell_sizex=200000
+    if(is.null(cell_sizey)) cell_sizey=200000
+  } else {
+    cell_sizex=cell_size
+    cell_sizey=cell_size
+  }
+  # Number of rows and columns
+  nc=ceiling((e@xmax-e@xmin)/cell_sizex)
+  nr=ceiling((e@ymax-e@ymin)/cell_sizey)
+  
+  r <- raster(e, ncol=nc, nrow=nr) # Empty raster
+  projection(r)<-proj4
+  
+  if(is.null(distance_buffer)) distance_buffer=300000
+  
+  ## Elevation stuff (median elevation in each predicted cell)  
+  if(is.null(elevation_range)==FALSE){
+    temp=rasterToPoints(dem1)
+    temp1=rasterize(temp[, 1:2], r, temp[,3], fun=median)
+    z=intersect(temp1,r)
+    # plot(temp1)
+    elev1=rasterToPoints(temp1)[,3]
+    dat1=as.data.frame(rasterToPoints(z))
+  } else dat1=as.data.frame(rasterToPoints(r))
+
+  
+  ## Initiate a percentage counter
+  if(verbose==TRUE){
+    percent=seq(10,100,by=10)
+    values=round(percent*length(dat1[,1])/100)
+    cat("Spatio-temporal weighted interpolation...")
+    cat("\n")
+    cat("Percentage done: ")
+  }
+  
+  #ptm <- proc.time()
+  
+  ## Main loop time--distance weighting 
+  dat1[,3]=c()
+  for(i in 1:length(dat1[,1])){
+    d=pointDistance(dat1[i,1:2], dat2,longlat=FALSE)
+    d=cbind(dat2,data[,3],d,triCube(d,distance_buffer))
+    
+    ## Elevation range search
+    if(is.null(elevation_range)==FALSE){
+      elev2=extract(dem1,d[,1:2])
+      elev1=extract(temp1,dat1[i,1:2])
+      elev2[elev2<elev1-elevation_range]=NA
+      elev2[elev2>elev1+elevation_range]=NA
+      d=cbind(d,elev2)
+      d[is.na(d[,6]),5]=0
+    }
+    d1=d[d[,5]!=0,]
+    
+    ## Time weight
+    d1=cbind(d1,triCube(age-d1[,3],time_buffer))
+    # head(d)
+    colnames(d1)=c("x","y","age","dist","dweight","elev","tweight")
+    d1$weight=d1$dweight*d1$tweight
+    d1$data=data[d[,5]!=0,4]
+    
+    ## Combine time and distance weights
+    if(sum(d1$weight,na.rm=TRUE)>threshold){
+      dat1[i,3]=sum(d1$data*d1$weight,na.rm=TRUE)/sum(d1$weight,na.rm=TRUE)
+    } else dat1[i,3]=NA
+    
+    ## Verbose
+    if(i %in% values & verbose==TRUE)
+      cat(percent[values==i]," ",sep="")
+    #cat(i," ")
+  }
+  
+  r1=rasterize(dat1[, 1:2], r, dat1[,3], fun=mean) # Fill raster with mean value 
+  #   plot(r1)
+
+  
+  ## SEA MASK  
+  if(sea_mask==TRUE){
+    ttte=spTransform(world_map,CRS(proj4))
+    
+    capture.output(
+      r2 <- rasterize(ttte,r),file='NUL'
+    )
+    # plot(r2)
+    # plot(dem1)
+    r2 <- is.na(r2)  ## sea is now 1
+    r2[r2==1]=NA
+    #plot(r2)
+    
+    # !!!!!!MASK
+    r1=(r1-r2)
+  }
+  
+  # plot(r1-r2)
+  
+  dat1=as.data.frame(rasterToPoints(r1))
+  #dat1[dat1==0]=1e-6
+  #dat1[9,3]=4.5
+  
+  # Define classes for colors
+  if(is.null(col_class)){
+    if(anomalies==TRUE){
+      b1=seq(floor(min(dat1$layer,na.rm=TRUE)),0,len=5)
+      b2=seq(0,ceiling(max(dat1$layer,na.rm=TRUE)),len=5)
+      breaks=c(b1,b2[2:5])
+      breaks=unique(breaks)
+    } else  breaks=seq(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE)),len=10)
+  }
+  if(is.numeric(col_class) & length(col_class)==1){
+    if(anomalies==TRUE){
+      b2=seq(0,ceiling(max(abs(dat1$layer,na.rm=TRUE)))+col_class,by=col_class)
+      breaks=c(-rev(b2),b2[2:length(b2)])
+    } else breaks=seq(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE))+col_class,by=col_class)
+  }
+  if(is.numeric(col_class) & length(col_class)>1){
+    breaks=col_class
+  }
+  # End of options
+  
+  ## Define color limils
+  if(is.null(col_lim))
+    col_lim=c(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE)))
+  
+  dat1=cbind(dat1,class=cut(dat1$layer,breaks))
+  data=na.omit(data)
+  
+  data(coast)
+  coast=coast[coast$X<=180,]
+  # plot((coast$X),(coast$Y),type="l")  
+  xy=cbind(coast[,2],coast[,1])
+  coast=data.frame(project(xy, proj4))
+  colnames(coast)=c("x","y")
+  # plot(round(coast$x),round(coast$y),type="l")
+
+  ## LIMITS
+  if(is.null(xlim)){
+    xplus=(e@xmax-e@xmin)*empty_space/100
+    xlim=c(e@xmin-xplus,e@xmax+xplus)}
+  
+  if(is.null(ylim)){
+    yplus=(e@ymax-e@ymin)*empty_space/100
+    ylim=c(e@ymin-yplus,e@ymax+yplus)}
+  
+  ## Crop coast using limits
+#   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
+#                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
+  #plot(coast[,1],coast[,2],type="l")
+  
+  dat2=data.frame(na.omit(dat2))
+  colnames(dat2)=c("x","y")
+  
+  if(anomalies==TRUE) {
+    cpal="RdBu"
+    pal=rev(brewer.pal(9,cpal))} else pal=brewer.pal(9,cpal)
+  
+  testcol  <- colorRampPalette(pal)
+  
+  ## LIMITS
+  if(is.null(xlim)){
+    xplus=(e@xmax-e@xmin)*0.1
+    xlim=c(e@xmin-xplus,e@xmax+xplus)}
+  
+  if(is.null(ylim)){
+    yplus=(e@ymax-e@ymin)*0.1
+    ylim=c(e@ymin-yplus,e@ymax+yplus)}
+  
+  ## SAME COLORS 
+  if(continuous==FALSE & is.numeric(col_class) & length(col_class)>1){
+    c1=breaks+(mean(diff(breaks)/2))
+    c3=cbind(xlim[2]+1e+6,ylim[2]+1e+6,c1)
+    c3=c3[1:(length(c3[,1])-1),]
+    c3=data.frame(c3,rr=(cut(c3[,3],breaks)))
+    colnames(c3)=colnames(dat1)
+    dat1=rbind(dat1,c3)
+  }
+  ## 
+  pale=testcol(length(unique(dat1$class)))
+  
+  #display.brewer.pal(12,"Spectral")
+  #pal=c(pal[9],pal[8],pal[6:1])
+  ## On fait une carte avec ggplot2
+  #pdf(file="/Users/Olivier/Desktop/dat1Map.pdf",height=6,width=9)
+  if(continuous==FALSE){
+    p=ggplot(dat1) +
+      geom_polygon(data=coast,aes(x=x,y=y),alpha=0.2)+
+      geom_raster(data=dat1,aes(x, y, fill = class))+
+      scale_fill_manual(values = pale,name="")+
+      geom_point(data=dat2,aes(x,y),colour="grey40")+
+      coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+      theme_bw(base_size = 16)
+  } else {
+    p=ggplot(dat1) +
+      geom_polygon(data=coast,aes(x=x,y=y),alpha=0.2)+
+      geom_raster(data=dat1,aes(x, y, fill = layer))+
+      scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
+      geom_point(data=dat2,aes(x,y),colour="grey40")+
+      coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+      theme_bw(base_size = 16)
+  }
+  p
+  if(is.null(file)==FALSE){
+    projection(r1)<-CRS(proj4)
+    writeRaster(r1, filename=file, format="GTiff",overwrite=TRUE)
+  }
+  
+  ## Output
+  out=list(raster=r1,df=dat1,plot=p)
+  
+  return(out)
+}
+
+## -------------------------------------------------------------------------------------------
+#'   Tukey's Tricube weight function
+#'   
+#'   From the EGRET package http://usgs-r.github.io/EGRET/
+#'   Robert Hirsch and Laura De Cicco
+#'   
+#'      Computes the tricube weight function on a vector of distance values (d),
+#'      based on a half-window width of h,
+#'      and returns a vector of weights that range from zero to 1.
+#'
+#' @param d numeric vector of distances from the point of estimation to the given sample value
+#' @param h numeric value, the half-window width, measured in the same units as d
+#' @keywords statistics weighting
+#' @return w numeric vector of weights, all 0<=w<=1
+#' @export
+#' @examples
+#'  h<-10
+#'  d<-c(-11,-10,-5,-1,-0.01,0,5,9.9,10,20)
+#'  triCube(d,h)
+triCube<-function(d,h) {
+  #  triCube is Tukey tricubed weight function
+  #    first argument, d, is a vector of the distances between the observations and the estimation point
+  #    second argument, h, is the half window width
+  #    it returns a vector of weights (w) for the observations in the vector, d
+  n<-length(d)
+  zero<-rep(0,n)
+  ad<-abs(d)
+  w<-(1-(ad/h)^3)^3
+  w<-pmax(zero,w)
+  return(w)
+}

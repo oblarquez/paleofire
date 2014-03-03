@@ -33,11 +33,6 @@ pfDotMap = function(TR, bins,
   
   
   # ----- Libraries
-
-  require(rgdal)         # Takes care of transformations, etc.
-  require(rworldmap)     # A library of base maps
-  require(lattice)       # A plotting library
-  require(latticeExtra)
   
   
   # ----- Load base map
