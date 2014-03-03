@@ -108,7 +108,7 @@ pfTransform=function(IDn,
         # Print which sites are dropped from the analysis
         cat(IDChar$SiteNames[!(IDChar$SitesIDS %in% unique(paleofiredata[,1]))],"\n")
         cat(length(IDChar$SiteNames)-length(unique(paleofiredata[,1])), 
-            " sites were excluded from the analysis")
+            " sites were excluded from the analysis \n")
         IDn=unique(paleofiredata[,1])
         if(QuantType=="INFL"){
           for(i in IDn)  
@@ -344,6 +344,7 @@ pfTransform=function(IDn,
     }
     ## j loop end
   }
+  if(verbose==TRUE) cat("\n")
   
   ### End Return Results
   colnames(transI)=IDn
