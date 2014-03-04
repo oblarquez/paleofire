@@ -1,10 +1,9 @@
 exportPattern("^[[:alpha:]]+")
-import(locfit, gtools, caTools, pscl, Imap, RCurl, devtools, methods, rgdal, lattice, rworldmap)
+import(locfit, gtools, caTools, pscl, Imap, RCurl, devtools, methods, rgdal, lattice, rworldmap,raster)
 importFrom(utils)
 importFrom(GCD)
 importFrom(latticeExtra)
 importFrom(ggplot2)
-importFrom(raster)
 
 
 S3method(plot,pfCircular)
