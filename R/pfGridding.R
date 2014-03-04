@@ -40,7 +40,8 @@ pfGridding=function(data,cell_sizex=NULL,
   
   
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
-  data(dem)
+  ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
+  # load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -48,10 +49,11 @@ pfGridding=function(data,cell_sizex=NULL,
   xy <-cbind(data[,1],data[,2])
   
   ### LOAD DEM if required
-  if(is.null(elevation_range)==FALSE){
+  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     cat("Preparing data and loading DEM...")
     cat("\n")
-    load("/Users/Olivier/Documents/BorealTreeCover/final/GMTED2010.rda")
+    ## dem is GMTED2010
+    data(dem)
     v=extent(xy)
     dem=crop(dem,v)
     dem1 <- projectRaster(dem, crs=proj4)
@@ -84,15 +86,15 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(distance_buffer)) distance_buffer=300000
   
   ## Elevation stuff (median elevation in each predicted cell)  
-  if(is.null(elevation_range)==FALSE){
+  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     temp=rasterToPoints(dem1)
-    temp1=rasterize(temp[, 1:2], r, temp[,3], fun=median)
     z=raster::intersect(temp1,r)
+    temp1=rasterize(temp[, 1:2], r, temp[,3], fun=mean)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
   } else dat1=as.data.frame(rasterToPoints(r))
-  
+
   
   ## Initiate a percentage counter
   if(verbose==TRUE){
@@ -112,7 +114,7 @@ pfGridding=function(data,cell_sizex=NULL,
     d=cbind(dat2,data[,3],d,triCube(d,distance_buffer))
     
     ## Elevation range search
-    if(is.null(elevation_range)==FALSE){
+    if(is.null(elevation_range)==FALSE ){
       elev2=extract(dem1,d[,1:2])
       elev1=extract(temp1,dat1[i,1:2])
       elev2[elev2<elev1-elevation_range]=NA
@@ -125,7 +127,10 @@ pfGridding=function(data,cell_sizex=NULL,
     ## Time weight
     d1=cbind(d1,triCube(age-d1[,3],time_buffer))
     # head(d)
-    colnames(d1)=c("x","y","age","dist","dweight","elev","tweight")
+    if(is.null(elevation_range)==FALSE){
+      colnames(d1)=c("x","y","age","dist","dweight","elev","tweight")
+    } else colnames(d1)=c("x","y","age","dist","dweight","tweight")
+
     d1$weight=d1$dweight*d1$tweight
     d1$data=data[d[,5]!=0,4]
     
@@ -142,18 +147,13 @@ pfGridding=function(data,cell_sizex=NULL,
   
   r1=rasterize(dat1[, 1:2], r, dat1[,3], fun=mean) # Fill raster with mean value 
   #   plot(r1)
-  
+
   
   ## SEA MASK  
   if(sea_mask==TRUE){
-    ttte=spTransform(world_map,CRS(proj4))
-    
-    capture.output(
-      r2 <- rasterize(ttte,r),file='NUL'
-    )
     # plot(r2)
-    # plot(dem1)
-    r2 <- is.na(r2)  ## sea is now 1
+    # plot(temp1)
+    r2 <- is.na(temp1)  ## sea is now 1
     r2[r2==1]=NA
     #plot(r2)
     
@@ -201,7 +201,7 @@ pfGridding=function(data,cell_sizex=NULL,
   coast=data.frame(project(xy, proj4))
   colnames(coast)=c("x","y")
   # plot(round(coast$x),round(coast$y),type="l")
-  
+
   ## LIMITS
   if(is.null(xlim)){
     xplus=(e@xmax-e@xmin)*empty_space/100
@@ -212,8 +212,8 @@ pfGridding=function(data,cell_sizex=NULL,
     ylim=c(e@ymin-yplus,e@ymax+yplus)}
   
   ## Crop coast using limits
-  #   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
-  #                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
+#   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
+#                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
   #plot(coast[,1],coast[,2],type="l")
   
   dat2=data.frame(na.omit(dat2))
