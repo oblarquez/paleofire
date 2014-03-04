@@ -85,7 +85,7 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(elevation_range)==FALSE){
     temp=rasterToPoints(dem1)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=median)
-    z=intersect(temp1,r)
+    z=raster::intersect(temp1,r)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
