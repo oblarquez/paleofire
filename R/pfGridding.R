@@ -46,7 +46,7 @@ pfGridding=function(data,cell_sizex=NULL,
   xy <-cbind(data[,1],data[,2])
   
   ### LOAD DEM if required
-  if(is.null(elevation_range)==FALSE){
+  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     cat("Preparing data and loading DEM...")
     cat("\n")
     load("/Users/Olivier/Documents/BorealTreeCover/final/GMTED2010.rda")
@@ -82,7 +82,7 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(distance_buffer)) distance_buffer=300000
   
   ## Elevation stuff (median elevation in each predicted cell)  
-  if(is.null(elevation_range)==FALSE){
+  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     temp=rasterToPoints(dem1)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=median)
     z=raster::intersect(temp1,r)
@@ -144,14 +144,14 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## SEA MASK  
   if(sea_mask==TRUE){
-    ttte=spTransform(world_map,CRS(proj4))
+    #ttte=spTransform(world_map,CRS(proj4))
     
-    capture.output(
-      r2 <- rasterize(ttte,r),file='NUL'
-    )
+    #capture.output(
+    # r2 <- rasterize(ttte,r),file='NUL'
+    # )
     # plot(r2)
     # plot(dem1)
-    r2 <- is.na(r2)  ## sea is now 1
+    r2 <- is.na(temp1)  ## sea is now 1
     r2[r2==1]=NA
     #plot(r2)
     
