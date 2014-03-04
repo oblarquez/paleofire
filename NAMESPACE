@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
-import(locfit, gtools, caTools, pscl, Imap, RCurl, devtools, methods, rgdal, lattice, rworldmap,raster)
+import(locfit, gtools, caTools, pscl, Imap, RCurl, devtools, methods, rgdal, lattice, rworldmap,raster,RColorBrewer)
 importFrom(utils)
 importFrom(GCD)
 importFrom(latticeExtra)
