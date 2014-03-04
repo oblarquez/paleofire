@@ -38,7 +38,6 @@ pfGridding=function(data,cell_sizex=NULL,
   
   
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
-  data(dem)
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -49,7 +48,7 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     cat("Preparing data and loading DEM...")
     cat("\n")
-    load("/Users/Olivier/Documents/BorealTreeCover/final/GMTED2010.rda")
+      data(dem)
     v=extent(xy)
     dem=crop(dem,v)
     dem1 <- projectRaster(dem, crs=proj4)
