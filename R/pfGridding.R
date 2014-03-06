@@ -89,8 +89,8 @@ pfGridding=function(data,cell_sizex=NULL,
   ## Elevation stuff (median elevation in each predicted cell)  
   if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
     temp=rasterToPoints(dem1)
-    z=raster::intersect(temp1,r)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=mean)
+    z=raster::intersect(temp1,r)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
