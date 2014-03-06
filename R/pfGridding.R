@@ -42,6 +42,7 @@ pfGridding=function(data,cell_sizex=NULL,
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
   ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
   # load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
+
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -90,7 +91,6 @@ pfGridding=function(data,cell_sizex=NULL,
     temp=rasterToPoints(dem1)
     z=raster::intersect(temp1,r)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=mean)
-    z=intersect(temp1,r)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
@@ -152,12 +152,9 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## SEA MASK  
   if(sea_mask==TRUE){
-    # plot(r2)
-    # plot(temp1)
     r2 <- is.na(temp1)  ## sea is now 1
     r2[r2==1]=NA
-    #plot(r2)
-    
+    #plot(r2) 
     # !!!!!!MASK
     r1=(r1-r2)
   }
