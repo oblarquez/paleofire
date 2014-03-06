@@ -8,16 +8,9 @@ pfGridding=function(data,cell_sizex=NULL,
                     threshold=0.5,
                     raster_extent=NULL,
                     elevation_range=NULL,
-                    continuous=TRUE,
-                    col_class=NULL,
-                    col_lim=NULL,
                     proj4=NULL,
-                    xlim=NULL,ylim=NULL,empty_space=10,
-                    cpal="YlGn",
-                    anomalies=TRUE,
                     sea_mask=FALSE,
-                    file=NULL,verbose=TRUE)
-{
+                    verbose=TRUE){
   
   ## pfTransform object
   if(class(data)=="pfTransform"){
@@ -42,7 +35,7 @@ pfGridding=function(data,cell_sizex=NULL,
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
   ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
   # load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
-
+  
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -55,7 +48,7 @@ pfGridding=function(data,cell_sizex=NULL,
     cat("\n")
     ## dem is GMTED2010
     data(dem)
-    v=extent(xy)
+    if(is.null(raster_extent)) v=extent(xy) else v=extent(raster_extent)
     dem=crop(dem,v)
     dem1 <- projectRaster(dem, crs=proj4)
     #plot(dem1)
@@ -67,7 +60,12 @@ pfGridding=function(data,cell_sizex=NULL,
   colnames(dat2)=c("x","y")
   if(is.null(raster_extent)) {
     e <- extent(c(round(range(dat2$x)*2)/2,round(range(dat2$y)*2)/2))
-  } else e <- extent(raster_extent)
+  } else {
+    toto=cbind(x=c(raster_extent[c(1,1,2,2)], raster_extent[1]+(raster_extent[2]-raster_extent[1])/2),
+               y=c(raster_extent[c(3,4,3,4)], raster_extent[3]))
+    e <- extent(project(toto, proj4))
+  }
+  
   
   # Cell sizes
   if(is.null(cell_size)){
@@ -95,7 +93,7 @@ pfGridding=function(data,cell_sizex=NULL,
     elev1=rasterToPoints(temp1)[,3]
     dat1=as.data.frame(rasterToPoints(z))
   } else dat1=as.data.frame(rasterToPoints(r))
-
+  
   
   ## Initiate a percentage counter
   if(verbose==TRUE){
@@ -131,7 +129,7 @@ pfGridding=function(data,cell_sizex=NULL,
     if(is.null(elevation_range)==FALSE){
       colnames(d1)=c("x","y","age","dist","dweight","elev","tweight")
     } else colnames(d1)=c("x","y","age","dist","dweight","tweight")
-
+    
     d1$weight=d1$dweight*d1$tweight
     d1$data=data[d[,5]!=0,4]
     
@@ -148,7 +146,7 @@ pfGridding=function(data,cell_sizex=NULL,
   
   r1=rasterize(dat1[, 1:2], r, dat1[,3], fun=mean) # Fill raster with mean value 
   #   plot(r1)
-
+  
   
   ## SEA MASK  
   if(sea_mask==TRUE){
@@ -162,23 +160,38 @@ pfGridding=function(data,cell_sizex=NULL,
   # plot(r1-r2)
   
   dat1=as.data.frame(rasterToPoints(r1))
-  #dat1[dat1==0]=1e-6
-  #dat1[9,3]=4.5
   
+  ## End of DATA part --------------------------------------------------------------------
+  
+  out=list(raster=r1,df=dat1,proj4=proj4,extent=e,points=dat2)
+  class(out)="pfGridding"
+  return(out)
+  
+}
+
+plot.pfGridding=function(x,continuous=TRUE,
+                col_class=NULL,
+                col_lim=NULL,
+                xlim=NULL,ylim=NULL,empty_space=10,
+                cpal="YlGn",
+                anomalies=TRUE,
+                file=NULL,points=FALSE,...){
+  
+  x$df=as.data.frame(rasterToPoints(x$raster))
   # Define classes for colors
   if(is.null(col_class)){
     if(anomalies==TRUE){
-      b1=seq(floor(min(dat1$layer,na.rm=TRUE)),0,len=5)
-      b2=seq(0,ceiling(max(dat1$layer,na.rm=TRUE)),len=5)
+      b1=seq(floor(min(x$df$layer,na.rm=TRUE)),0,len=5)
+      b2=seq(0,ceiling(max(x$df$layer,na.rm=TRUE)),len=5)
       breaks=c(b1,b2[2:5])
       breaks=unique(breaks)
-    } else  breaks=seq(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE)),len=10)
+    } else  breaks=seq(floor(min(x$df$layer,na.rm=TRUE)),ceiling(max(x$df$layer,na.rm=TRUE)),len=10)
   }
   if(is.numeric(col_class) & length(col_class)==1){
     if(anomalies==TRUE){
-      b2=seq(0,ceiling(max(abs(dat1$layer,na.rm=TRUE)))+col_class,by=col_class)
+      b2=seq(0,ceiling(max(abs(x$df$layer,na.rm=TRUE)))+col_class,by=col_class)
       breaks=c(-rev(b2),b2[2:length(b2)])
-    } else breaks=seq(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE))+col_class,by=col_class)
+    } else breaks=seq(floor(min(x$df$layer,na.rm=TRUE)),ceiling(max(x$df$layer,na.rm=TRUE))+col_class,by=col_class)
   }
   if(is.numeric(col_class) & length(col_class)>1){
     breaks=col_class
@@ -187,35 +200,35 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## Define color limils
   if(is.null(col_lim))
-    col_lim=c(floor(min(dat1$layer,na.rm=TRUE)),ceiling(max(dat1$layer,na.rm=TRUE)))
+    col_lim=c(floor(min(x$df$layer,na.rm=TRUE)),ceiling(max(x$df$layer,na.rm=TRUE)))
   
-  dat1=cbind(dat1,class=cut(dat1$layer,breaks))
-  data=na.omit(data)
+  x$df=cbind(x$df,class=cut(x$df$layer,breaks))
+  #   data=na.omit(data)
   
   data(coast)
   coast=coast[coast$X<=180,]
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
-  coast=data.frame(project(xy, proj4))
+  coast=data.frame(project(xy, x$proj4))
   colnames(coast)=c("x","y")
   # plot(round(coast$x),round(coast$y),type="l")
-
+  
   ## LIMITS
   if(is.null(xlim)){
-    xplus=(e@xmax-e@xmin)*empty_space/100
-    xlim=c(e@xmin-xplus,e@xmax+xplus)}
+    xplus=(x$extent@xmax-x$extent@xmin)*empty_space/100
+    xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
   
   if(is.null(ylim)){
-    yplus=(e@ymax-e@ymin)*empty_space/100
-    ylim=c(e@ymin-yplus,e@ymax+yplus)}
+    yplus=(x$extent@ymax-x$extent@ymin)*empty_space/100
+    ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
   
   ## Crop coast using limits
-#   coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
-#                 coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
+    coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
+                  coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
   #plot(coast[,1],coast[,2],type="l")
   
-  dat2=data.frame(na.omit(dat2))
-  colnames(dat2)=c("x","y")
+  x$points=data.frame(na.omit(x$points))
+  colnames(x$points)=c("x","y")
   
   if(anomalies==TRUE) {
     cpal="RdBu"
@@ -225,12 +238,12 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## LIMITS
   if(is.null(xlim)){
-    xplus=(e@xmax-e@xmin)*0.1
-    xlim=c(e@xmin-xplus,e@xmax+xplus)}
+    xplus=(x$extent@xmax-x$extent@xmin)*0.1
+    xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
   
   if(is.null(ylim)){
-    yplus=(e@ymax-e@ymin)*0.1
-    ylim=c(e@ymin-yplus,e@ymax+yplus)}
+    yplus=(x$extent@ymax-x$extent@ymin)*0.1
+    ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
   
   ## SAME COLORS 
   if(continuous==FALSE & is.numeric(col_class) & length(col_class)>1){
@@ -238,43 +251,41 @@ pfGridding=function(data,cell_sizex=NULL,
     c3=cbind(xlim[2]+1e+6,ylim[2]+1e+6,c1)
     c3=c3[1:(length(c3[,1])-1),]
     c3=data.frame(c3,rr=(cut(c3[,3],breaks)))
-    colnames(c3)=colnames(dat1)
-    dat1=rbind(dat1,c3)
+    colnames(c3)=colnames(x$df)
+    x$df=rbind(x$df,c3)
   }
   ## 
-  pale=testcol(length(unique(dat1$class)))
+  pale=testcol(length(unique(x$df$class)))
   
   #display.brewer.pal(12,"Spectral")
   #pal=c(pal[9],pal[8],pal[6:1])
   ## On fait une carte avec ggplot2
-  #pdf(file="/Users/Olivier/Desktop/dat1Map.pdf",height=6,width=9)
+  #pdf(file="/Users/Olivier/Desktop/x$dfMap.pdf",height=6,width=9)
   if(continuous==FALSE){
-    p=ggplot(dat1) +
-      geom_polygon(data=coast,aes(x=x,y=y),alpha=0.2)+
-      geom_raster(data=dat1,aes(x, y, fill = class))+
+    p=ggplot(x$df) +
+      geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
+      geom_raster(data=x$df,aes(x, y, fill = class))+
       scale_fill_manual(values = pale,name="")+
-      geom_point(data=dat2,aes(x,y),colour="grey40")+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
+    if(points==TRUE) p=p+geom_point(data=x$points,aes(x,y),colour="grey40")
+
   } else {
-    p=ggplot(dat1) +
-      geom_polygon(data=coast,aes(x=x,y=y),alpha=0.2)+
-      geom_raster(data=dat1,aes(x, y, fill = layer))+
+    p=ggplot(x$df) +
+      geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
+      geom_raster(data=x$df,aes(x, y, fill = layer))+
       scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
-      geom_point(data=dat2,aes(x,y),colour="grey40")+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
+    if(points==TRUE) p=p+geom_point(data=x$points,aes(x,y),colour="grey40")
+      
   }
   p
   if(is.null(file)==FALSE){
-    projection(r1)<-CRS(proj4)
-    writeRaster(r1, filename=file, format="GTiff",overwrite=TRUE)
+    projection(x$raster)<-CRS(x$proj4)
+    writeRaster(x$raster, filename=file, format="GTiff",overwrite=TRUE)
   }
-  
-  ## Output
-  out=list(raster=r1,df=dat1,plot=p)
-  
-  return(out)
+  return(p)
 }
 
 ## -------------------------------------------------------------------------------------------
