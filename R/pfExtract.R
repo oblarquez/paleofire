@@ -1,9 +1,9 @@
-pfExtract=function(IDn){
+pfExtract=function(ID){
   ## Avoid no visible binding for global variable
   paleofiredata=NULL; rm(paleofiredata)
   
   # Extract data for sites
   data(paleofiredata, envir = environment())
-  if(is.numeric(IDn)){  Ext=paleofiredata[paleofiredata[,1] %in% IDn,] } else Ext=paleofiredata[paleofiredata[,1] %in% IDn$SitesIDS,]
+  if(is.numeric(ID)){  Ext=paleofiredata[paleofiredata[,1] %in% ID,] } else Ext=paleofiredata[paleofiredata[,1] %in% ID$SitesIDS,]
   return(Ext)
 }

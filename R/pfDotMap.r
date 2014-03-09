@@ -71,7 +71,7 @@ pfDotMap = function(TR, bins,
   
   # Lookup info from the database
   sink("/dev/null") # Suppress the big printed output of this function...
-  site.dat = summary( pfSiteSel(ID=TR$params$IDn$SitesIDS) )
+  site.dat = summary( pfSiteSel(ID=TR$params$ID$SitesIDS) )
   sink()
   
   # Extract coordinates, including in radians for use in the distance function

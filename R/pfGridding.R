@@ -14,13 +14,13 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## pfTransform object
   if(class(data)=="pfTransform"){
-    capture.output(
+    sink("/dev/null")
       data<-data.frame(
-        x=rep(summary(data$params$IDn)$LONGITUDE,each=length(data$TransData[,1])),
-        y=rep(summary(data$params$IDn)$LATITUDE,each=length(data$TransData[,1])),
+        x=rep(summary(data$params$ID)$LONGITUDE,each=length(data$TransData[,1])),
+        y=rep(summary(data$params$ID)$LATITUDE,each=length(data$TransData[,1])),
         age=c(data$Age),
-        char=c(data$TransData))
-      ,file='NUL')
+        char=c(data$TransData));
+    sink();
     data=na.omit(data)
     ## Remove extreme outliers i.e. 3*sd (sometimes happens... why? probably baseperiod related)
     data=data[data[,4]<3*sd(data[,4]) & data[,4]>-(3*sd(data[,4])) ,]

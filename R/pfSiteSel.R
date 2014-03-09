@@ -51,7 +51,7 @@ pfSiteSel=function(
   
   # Selection process
   
-  IDn=paleofiresites[  paleofiresites$ID_SITE %in% ID 
+  ID=paleofiresites[  paleofiresites$ID_SITE %in% ID 
                        & paleofiresites$LONGITUDE>=Longlim[1] 
                        & paleofiresites$LONGITUDE<=Longlim[2] 
                        & paleofiresites$LATITUDE>=Latlim[1] 
@@ -71,19 +71,19 @@ pfSiteSel=function(
                        & paleofiresites$ID_LANDS_DESC %in% LandDesc, 1]
   
   if(is.na(DateInt)==FALSE)
-    IDn=paleofiresites[paleofiresites$ID_SITE %in% IDn & 
+    ID=paleofiresites[paleofiresites$ID_SITE %in% ID & 
                          paleofiresites$DATE_MEAN<DateInt,1] 
   
   #& paleofiresites$ID_COUNTRY %in% Country 
   
   # Returns NA (Why? to be checked)
   
-  IDn=as.numeric(na.omit(IDn))
+  ID=as.numeric(na.omit(ID))
   
   # Site Names
-  SiteNames=as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% IDn])
+  SiteNames=as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% ID])
   #
-  output=list(SitesIDS=IDn,SiteNames=SiteNames)
+  output=list(SitesIDS=ID,SiteNames=SiteNames)
   class(output)="pfSiteSel"
   return(output)
   

@@ -48,7 +48,7 @@ pfComposite=function(TR,
     
     # Matrix to store results
     result=matrix(ncol=length(TR$Age[1,]),nrow=length(bins)-1)
-    #sm_result=matrix(ncol=length(IDn),nrow=length(bins)-1)
+    #sm_result=matrix(ncol=length(ID),nrow=length(bins)-1)
     
     ## Binning procedure
     for (k in 1:length(TR$Age[1,])){
