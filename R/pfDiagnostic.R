@@ -1,4 +1,4 @@
-pfDiagnostic=function(IDn,
+pfDiagnostic=function(ID,
                       add=NULL,
                       Age=0,
                       Interpolate=FALSE,
@@ -18,17 +18,17 @@ pfDiagnostic=function(IDn,
   coast=NULL; rm(coast)
   
   ## Load data
-  if (is.list(IDn) & length(IDn)==2){
+  if (is.list(ID) & length(ID)==2){
     data(paleofiredata,envir = environment())
     data(paleofiresites,envir = environment())
     #paleofiredata=na.omit(paleofiredata)
-    IDn=IDn$SitesIDS
-    # Use only paleofiredata corresponding to IDn
-    paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
+    ID=ID$SitesIDS
+    # Use only paleofiredata corresponding to ID
+    paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
     
     ## Convert data to influx------
 #     if(QuantType=="INFL"){
-#       for(i in unique(IDn))  
+#       for(i in unique(ID))  
 #         if( paleofiresites[paleofiresites$ID_SITE==i,]$QTYPE!="INFL" & 
 #               is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
 #           temp=paleofiredata[paleofiredata[,1]==i,]
@@ -52,18 +52,18 @@ pfDiagnostic=function(IDn,
     ## Add users data
     if(is.null(add)==FALSE){
       paleofiredata=rbind(paleofiredata,add$data)
-      IDn=c(IDn,unique(add$data[,1]))
+      ID=c(ID,unique(add$data[,1]))
       paleofiresites=merge(paleofiresites,add$metadata,all=TRUE)
     }
   }
   
-  if (is.character(IDn)){
-    paleofiredata = read.csv(IDn)
-    IDn=unique( paleofiredata[,1])
+  if (is.character(ID)){
+    paleofiredata = read.csv(ID)
+    ID=unique( paleofiredata[,1])
   }
   
   # Warnings for the age depths model
-  warn=matrix(nrow=length(IDn),ncol=1)
+  warn=matrix(nrow=length(ID),ncol=1)
   
   
   
@@ -72,9 +72,9 @@ pfDiagnostic=function(IDn,
   
   layout(matrix(c(1,1,2,2,3,4,5,6),4,2,byrow=TRUE))
   
-  for (k in 1:length(IDn)){
+  for (k in 1:length(ID)){
     # Sites identifier
-    ID1=IDn[k]
+    ID1=ID[k]
     # Site info
     siteinfo=paleofiresites[paleofiresites[,1]==ID1,]
     # List for pfTransform function
@@ -106,7 +106,7 @@ pfDiagnostic=function(IDn,
                   add1$data=paleofiredata[paleofiredata$ID_SITE %in% ID1,]}
     
 
-      tr=pfTransform(IDn=tr,add=add1,
+      tr=pfTransform(ID=tr,add=add1,
                      Interpolate=Interpolate,
                      method=method,
                      stlYears=stlYears,

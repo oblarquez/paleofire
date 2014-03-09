@@ -99,13 +99,14 @@ summary.pfSiteSel=function(object,...){
   data(paleofiredata,envir = environment())
   coln=length(paleofiresites[1,])
   
-  NUM_SAMP=c()
-  for (i in 1:length(object$SitesIDS)){
-    NUM_SAMP[i]=c(length(paleofiredata[paleofiredata[,1]==object$SitesIDS[i],1]))
-  }
-  table=cbind(paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,],NUM_SAMP)
+#   NUM_SAMP=c()
+#   for (i in 1:length(object$SitesIDS)){
+#     NUM_SAMP[i]=c(length(paleofiredata[paleofiredata[,1]==object$SitesIDS[i],1]))
+#   }
+#   table=cbind(paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,],NUM_SAMP)
+  table=paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,]
   rownames(table)=table$SITE_NAME
-  table=subset(table, select=c(1,3,4,5,16,17,18,coln+1))
+  table=subset(table, select=c(1,3,4,5,16,17,18,coln))
   print(table)
   return(table)
 }
