@@ -1,4 +1,4 @@
-pfTransform=function(IDn,
+pfTransform=function(ID,
                      add=NULL,
                      Interpolate=FALSE,
                      Age=0,
@@ -18,7 +18,7 @@ pfTransform=function(IDn,
   paleofiresites=NULL; rm(paleofiresites)
   
   # Value for warnings
-  IDChar=IDn
+  IDChar=ID
   
   # Check methods
   methods=c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle")
@@ -31,7 +31,7 @@ pfTransform=function(IDn,
   
   
   ## 0 Save parameters
-  params=list(IDn=IDn,
+  params=list(ID=ID,
               Interpolate=Interpolate,
               Age=Age,
               method=method,
@@ -64,22 +64,22 @@ pfTransform=function(IDn,
     cat("Loading and preparing data...")
     cat("\n")}
   
-  if(is.null(IDn)==FALSE){
-    if (is.list(IDn) & length(IDn)==2){
+  if(is.null(ID)==FALSE){
+    if (is.list(ID) & length(ID)==2){
       
       data(paleofiredata,envir = environment())
       data(paleofiresites,envir = environment())
       
       #paleofiredata=na.omit(paleofiredata)
       # Sites are:
-      IDn=IDn$SitesIDS
-      # Use only paleofiredata corresponding to IDn
-      paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
+      ID=ID$SitesIDS
+      # Use only paleofiredata corresponding to ID
+      paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
       
       ## 1 Use Pref_Units 
       if(is.null(MethodType)){
         # Drop Non pref Units  
-        for(i in IDn){
+        for(i in ID){
           paleofiredata[paleofiredata[,1] %in% i &
                           !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),
                         7]=NA
@@ -87,7 +87,7 @@ pfTransform=function(IDn,
         paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
         ## Convert data to influx------
         if(QuantType=="INFL"){
-          for(i in IDn)  
+          for(i in ID)  
             if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
                   is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
               infl=influx(paleofiredata[paleofiredata[,1]==i,])
@@ -98,7 +98,7 @@ pfTransform=function(IDn,
         ## 2 User defined Method
         ## Drop duplicate units and keep only pref_unit in desired method
         paleofiredata=paleofiredata[paleofiredata[,6] %in% MethodType,]
-        for(i in IDn){
+        for(i in ID){
           if (length(unique(paleofiredata[paleofiredata[,1] %in% i,5]))>=2){
             paleofiredata[paleofiredata[,1] %in% i &
                             !(paleofiredata[,5] %in% paleofiresites$PREF_UNIT[paleofiresites[,1]==i]),7]=NA
@@ -109,9 +109,9 @@ pfTransform=function(IDn,
         cat(IDChar$SiteNames[!(IDChar$SitesIDS %in% unique(paleofiredata[,1]))],"\n")
         cat(length(IDChar$SiteNames)-length(unique(paleofiredata[,1])), 
             " sites were excluded from the analysis \n")
-        IDn=unique(paleofiredata[,1])
+        ID=unique(paleofiredata[,1])
         if(QuantType=="INFL"){
-          for(i in IDn)  
+          for(i in ID)  
             if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
                   is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
               infl=influx(paleofiredata[paleofiredata[,1]==i,])
@@ -127,25 +127,25 @@ pfTransform=function(IDn,
         add$data=cbind(add$data,UNIT=NA,METHOD=NA,TYPE="INFL")
         # Then...
         paleofiredata=rbind(paleofiredata,add$data)
-        IDn=c(IDn,unique(add$data[,1]))
+        ID=c(ID,unique(add$data[,1]))
       }
     }
   }
-  if(is.null(IDn)){
+  if(is.null(ID)){
     paleofiredata=add$data
-    IDn=c(unique(add$data[,1]))
+    ID=c(unique(add$data[,1]))
   }
   
   
   
-  if (is.character(IDn)){
-    paleofiredata = read.csv(IDn)
-    IDn=unique(paleofiredata[,1])
+  if (is.character(ID)){
+    paleofiredata = read.csv(ID)
+    ID=unique(paleofiredata[,1])
   }
-  if (is.list(IDn) & length(IDn)>2)  {
-    temp=IDn$TransData
-    depths=IDn$IntDepths
-    age=IDn$Age
+  if (is.list(ID) & length(ID)>2)  {
+    temp=ID$TransData
+    depths=ID$IntDepths
+    age=ID$Age
     sites=as.numeric(colnames(temp))
     ids=matrix(nrow=length(temp[,1]),ncol=length(temp[1,]))
     for (i in 1:length(temp[,1])){
@@ -157,21 +157,21 @@ pfTransform=function(IDn,
     depths=c(depths)
     if(length(depths)==0) depths=rep(NA,length(age))
     paleofiredata=cbind(ids,depths,age,data)
-    IDn=unique( paleofiredata[,1])
+    ID=unique( paleofiredata[,1])
   }
-  if (is.matrix(IDn)){
-    paleofiredata=IDn
-    IDn=unique(paleofiredata[,1])
+  if (is.matrix(ID)){
+    paleofiredata=ID
+    ID=unique(paleofiredata[,1])
   }
   
   # 2 Interpolate TRUE
   if (Interpolate==TRUE){
     # Interpolation procedure
     if (length(Age)<=1) {
-      res=matrix(ncol=1,nrow=length(IDn))
+      res=matrix(ncol=1,nrow=length(ID))
       # Find the median time resolution for each paleofiredataset
-      for (k in 1:length(IDn)){
-        resT=diff(paleofiredata[paleofiredata[,1]==IDn[k],3])
+      for (k in 1:length(ID)){
+        resT=diff(paleofiredata[paleofiredata[,1]==ID[k],3])
         # Sometimes the last age is a copy of the previous one (why?)
         res[k]=c(median(resT[resT>0]))
       }
@@ -185,24 +185,24 @@ pfTransform=function(IDn,
       AgeN=Age
       #paleofiredata=paleofiredata[paleofiredata[,3]>min(AgeN),]
       #paleofiredata=paleofiredata[paleofiredata[,3]<max(AgeN),]
-      #paleofiredata=paleofiredata[paleofiredata[,1] %in% IDn,]
-      IDn=unique(paleofiredata[,1])
+      #paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
+      ID=unique(paleofiredata[,1])
     }
     
     # Use linear interpolation to reconstruct a matrix of raw paleofiredata
-    rawI=matrix(nrow=length(AgeN),ncol=length(IDn))
+    rawI=matrix(nrow=length(AgeN),ncol=length(ID))
     
-    for (k in 1:length(IDn)){
-      if(length(paleofiredata[paleofiredata[,1]==IDn[k],3])>=3){
-        rawI[,k]=approx(paleofiredata[paleofiredata[,1]==IDn[k],3],paleofiredata[paleofiredata[,1]==IDn[k],4],AgeN, method = "linear")$y} else print(paste(IDChar$SiteNames[k], "has < 3 charcoal values and was excluded", sep=" "))
+    for (k in 1:length(ID)){
+      if(length(paleofiredata[paleofiredata[,1]==ID[k],3])>=3){
+        rawI[,k]=approx(paleofiredata[paleofiredata[,1]==ID[k],3],paleofiredata[paleofiredata[,1]==ID[k],4],AgeN, method = "linear")$y} else print(paste(IDChar$SiteNames[k], "has < 3 charcoal values and was excluded", sep=" "))
     }
     
     # Calculates Interpolated depths
-    depthI=matrix(nrow=length(AgeN),ncol=length(IDn))
-    for (k in 1:length(IDn)){
-      if (is.na(sum(paleofiredata[paleofiredata[,1]==IDn[k],2]))==F){
-        if(length(paleofiredata[paleofiredata[,1]==IDn[k],3])>=3){
-          depthI[,k]=approx(paleofiredata[paleofiredata[,1]==IDn[k],3],paleofiredata[paleofiredata[,1]==IDn[k],2],AgeN,
+    depthI=matrix(nrow=length(AgeN),ncol=length(ID))
+    for (k in 1:length(ID)){
+      if (is.na(sum(paleofiredata[paleofiredata[,1]==ID[k],2]))==F){
+        if(length(paleofiredata[paleofiredata[,1]==ID[k],3])>=3){
+          depthI[,k]=approx(paleofiredata[paleofiredata[,1]==ID[k],3],paleofiredata[paleofiredata[,1]==ID[k],2],AgeN,
                             method = "linear")$y
         }
       } else{depthI[,k]=NA}
@@ -215,13 +215,13 @@ pfTransform=function(IDn,
     }
     
     rawI=rawI[,supp==0]
-    SuppSites=IDn[supp==1]
-    IDn=IDn[supp==0]  
+    SuppSites=ID[supp==1]
+    ID=ID[supp==0]  
     # Space for data
-    transI=matrix(nrow=length(AgeN),ncol=length(IDn))
+    transI=matrix(nrow=length(AgeN),ncol=length(ID))
     # Matrix of Ages (just a repeat)
-    Ages=matrix(ncol=length(IDn),nrow=length(AgeN))
-    for (k in 1:length(IDn)){
+    Ages=matrix(ncol=length(ID),nrow=length(AgeN))
+    for (k in 1:length(ID)){
       Ages[,k]=c(AgeN)
     }
   }
@@ -229,26 +229,26 @@ pfTransform=function(IDn,
   ## 3 No Interpolation:
   if (Interpolate==FALSE){
     # Which is the longest record?
-    lengths=matrix(ncol=1,nrow=length(IDn))
-    for (k in 1:length(IDn)){
-      lengths[k]=c(length(paleofiredata[paleofiredata[,1] %in% IDn[k],1]))
+    lengths=matrix(ncol=1,nrow=length(ID))
+    for (k in 1:length(ID)){
+      lengths[k]=c(length(paleofiredata[paleofiredata[,1] %in% ID[k],1]))
     }
     m=max(lengths)
     
     # Space for paleofiredata
-    transI=matrix(nrow=m,ncol=length(IDn))
-    rawI=matrix(nrow=m,ncol=length(IDn))
-    depthI=matrix(nrow=m,ncol=length(IDn))
-    Ages=matrix(ncol=length(IDn),nrow=m)
+    transI=matrix(nrow=m,ncol=length(ID))
+    rawI=matrix(nrow=m,ncol=length(ID))
+    depthI=matrix(nrow=m,ncol=length(ID))
+    Ages=matrix(ncol=length(ID),nrow=m)
     
     # Matrix of Ages, rawData and depths
-    for (k in 1:length(IDn)){
-      forNA=m-length(paleofiredata[paleofiredata[,1] %in% IDn[k],3])
-      AgeTemp=c(paleofiredata[paleofiredata[,1] %in% IDn[k],3],rep(NA,forNA))
+    for (k in 1:length(ID)){
+      forNA=m-length(paleofiredata[paleofiredata[,1] %in% ID[k],3])
+      AgeTemp=c(paleofiredata[paleofiredata[,1] %in% ID[k],3],rep(NA,forNA))
       Ages[,k]=c(AgeTemp)
-      rawTemp=c(paleofiredata[paleofiredata[,1] %in% IDn[k],4],rep(NA,forNA))
+      rawTemp=c(paleofiredata[paleofiredata[,1] %in% ID[k],4],rep(NA,forNA))
       rawI[,k]=c(rawTemp)
-      depthTemp=c(paleofiredata[paleofiredata[,1] %in% IDn[k],2],rep(NA,forNA))
+      depthTemp=c(paleofiredata[paleofiredata[,1] %in% ID[k],2],rep(NA,forNA))
       depthI[,k]=c(depthTemp)
     }
     ## End No Int
@@ -257,7 +257,7 @@ pfTransform=function(IDn,
   ## % Cat to see where we are
   if(verbose==TRUE){
     percent=seq(10,100,by=10)
-    values=round(percent*length(IDn)/100)
+    values=round(percent*length(ID)/100)
     cat("Transforming...")
     cat("\n")
     cat("Percentage done: ")
@@ -269,12 +269,12 @@ pfTransform=function(IDn,
     if (j>=2){rawI=transI}
     
     # Transformations
-    for (k in 1:length(IDn)){
+    for (k in 1:length(ID)){
       
       tmp=cbind(Ages[,k],rawI[,k])
       tmp=na.omit(tmp)
       ## At least 3 data values! 
-      if(sum(tmp[,1])>3 & IDn[k]!=882){
+      if(sum(tmp[,1])>3 & ID[k]!=882){
         # Not Tamagaucia site (882)!
         if(methodj=="stl") {
           agesI=seq(tmp[1,1],tmp[length(tmp[,1]),1],1)
@@ -350,11 +350,11 @@ pfTransform=function(IDn,
   if(verbose==TRUE) cat("\n")
   
   ### End Return Results
-  colnames(transI)=IDn
-  output=structure(list(Age=structure(Ages,col.names=as.character(IDn),class="matrix" ),
-                        IntDepths=structure(depthI,col.names=as.character(IDn),class="matrix" ),
-                        IntData=structure(rawI,col.names=as.character(IDn),class="matrix" ),
-                        TransData=structure(transI,col.names=as.character(IDn),class="matrix"),
+  colnames(transI)=ID
+  output=structure(list(Age=structure(Ages,col.names=as.character(ID),class="matrix" ),
+                        IntDepths=structure(depthI,col.names=as.character(ID),class="matrix" ),
+                        IntData=structure(rawI,col.names=as.character(ID),class="matrix" ),
+                        TransData=structure(transI,col.names=as.character(ID),class="matrix"),
                         Method=method,
                         params=params
   ))
