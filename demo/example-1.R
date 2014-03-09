@@ -1,17 +1,19 @@
 ## Interactive sites selection:
 # ID=pfInteractive()
 library(devtools)
-install_github("paleofire", repo="GCD",ref="master")
+install_github("paleofire", repo="GCD",ref="release3.0.1")
+library(GCD)
 library(paleofire)
 ## Site selection using criterions
 # DateInt parameter is used to set the mean interval which is required between two
 # dating points (ex 14C) for sites to be selected for a complete list of criterions
 # that can be used see pfSiteSel function
 
-ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
 
-ID=pfSiteSelM(LATITUDE>50 & LATITUDE<70, NUM_SAMP>=20)
+ID=pfSiteSel(lat>40)
+
 plot(ID)
+
 ID1=pfSiteSelM(ID_SITE %in% ID$SitesIDS & LONGITUDE>-90 & LONGITUDE<(-50))
 plot(ID1,xlim=c(-100,-50),ylim=c(30,70))
 

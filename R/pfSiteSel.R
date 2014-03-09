@@ -1,92 +1,25 @@
-pfSiteSel=function(
-  ID=NULL,
-  Latlim=c(-360,360),
-  Longlim=c(-360,360),
-  Biome=NULL,
-  DateInt=NULL,
-  Country=NULL,
-  Region=NULL,
-  SiteName=NULL,
-  PrefUnit=NULL,
-  Elevation=c(-100000,100000),
-  QuantType=NULL,
-  L12=NULL,
-  RF99=NULL,
-  LandDesc=NULL,
-  MinAge=-200,
-  MaxAge=1e+12
-)
-{
-  #Parameters and data
+pfSiteSel <- function(...) {
+  
+  paleofiresites<-NULL
   data(paleofiresites,envir = environment())
-  coln=length(paleofiresites[1,])
   
-  ## ID_SITE
-  if(is.null(ID)){ID=unique(paleofiresites$ID_SITE)}
-  ## SiteName
-  if(is.null(SiteName)){SiteName=unique(paleofiresites$SITE_NAME)}
-  ## Country
-  if(is.null(Country)){Country=unique(paleofiresites$ID_COUNTRY)}
-  ## PrefUnit
-  if(is.null(PrefUnit)){PrefUnit=unique(paleofiresites$PREF_UNITS)}
-  ## PrefUnit
-  if(is.null(Region)){Region=unique(paleofiresites$ID_REGION)}
-  ## Biome
-  if(is.null(Biome)){Biome=unique(paleofiresites$BIOME)}
-  ## QTYPE
-  if(is.null(QuantType)){QuantType=unique(paleofiresites$QTYPE)}
-  ## RF99
-  if(is.null(RF99)){RF99=unique(paleofiresites$RF99)}
-  ## L12
-  if(is.null(L12)){L12=unique(paleofiresites$L12)}
-  ## Land Description
-  if(is.null(LandDesc)){LandDesc=unique(paleofiresites$ID_LANDS_DESC)}
-  # Date Numbers
-  paleofiresites=cbind(paleofiresites,(paleofiresites$MAX_EST_AGE-paleofiresites$MIN_EST_AGE)/paleofiresites$NUM_DATING)
-  colnames(paleofiresites)[coln+1] <- "DATE_MEAN"
+  theeval=function(thelist){
+    eval(thelist,paleofiresites)
+  }
   
-  paleofiresites[!is.finite(paleofiresites[,coln+1]),coln+1]=NA
-  if(is.null(DateInt)){DateInt=NA}
+  args=eval(substitute(alist(...)))
+  if(length(args)>0){
+    c=lapply(args,theeval)
+    d=matrix(unlist(c),ncol=length(args))
+    finalTF=ifelse(rowSums(d == TRUE) == length(args), TRUE, FALSE)
+    id=paleofiresites[finalTF,]$id_site
+  } else id=paleofiresites$id_site
   
-  
-  # Selection process
-  
-  ID=paleofiresites[  paleofiresites$ID_SITE %in% ID 
-                       & paleofiresites$LONGITUDE>=Longlim[1] 
-                       & paleofiresites$LONGITUDE<=Longlim[2] 
-                       & paleofiresites$LATITUDE>=Latlim[1] 
-                       & paleofiresites$LATITUDE<=Latlim[2]  
-                       & paleofiresites$ELEV>=Elevation[1]
-                       & paleofiresites$ELEV<=Elevation[2]
-                       & paleofiresites$ID_COUNTRY %in%  Country
-                       & paleofiresites$RF99 %in%  RF99
-                       & paleofiresites$L12 %in%  L12
-                       & paleofiresites$BIOME %in%  Biome 
-                       & paleofiresites$ID_REGION %in% Region
-                       & paleofiresites$PREF_UNITS %in% PrefUnit
-                       & paleofiresites$QTYPE %in% QuantType 
-                       & paleofiresites$SITE_NAME %in% SiteName
-                       & paleofiresites$MIN_EST_AGE>=MinAge
-                       & paleofiresites$MAX_EST_AGE<=MaxAge
-                       & paleofiresites$ID_LANDS_DESC %in% LandDesc, 1]
-  
-  if(is.na(DateInt)==FALSE)
-    ID=paleofiresites[paleofiresites$ID_SITE %in% ID & 
-                         paleofiresites$DATE_MEAN<DateInt,1] 
-  
-  #& paleofiresites$ID_COUNTRY %in% Country 
-  
-  # Returns NA (Why? to be checked)
-  
-  ID=as.numeric(na.omit(ID))
-  
-  # Site Names
-  SiteNames=as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% ID])
+  SiteNames=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
   #
-  output=list(SitesIDS=ID,SiteNames=SiteNames)
+  output=list(SitesIDS=id,SitesNames=SiteNames)
   class(output)="pfSiteSel"
   return(output)
-  
 }
 
 ## Summary function
@@ -103,9 +36,9 @@ summary.pfSiteSel=function(object,...){
 #   for (i in 1:length(object$SitesIDS)){
 #     NUM_SAMP[i]=c(length(paleofiredata[paleofiredata[,1]==object$SitesIDS[i],1]))
 #   }
-#   table=cbind(paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,],NUM_SAMP)
-  table=paleofiresites[paleofiresites$ID_SITE %in% object$SitesIDS,]
-  rownames(table)=table$SITE_NAME
+#   table=cbind(paleofiresites[paleofiresites$id_site %in% object$SitesIDS,],NUM_SAMP)
+  table=paleofiresites[paleofiresites$id_site %in% object$SitesIDS,]
+  rownames(table)=table$site_name
   table=subset(table, select=c(1,3,4,5,16,17,18,coln))
   print(table)
   return(table)
@@ -126,11 +59,11 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
   ## Chronology
   if(type=="Chronology"){
     data(paleofiredata,envir = environment())
-    paleofiredata=paleofiredata[paleofiredata$ID_SITE %in% x$SitesIDS,]
+    paleofiredata=paleofiredata[paleofiredata$id_site %in% x$SitesIDS,]
     
     IDsorted=data.frame(IDs = c(x$SitesIDS),
-                        Lat = c(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE),
-                        labels = as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% x$SitesIDS]))
+                        Lat = c(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat),
+                        labels = as.character(paleofiresites$site_name[paleofiresites$id_site %in% x$SitesIDS]))
     
     IDsorted=IDsorted[with(IDsorted, order(Lat)), ]
     ## Xlim
@@ -142,7 +75,7 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
          ylim = c(1,length(x$SitesIDS)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
     n=c()
     for(i in 1:length(x$SitesIDS)){
-      samples=paleofiredata$EST_AGE[paleofiredata$ID_SITE %in% IDsorted$IDs[i]]
+      samples=paleofiredata$EST_AGE[paleofiredata$id_site %in% IDsorted$IDs[i]]
       points(samples,rep(i,length(samples)),pch=pch,cex=cex)
       n[i]=length(samples)
     }
@@ -164,22 +97,22 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
   if(type=="Map"){
     
     if(zoom=="World"|zoom=="world"){
-      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,
+      plot(paleofiresites$long,paleofiresites$lat,
            col="blue",xlab="Longitude",ylab="Latitude")
       lines(coast$X,coast$Y)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,
-             paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE, 
+      points(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long,
+             paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat, 
              bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
       if(is.null(add)==FALSE)
-        points(add$metadata$LONGITUDE,
-               add$metadata$LATITUDE, 
+        points(add$metadata$long,
+               add$metadata$lat, 
                bg="red",col = "red",pch = 21)
     }
     
     if(zoom=="Sites"|zoom=="sites"){
       # Draw map
-      xl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE)
-      yl=as.vector(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE)
+      xl=as.vector(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long)
+      yl=as.vector(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat)
       
       if(is.null(xlim))
         xlim=range(xl[!is.na(xl) & is.finite(xl)])
@@ -187,12 +120,12 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
         ylim=range(yl[!is.na(yl) & is.finite(yl)])
       
       
-      plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
-      points(paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% x$SitesIDS,]$LATITUDE,bg="red",col = "red",pch = 21)
+      plot(paleofiresites$long,paleofiresites$lat,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
+      points(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long,paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)
       if(is.null(add)==FALSE)
-        points(add$metadata$LONGITUDE,
-               add$metadata$LATITUDE, 
+        points(add$metadata$long,
+               add$metadata$lat, 
                bg="red",col = "red",pch = 21)
       
     }
