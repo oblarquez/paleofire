@@ -6,7 +6,7 @@ Print diagnostic pdf for individual transformed series}
 \description{
 Print diagnostic pdf for individual transformed series, successive transformations could be specified (see example)}
 \usage{
-pfDiagnostic(IDn, add = NULL, Age = 0, Interpolate = FALSE, method
+pfDiagnostic(ID, add = NULL, Age = 0, Interpolate = FALSE, method
                  = "Box-Cox", BasePeriod = c(-100, 1e+09), span = 0.3,
                  RunWidth = 500, RunQParam = 0.5, stlYears = 500, alpha
                  = 0.01, type = "BoxCox1964", FileName =
@@ -14,7 +14,7 @@ pfDiagnostic(IDn, add = NULL, Age = 0, Interpolate = FALSE, method
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{IDn}{
+  \item{ID}{
 An object returned by \code{\link{pfSiteSel}} or \code{\link{pfTransform}}
 }
 \item{add}{

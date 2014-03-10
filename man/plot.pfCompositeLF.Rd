@@ -6,8 +6,9 @@ plot.pfCompositeLF}
 \description{
 Plot pfCompositeLF object}
 \usage{
-\method{plot}{pfCompositeLF}(x, type = "ci", add = NULL, conf = c(0.05, 0.95), palette = "jet",
-                 ...)
+\method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL", conf = c(0.05, 0.95),
+                 palette = "jet", xlim = NULL, ylim = NULL, main =
+                 "Composite", ...)
 }
 \arguments{
   \item{x}{
@@ -20,6 +21,12 @@ Character, add=NULL by default, add="sitenum" could be specified to plot the sit
 Numeric, confidence levels.}
   \item{palette}{
 Character, color palette used with type=c("prctile", "density") among "jet" and "BW".}
+ \item{xlim}{
+Numeric, x axis limits.}
+ \item{ylim}{
+Numeric, y axis limits.}
+ \item{main}{
+Character, title of the plot.}
   \item{\dots}{\dots}
 }
 

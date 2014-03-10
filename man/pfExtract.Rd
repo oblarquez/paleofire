@@ -3,13 +3,13 @@
 \title{
 Extract charcoal data for a list of sites}
 \description{
-Extract charcoal data from an IDn object obtained by \code{\link{pfSiteSel}}}
+Extract charcoal data from an object returned by \code{\link{pfSiteSel}}}
 \usage{
-pfExtract(IDn)
+pfExtract(ID)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{IDn}{
+  \item{ID}{
 An object returned by \code{\link{pfSiteSel}}.}
 }
 

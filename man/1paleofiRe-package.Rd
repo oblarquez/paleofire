@@ -36,29 +36,24 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 # ID=pfInteractive()
 
 ## Site selection using criterions
-# DateInt parameter is used to set the mean interval which is required between two
+# date_int parameter is used to set the mean interval which is required between two
 # dating points (ex 14C) for sites to be selected for a complete list of criterions
 # that can be used see pfSiteSel function
 
-ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
+ID=pfSiteSel(lat>50, lat<70, long>-90, long<(-50), date_int<=3000)
 plot(ID,zoom="world")
 
-## Filter sites based on sample number using summary function
-sumID=summary(ID)
-sites_inc=sumID$ID_SITE[sumID$NUM_SAMP>=20]
-ID=pfSiteSel(ID=sites_inc)
-
-## Associated plots
+## Modify plot
 plot(ID,zoom="sites")
 
 ## Simple test for transforming data
 # Select site 1 (Cygnet Lake)
 
-ID=pfSiteSel(ID=1)
-plot(ID)
+ID1=pfSiteSel(id_site==1)
+plot(ID1)
 
 # Transformation of data
-TR=pfTransform(ID,method=c("MinMax", "Box-Cox", "Z-Score"))
+TR=pfTransform(ID1,method=c("MinMax", "Box-Cox", "Z-Score"))
 
 # Plot Transformed and raw data
 # First retrieve raw data for Cygnet using pfExtract
@@ -75,7 +70,7 @@ plot(TR$Age,TR$TransData,type="l")
 ## Transforming and Compositing
 ## Example 1: Usage as in Power et al. 2008
 ## Data transformation
-ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
+
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Diagnostic pdf file with transformed series:

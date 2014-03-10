@@ -7,10 +7,10 @@ Produce maps of paleofire data}
 Produce map graphics representing spatial variability in charcoal data from the Global Charcoal Database. 
 }
 \usage{
-  pfDotMap(TR, bins, fig.base.name=NULL, 
-           grd.res=5, grd.ext=c(-180,180,-90,90), 
-           base.map='coasts', proj4="+proj=longlat", 
-           n.boot=1000, cx.minsize=0.3, cx.mult=1)
+  pfDotMap(TR, bins, fig.base.name = NULL, base.map = "coasts",
+                 grd.res = 5, grd.ext = c(-180, 180, -90, 90), proj4 =
+                 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+                 n.boot = 1000, cx.minsize = 0.3, cx.mult = 1)
   }
 
 %- maybe also 'usage' for other objects documented here.
@@ -61,13 +61,13 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 
 \examples{
 ## Composite charcoal record for North America:
-ID=pfSiteSel(id_region==c("WNA0") & l12==1)
-plot(ID)
+ID=pfSiteSel(id_region==c("WNA0") & l12==1 & long<=-130)
+plot(ID,zoom="world")
 
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
 ## Plot maps for 1000-yr bins spanning 3-0 kBP
 # dev.new(width=10,height=10) # A big plot area helps. 
-pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80) )
+pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80))
 }

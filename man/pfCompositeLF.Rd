@@ -8,7 +8,7 @@ Produce a composite serie from multiple charcoal local fits produced using the l
 }
 \usage{
 pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=NULL,nboot=1000,conf=c(0.05,0.95),
-                       pseudodata=FALSE)
+                       pseudodata=FALSE,verbose=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,10 @@ Numeric, the half window width for the locfit procedure (in years).}
 Numeric, define confidence levels.}
   \item{pseudodata}{
 Logical, if TRUE 10 percent of the data is reflected at the top and the bottom of the resampled serie prior of each locfit regression in order to correct for the edge effect introduced by the local regression, see Cowling & Hall (1996). Equivalent to "minimum slope" correction in Mann(2004).}
+\item{verbose}{Logical: verbose or not...}
 }
+
+
 
 \value{
 %%  ~Describe the value returned

@@ -1,7 +1,7 @@
 pfTransform=function(ID=NULL,
                      add=NULL,
                      Interpolate=FALSE,
-                     Age=0,
+                     Age=NULL,
                      method="Z-Score",
                      BasePeriod=c(-100,1e+09),
                      span=0.3,
@@ -167,7 +167,7 @@ pfTransform=function(ID=NULL,
   # 2 Interpolate TRUE
   if (Interpolate==TRUE){
     # Interpolation procedure
-    if (length(Age)<=1) {
+    if (is.null(Age)) {
       res=matrix(ncol=1,nrow=length(ID))
       # Find the median time resolution for each paleofiredataset
       for (k in 1:length(ID)){
@@ -181,7 +181,7 @@ pfTransform=function(ID=NULL,
       maxA=round(max(paleofiredata[,3]))
       AgeN=seq(minA,maxA,step)
     }
-    if (length(Age)>1) {
+    if (is.null(Age)==FALSE) {
       AgeN=Age
       #paleofiredata=paleofiredata[paleofiredata[,3]>min(AgeN),]
       #paleofiredata=paleofiredata[paleofiredata[,3]<max(AgeN),]

@@ -34,6 +34,6 @@ ID=pfSiteSel(id_region=="WNA0",l12=1)
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
 ## Composite
-comp=pfComposite(res3,bins=seq(0,20000,200))
+comp=pfComposite(res3,bins=seq(0,5000,200))
 plot(comp,type="density",smoothing=TRUE,spar=0.3)
 }

@@ -109,8 +109,8 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
              paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat, 
              bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
       if(is.null(add)==FALSE)
-        points(add$metadata$long,
-               add$metadata$lat, 
+        points(add$metadata$LONGITUDE,
+               add$metadata$LATITUDE, 
                bg="red",col = "red",pch = 21)
     }
     
@@ -129,8 +129,8 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
       points(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long,paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)
       if(is.null(add)==FALSE)
-        points(add$metadata$long,
-               add$metadata$lat, 
+        points(add$metadata$LONGITUDE,
+               add$metadata$LATITUDE, 
                bg="red",col = "red",pch = 21)
       
     }

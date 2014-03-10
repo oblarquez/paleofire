@@ -36,7 +36,7 @@ pfDotMap = function(TR, bins,
   
   
   # ----- Load base map
-  countriesCoarse=coastsCoarse=NULL
+  countriesCoarse<-coastsCoarse<-NULL
   data(countriesCoarse,envir = environment())  # A dataset in rworldmap used in the plots below
   data(coastsCoarse,envir = environment())     # An alternative base map. Needs one fix:
   ind = which(coastsCoarse@lines[[94]]@Lines[[1]]@coords[,1] > 180)
@@ -69,11 +69,12 @@ pfDotMap = function(TR, bins,
   cat("Retrieveing site coordinates from GCD...")
   # A little awkward, but seems good to rely on existing paleofire functions for retrieving site coordinates,
   # and as far as I can tell this is the way to do it at present.
-  
+
   # Lookup info from the database
-  sink("/dev/null") # Suppress the big printed output of this function...
-  site.dat = summary( pfSiteSel(id_site %in% TR$params$ID$SitesIDS) )
-  sink()
+  paleofiresites=NULL; rm(paleofiresites)  
+  data(paleofiresites,envir = environment())
+  site.dat=paleofiresites[paleofiresites$id_site %in% TR$params$ID$SitesIDS, ]
+  
   
   # Extract coordinates, including in radians for use in the distance function
   sites.lon = site.dat$long

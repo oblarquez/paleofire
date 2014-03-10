@@ -19,7 +19,7 @@ Numeric, defines age limits for age resolution calculations (e.g. AgeLim=c(-50,6
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-\item{data.frame}{A data frame with the following informations: ID_SITE, SITE_NAME, Median Resolution of the record, Mean Resolution and Standard seviation}
+\item{data.frame}{A data frame with the following informations: ID_SITE, SITE_NAME, Median Resolution of the record, Mean Resolution and Standard deviation}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
@@ -30,7 +30,7 @@ O. Blarquez}
 
 \examples{
 ID=pfSiteSel(lat>40, lat<90, long>-100, long<=-50)
-Res=pfResolution(ID1,AgeLim=c(-50,8000))
+Res=pfResolution(ID,AgeLim=c(-50,8000))
 head(Res)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

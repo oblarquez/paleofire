@@ -14,9 +14,12 @@ pfSiteSel(...)
 }
     
 \details{
-Use data(paleofiresites);names(paleofiresites) to retrieve the conditions that could be used to select sites.}
+Use data(paleofiresites);names(paleofiresites) to retrieve the conditions that could be used to select sites i.e.:
+ id_site, site_name, lat, long, elev, pref_units, biome, id_region, id_country, id_site_type, water_depth, 
+ id_basin_size, id_catch_size, id_land_desc, dating_type, min_est_age, max_est_age, num_dating, age_model, 
+ data_source, qtype, rf99, l12, num_samp, date_int.}
 \value{
-An object of the class pfSiteSel
+An object of the class "pfSiteSel".
 }
 \seealso{\code{\link[GCD]{paleofiresites}}}
 \author{
@@ -48,8 +51,8 @@ ID=pfSiteSel(id_region==c("ENA0","WNA0"))
 plot(ID,zoom="world")
 
 ## WRONG, use the %in% operator when concatenating two characters
-ID=pfSiteSel(id_region %in% c("ENA0","WNA0"))
-plot(ID,zoom="world")
+# ID=pfSiteSel(id_region %in% c("ENA0","WNA0"))
+# plot(ID,zoom="world")
 
 ## Pas-de-Fond site
 pfSiteSel(site_name=="Pas-de-Fond")
