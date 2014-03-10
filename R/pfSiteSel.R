@@ -1,22 +1,29 @@
 pfSiteSel <- function(...) {
   
+  ## Load data (bindind...)
   paleofiresites<-NULL
   data(paleofiresites,envir = environment())
   
+  ## The eval function:
   theeval=function(thelist){
     eval(thelist,paleofiresites)
   }
   
+  ## Retrieve all args in dots
   args=eval(substitute(alist(...)))
+  
   if(length(args)>0){
+    ## Eval all args
     c=lapply(args,theeval)
     d=matrix(unlist(c),ncol=length(args))
+    ## All TRUE?
     finalTF=ifelse(rowSums(d == TRUE) == length(args), TRUE, FALSE)
     id=paleofiresites[finalTF,]$id_site
   } else id=paleofiresites$id_site
   
+  ## Output:
   SiteNames=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
-  #
+  
   output=list(SitesIDS=id,SitesNames=SiteNames)
   class(output)="pfSiteSel"
   return(output)
@@ -24,6 +31,7 @@ pfSiteSel <- function(...) {
 
 ## Summary function
 summary.pfSiteSel=function(object,...){
+  
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   paleofiredata=NULL; rm(paleofiredata)
@@ -32,11 +40,6 @@ summary.pfSiteSel=function(object,...){
   data(paleofiredata,envir = environment())
   coln=length(paleofiresites[1,])
   
-#   NUM_SAMP=c()
-#   for (i in 1:length(object$SitesIDS)){
-#     NUM_SAMP[i]=c(length(paleofiredata[paleofiredata[,1]==object$SitesIDS[i],1]))
-#   }
-#   table=cbind(paleofiresites[paleofiresites$id_site %in% object$SitesIDS,],NUM_SAMP)
   table=paleofiresites[paleofiresites$id_site %in% object$SitesIDS,]
   rownames(table)=table$site_name
   table=subset(table, select=c(1,3,4,5,16,17,18,coln))

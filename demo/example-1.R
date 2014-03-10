@@ -10,9 +10,10 @@ library(paleofire)
 # that can be used see pfSiteSel function
 
 
-ID=pfSiteSel(lat>40)
+ID=pfSiteSel(id_land_desc!="MARI" , id_site_type!="FLUV" & id_site_type!="LFLU")
 
 plot(ID)
+
 
 ID1=pfSiteSelM(ID_SITE %in% ID$SitesIDS & LONGITUDE>-90 & LONGITUDE<(-50))
 plot(ID1,xlim=c(-100,-50),ylim=c(30,70))
@@ -21,9 +22,7 @@ plot(ID1,zoom="world")
 
 
 ## Filter sites based on sample number using summary function
-sumID=summary(ID)
-sites_inc=sumID$ID_SITE[sumID$NUM_SAMP>=20]
-ID=pfSiteSel(ID=sites_inc)
+
 
 ## Associated plots
 plot(ID,zoom="sites")
