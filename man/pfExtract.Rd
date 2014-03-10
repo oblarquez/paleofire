@@ -28,14 +28,14 @@ O. Blarquez}
 
 \examples{
 ## Retrieve a site
-ID=pfSiteSel(SiteName="Pas-de-Fond")
+ID=pfSiteSel(site_name=="Pas-de-Fond")
 ## Or a group of sites (Western North America)
-ID=pfSiteSel(Region=c("WNA0"))
+ID=pfSiteSel(id_region==c("WNA0"))
 
 ## Extract data
 A=pfExtract(ID)
 
 # Plot the first site raw charcoal data
-plot(A[A[,1]==ID$SitesIDS[1],3],A[A[,1]==ID$SitesIDS[1],4],type="l",main=ID$SiteNames[1],
+plot(A[A[,1]==ID$SitesIDS[1],3],A[A[,1]==ID$SitesIDS[1],4],type="l",main=ID$SitesNames[1],
      xlab="Age",ylab="raw Char")
 }

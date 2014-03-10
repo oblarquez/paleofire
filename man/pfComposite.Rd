@@ -41,12 +41,12 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 }
 \examples{
 ## Composite charcoal record for North America:
-ID=pfSiteSel(Region=c("WNA0"),L12=1)
+ID=pfSiteSel(id_region=="WNA0" & l12==1)
 plot(ID)
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
 ## Composite
-comp=pfComposite(res3,bins=seq(0,20000,200))
+comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))
 plot(comp)
 }

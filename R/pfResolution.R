@@ -5,6 +5,8 @@ pfResolution=function(ID,AgeLim=NULL){
   paleofiredata=NULL; rm(paleofiredata)
   
   data(paleofiredata, envir = environment())
+  IDs=ID # Save for output
+  
   ID=ID$SitesIDS
   # Use only paleofiredata corresponding to ID
   if (is.null(AgeLim)){
@@ -24,8 +26,8 @@ pfResolution=function(ID,AgeLim=NULL){
     sdres[i]=sd(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i],]$EST_AGE))
   }
   
-  res=data.frame(ID_SITE=as.numeric(ID$SitesIDS),
-                 SITE_NAME=ID$SiteNames,
+  res=data.frame(ID_SITE=as.numeric(IDs$SitesIDS),
+                 SITE_NAME=IDs$SitesNames,
                  MeanRes=as.numeric(meanres),
                  MedianRes=as.numeric(medianres),
                  SdRes=as.numeric(sdres))

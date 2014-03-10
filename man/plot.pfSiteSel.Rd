@@ -24,8 +24,8 @@ Character, zooming factor for type="Map": "Sites" or "World"}
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Region="ENA0")
-plot(ID)
+ID=pfSiteSel(id_region=="ENA0", long>-100)
+plot(ID,zoom="world")
 
 }
 

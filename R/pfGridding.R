@@ -16,8 +16,8 @@ pfGridding=function(data,cell_sizex=NULL,
   if(class(data)=="pfTransform"){
     sink("/dev/null")
       data<-data.frame(
-        x=rep(summary(data$params$ID)$LONGITUDE,each=length(data$TransData[,1])),
-        y=rep(summary(data$params$ID)$LATITUDE,each=length(data$TransData[,1])),
+        x=rep(summary(data$params$ID)$long,each=length(data$TransData[,1])),
+        y=rep(summary(data$params$ID)$lat,each=length(data$TransData[,1])),
         age=c(data$Age),
         char=c(data$TransData));
     sink();

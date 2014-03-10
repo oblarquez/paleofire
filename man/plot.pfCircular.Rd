@@ -21,7 +21,7 @@ A "pfCircular" object.
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Latlim=c(49,75),Longlim=c(6,50))
+ID=pfSiteSel(lat>49,lat<75,Long>6,long<50)
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Circular block bootstrapp

@@ -28,8 +28,8 @@ pfDotMap = function(TR, bins,
 #   n.boot            = 10    # too small, but OK for a teest
 #   cx.minsize        = 0.3   # minimum dot size
 #   cx.mult           = 1     # multiplicative factor for scaling all dots
-  
-  # ---------------- END TEST BLOCK
+#   
+#   # ---------------- END TEST BLOCK
   
   
   # ----- Libraries
@@ -72,13 +72,13 @@ pfDotMap = function(TR, bins,
   
   # Lookup info from the database
   sink("/dev/null") # Suppress the big printed output of this function...
-  site.dat = summary( pfSiteSel(ID=TR$params$ID$SitesIDS) )
+  site.dat = summary( pfSiteSel(id_site %in% TR$params$ID$SitesIDS) )
   sink()
   
   # Extract coordinates, including in radians for use in the distance function
-  sites.lon = site.dat$LONGITUDE
+  sites.lon = site.dat$long
   sites.lonrad = sites.lon*pi/180
-  sites.lat = site.dat$LATITUDE
+  sites.lat = site.dat$lat
   sites.latrad = sites.lat*pi/180
   
   # Define n.site

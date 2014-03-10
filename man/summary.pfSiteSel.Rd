@@ -18,14 +18,14 @@ Return a summary table for an object of the class "pfSiteSel"}
 }
 
 \value{
-Data.framce, returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","MIN_EST_AGE", "MAX_EST_AGE", "NUM_DATING", "NUM_SAMP".
+Data.frame, returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","MIN_EST_AGE", "MAX_EST_AGE", "NUM_DATING", "NUM_SAMP".
 }
 
 \author{
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(ID=2)
+ID=pfSiteSel(id_site==2)
 summary(ID)
 }
 

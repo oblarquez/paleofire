@@ -39,10 +39,10 @@ Logical, if TRUE 10 percent of the data is reflected at the top and the bottom o
 }
 \references{
 Daniau, A. L., P. J. Bartlein, S. P. Harrison, I. C. Prentice, S. Brewer, P. Friedlingstein, T. I. Harrison-Prentice, J. Inoue, K. Izumi, J. R. Marlon, S. Mooney, M. J. Power, J. Stevenson, W. Tinner, Andri, M., J. Atanassova, H. Behling, M. Black, O. Blarquez, K. J. Brown, C. Carcaillet, E. A. Colhoun, D. Colombaroli, B. A. S. Davis, D. D'Costa, J. Dodson, L. Dupont, Z. Eshetu, D. G. Gavin, A. Genries, S. Haberle, D. J. Hallett, G. Hope, S. P. Horn, T. G. Kassa, F. Katamura, L. M. Kennedy, P. Kershaw, S. Krivonogov, C. Long, D. Magri, E. Marinova, G. M. McKenzie, P. I. Moreno, P. Moss, F. H. Neumann, E. Norstrom, C. Paitre, D. Rius, N. Roberts, G. S. Robinson, N. Sasaki, L. Scott, H. Takahara, V. Terwilliger, F. Thevenon, R. Turner, V. G. Valsecchi, B. Vanniere, M. Walsh, N. Williams, and Y. Zhang. 2012. Predictability of biomass burning in response to climate changes. Global Biogeochem. Cycles 26:GB4007.
-
+\cr \cr
 Cowling A, Hall P (1996) On pseudodata methods for removing boundary effects in kernel density estimation. Journal of the Royal Statistical Society, Series B 58(3):
 551-563.
-
+\cr \cr
 Mann, M. E. (2004). On smoothing potentially non-stationary climate time series. Geophysical Research Letters, 31(7).
 }
 \author{
@@ -53,8 +53,8 @@ O.Blarquez}
 
 
 \examples{
-ID=pfSiteSel(Region=c("WNA0"),L12=1,Longlim=c(-160,-140))
-
+ID=pfSiteSel(id_region=="WNA0", l12==1, long>=-160 & long<=-140)
+plot(ID, xlim=c(-180, -130), ylim=c(40,80))
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
                BasePeriod=c(200,2000),QuantType="INFL")
 

@@ -29,7 +29,7 @@ O. Blarquez}
 
 \examples{
 ## Composite charcoal record for North America:
-ID=pfSiteSel(Region=c("WNA0"),L12=1)
+ID=pfSiteSel(id_region=="WNA0",l12=1)
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 

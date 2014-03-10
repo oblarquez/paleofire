@@ -29,7 +29,7 @@ O. Blarquez}
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-ID1=pfSiteSel(Latlim=c(45,90), Longlim=c(-100,-50))
+ID=pfSiteSel(lat>40, lat<90, long>-100, long<=-50)
 Res=pfResolution(ID1,AgeLim=c(-50,8000))
 head(Res)
 }

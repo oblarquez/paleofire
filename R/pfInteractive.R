@@ -10,7 +10,7 @@ pfInteractive=function(addata=NULL){
   data(coast,envir = environment())
   ## Define vectors
   yy=cbind(coast[,2],coast[,1])
-  pp=cbind(paleofiresites$LONGITUDE,paleofiresites$LATITUDE)
+  pp=cbind(paleofiresites$long,paleofiresites$lat)
   
   ## Use imap for interactive plot
   cat("You can zoom the map by left clicking in two different locations
@@ -36,13 +36,13 @@ three vertices. Right click or click finish when ready.")
   if (length(a)>2){
     plot(pp,bg="blue",col = "black",pch = 21,xlim=c(min(a[,1])-10,max(a[,1])+10),ylim=c(min(a[,2])-10,max(a[,2])+10))
     ## Retrive site IDs ans site names
-    IDs=paleofiresites[paleofiresites$LATITUDE %in% a[,2] & paleofiresites$LONGITUDE %in% a[,1], 1]
+    IDs=paleofiresites[paleofiresites$lat %in% a[,2] & paleofiresites$long %in% a[,1], 1]
     points(a,bg="red",col = "black",pch = 21)
     
   }
   if (length(a)==2) {plot(pp,bg="blue",col = "black",pch = 21,xlim=c((a[1])-10,(a[1])+10),ylim=c((a[2])-10,(a[2])+10))
                      ## Retrive site IDs ans site names
-                     IDs=paleofiresites[paleofiresites$LATITUDE %in% a[2] & paleofiresites$LONGITUDE %in% a[1], 1]
+                     IDs=paleofiresites[paleofiresites$lat %in% a[2] & paleofiresites$long %in% a[1], 1]
                      points(a[1],a[2],bg="red",col = "black",pch = 21)
                      
   }
@@ -53,9 +53,9 @@ three vertices. Right click or click finish when ready.")
   
   ## Retrive site IDs ans site names
   
-  SiteNames=as.character(paleofiresites$SITE_NAME[paleofiresites$ID_SITE %in% IDs])
+  SitesNames=as.character(paleofiresites$site_name[paleofiresites$id_site%in% IDs])
   ## Return output ID list
-  output=list(SitesIDS=IDs,SiteNames=SiteNames)
+  output=list(SitesIDS=IDs,SitesNames=SitesNames)
   class(output)="pfSiteSel"
   ## Remove data
   #rm(paleofiresites,envir = globalenv())

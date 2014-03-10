@@ -38,7 +38,7 @@ response to volcanic forcing. Nature 426:274-278.
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Latlim=c(49,75),Longlim=c(6,50))
+ID=pfSiteSel(lat>49, lat<75, long>6, long<50)
 plot(ID,zoom="world")
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 

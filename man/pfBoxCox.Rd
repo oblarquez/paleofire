@@ -27,9 +27,9 @@ Character, the Box-Cox transformation formulation, can be either "BoxCox1964" (d
 }
 \references{
 Venables, W. N., Ripley, B. D., & Venables, W. N. (1994). Modern applied statistics with S-PLUS (Vol. 250). New York: Springer-verlag.
-
+\cr \cr
 Box, G.E.P. & Cox, D. R.(1964) An analysis of transformations, Journal of the Royal Statistical Society, Series B, 26, 211-252.
-
+\cr \cr
 John, J. A. & Draper N. R. (1980) Analternative family of transformations, Applied Statistics, 29, 190-197.
 }
 \author{
@@ -37,7 +37,7 @@ P. Bartlein}
 \seealso{\code{\link{pfTransform}} }
 \examples{
 # Select a site
-ID=pfSiteSel(SiteName="Pas-de-Fond")
+ID=pfSiteSel(site_name=="Pas-de-Fond")
 
 # Extract data
 A=pfExtract(ID)

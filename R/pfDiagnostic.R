@@ -29,7 +29,7 @@ pfDiagnostic=function(ID,
     ## Convert data to influx------
 #     if(QuantType=="INFL"){
 #       for(i in unique(ID))  
-#         if( paleofiresites[paleofiresites$ID_SITE==i,]$QTYPE!="INFL" & 
+#         if( paleofiresites[paleofiresites$id_site==i,]$QTYPE!="INFL" & 
 #               is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
 #           temp=paleofiredata[paleofiredata[,1]==i,]
 #           ## Calculate Sed Acc
@@ -78,7 +78,7 @@ pfDiagnostic=function(ID,
     # Site info
     siteinfo=paleofiresites[paleofiresites[,1]==ID1,]
     # List for pfTransform function
-    IDt=list(SitesIDS=ID1,SiteNames=as.character(siteinfo$SITE_NAME))
+    IDt=list(SitesIDS=ID1,SitesNames=as.character(siteinfo$site_name))
     
     
     # Little TRICK for sites without depths = Assume depths == 1:length(Record)
@@ -94,16 +94,16 @@ pfDiagnostic=function(ID,
     #par(fig=c(0,1,.70,.95), mar=c(3.1, 4.1, 2.1, 4.1))
     plot(paleofiredata[paleofiredata[,1]==ID1,3],paleofiredata[paleofiredata[,1]==ID1,4], xlim=c(20000,-100), axes=F, mgp=c(2,0,0),
          font.main=1, lab=c(10,5,5), 
-         ylab=paste("Char", siteinfo$PREF_UNITS,sep=" "),xlab=" " ,cex.lab=0.8, pch=16, cex=0.5, type="o")
+         ylab=paste("Char", siteinfo$pref_units,sep=" "),xlab=" " ,cex.lab=0.8, pch=16, cex=0.5, type="o")
     axis(1, cex.axis=0.8, xaxp=c(0,22000,22)); axis(2, cex.axis=0.8); axis(4, cex.axis=0.8)
-    title(paste(siteinfo$SITE_NAME, ", Site ID: ", siteinfo$ID_SITE, sep=""),cex.main=1.5)
+    title(paste(siteinfo$site_name, ", Site ID: ", siteinfo$id_site, sep=""),cex.main=1.5)
     
     # Transform data
     if(ID1<10000) {tr=IDt 
                    add1=NULL } 
     if(ID1>10000){tr=NULL 
                   add1=c()
-                  add1$data=paleofiredata[paleofiredata$ID_SITE %in% ID1,]}
+                  add1$data=paleofiredata[paleofiredata$id_site %in% ID1,]}
     
 
       tr=pfTransform(ID=tr,add=add1,
@@ -128,7 +128,7 @@ pfDiagnostic=function(ID,
     
     # plot histograms of raw and transformed data, and likelhood profile
     #par(new=T, fig=c(0,.4,.0,.35), mar=c(7.1, 4.1, 2.1, 2.1))
-    hist(paleofiredata[paleofiredata[,1]==ID1,4], xlab=paste("Char", siteinfo$PREF_UNITS,sep=" "), cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL)
+    hist(paleofiredata[paleofiredata[,1]==ID1,4], xlab=paste("Char", siteinfo$pref_units,sep=" "), cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL)
     
     if(sum(is.na(tr$TransData))!=length(tr$TransData)){
       #par(new=T, fig=c(.3,.7,.0,.35), mar=c(7.1, 4.1, 1.1, 2.1))
@@ -138,11 +138,11 @@ pfDiagnostic=function(ID,
     #data(paleofiresites)
     data(coast, envir = environment())  
     # Draw map
-    plot(paleofiresites$LONGITUDE,paleofiresites$LATITUDE,col="blue",
-         xlim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE+20),  
-         ylim=c(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE-20,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE+20),
+    plot(paleofiresites$long,paleofiresites$lat,col="blue",
+         xlim=c(paleofiresites[paleofiresites$id_site %in% IDt,]$long-20,paleofiresites[paleofiresites$id_site %in% IDt,]$long+20),  
+         ylim=c(paleofiresites[paleofiresites$id_site %in% IDt,]$lat-20,paleofiresites[paleofiresites$id_site %in% IDt,]$lat+20),
          xlab="Longitude",ylab="Latitude")
-    points(paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LONGITUDE,paleofiresites[paleofiresites$ID_SITE %in% IDt,]$LATITUDE,
+    points(paleofiresites[paleofiresites$id_site %in% IDt,]$long,paleofiresites[paleofiresites$id_site %in% IDt,]$lat,
            bg="red",col = "red",pch = 21)
     lines(coast$X,coast$Y)
     
@@ -152,7 +152,7 @@ pfDiagnostic=function(ID,
          ylim=c(max(depth),min(depth)),
          , cex.lab=0.8, cex.axis=0.8, mgp=c(2,1,0), main=NULL);
     axis(1, cex.axis=0.8); axis(2, cex.axis=0.8); axis(4, cex.axis=0.8)
-    text(y=min(depth), x=mean(paleofiredata[paleofiredata[,1]==ID1,3]), labels = paste("# Dates=", siteinfo$NUM_DATING,sep=""))
+    text(y=min(depth), x=mean(paleofiredata[paleofiredata[,1]==ID1,3]), labels = paste("# Dates=", siteinfo$num_dating,sep=""))
     if (warn[k,]==1){
       text(y=mean(depth), x=mean(paleofiredata[paleofiredata[,1]==ID1,3]), labels = "Warning depths assumed continuous",col="red")  
     }

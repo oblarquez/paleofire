@@ -61,13 +61,13 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 
 \examples{
 ## Composite charcoal record for North America:
-ID=pfSiteSel(Region=c("WNA0"),L12=1)
+ID=pfSiteSel(id_region==c("WNA0") & l12==1)
 plot(ID)
 
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
 ## Plot maps for 1000-yr bins spanning 3-0 kBP
-dev.new(width=10,height=10) # A big plot area helps. 
+# dev.new(width=10,height=10) # A big plot area helps. 
 pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80) )
 }

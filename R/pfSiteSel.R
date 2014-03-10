@@ -16,15 +16,17 @@ pfSiteSel <- function(...) {
     ## Eval all args
     c=lapply(args,theeval)
     d=matrix(unlist(c),ncol=length(args))
+    d[is.na(d)]=FALSE
+    
     ## All TRUE?
     finalTF=ifelse(rowSums(d == TRUE) == length(args), TRUE, FALSE)
     id=paleofiresites[finalTF,]$id_site
   } else id=paleofiresites$id_site
   
   ## Output:
-  SiteNames=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
+  SitesNames=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
   
-  output=list(SitesIDS=id,SitesNames=SiteNames)
+  output=list(SitesIDS=id,SitesNames=SitesNames)
   class(output)="pfSiteSel"
   return(output)
 }
@@ -43,7 +45,7 @@ summary.pfSiteSel=function(object,...){
   table=paleofiresites[paleofiresites$id_site %in% object$SitesIDS,]
   rownames(table)=table$site_name
   table=subset(table, select=c(1,3,4,5,16,17,18,coln))
-  print(table)
+  #print(table)
   return(table)
 }
 

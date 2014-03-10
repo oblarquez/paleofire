@@ -27,7 +27,7 @@ Character, color palette used with type=c("prctile", "density") among "jet" and 
 O. Blarquez}
 
 \examples{
-ID=pfSiteSel(Region=c("WNA0"),L12=1,Longlim=c(-160,-140))
+ID=pfSiteSel(id_region=="WNA0",l12==1,long>=-160,long<=-140)
 
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
                BasePeriod=c(200,2000),QuantType="INFL")

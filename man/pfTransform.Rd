@@ -66,7 +66,7 @@ O. Blarquez
 
 \examples{
 ## Select the site Pas-de-Fond
-ID=pfSiteSel(SiteName="Pas-de-Fond")
+ID=pfSiteSel(site_name=="Pas-de-Fond")
 
 # Transform data sequentially using pfTransform function
 tr=pfTransform(ID,method=c("MinMax","Box-Cox"))
