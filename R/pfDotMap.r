@@ -36,8 +36,9 @@ pfDotMap = function(TR, bins,
   
   
   # ----- Load base map
-  data(countriesCoarse)  # A dataset in rworldmap used in the plots below
-  data(coastsCoarse)     # An alternative base map. Needs one fix:
+  countriesCoarse=coastsCoarse=NULL
+  data(countriesCoarse,envir = environment())  # A dataset in rworldmap used in the plots below
+  data(coastsCoarse,envir = environment())     # An alternative base map. Needs one fix:
   ind = which(coastsCoarse@lines[[94]]@Lines[[1]]@coords[,1] > 180)
   coastsCoarse@lines[[94]]@Lines[[1]]@coords[ind,1] = 180
   

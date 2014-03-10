@@ -1,0 +1,14 @@
+\name{paleofire-internal}
+
+\alias{bootCI}
+\alias{haverdist}
+\alias{pfGridding}
+\alias{plot.pfGridding}
+\alias{triCube}
+\alias{dem}
+
+
+\title{Internal paleofire functions}
+\description{
+Internal paleofire functions and functions waiting for man.
+}

@@ -47,7 +47,8 @@ pfGridding=function(data,cell_sizex=NULL,
     cat("Preparing data and loading DEM...")
     cat("\n")
     ## dem is GMTED2010
-    data(dem)
+    dem=NULL
+    data(dem,envir = environment())
     if(is.null(raster_extent)) v=extent(xy) else v=extent(raster_extent)
     dem=crop(dem,v)
     dem1 <- projectRaster(dem, crs=proj4)
@@ -177,6 +178,8 @@ plot.pfGridding=function(x,continuous=TRUE,
                 anomalies=TRUE,
                 file=NULL,points=FALSE,...){
   
+  y=NULL ##  no visible binding for global variable 'y' ?
+  
   x$df=as.data.frame(rasterToPoints(x$raster))
   # Define classes for colors
   if(is.null(col_class)){
@@ -189,7 +192,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   }
   if(is.numeric(col_class) & length(col_class)==1){
     if(anomalies==TRUE){
-      b2=seq(0,ceiling(max(abs(x$df$layer,na.rm=TRUE)))+col_class,by=col_class)
+      b2=seq(0,ceiling(max(abs(x$df$layer)))+col_class,by=col_class)
       breaks=c(-rev(b2),b2[2:length(b2)])
     } else breaks=seq(floor(min(x$df$layer,na.rm=TRUE)),ceiling(max(x$df$layer,na.rm=TRUE))+col_class,by=col_class)
   }
@@ -205,7 +208,8 @@ plot.pfGridding=function(x,continuous=TRUE,
   x$df=cbind(x$df,class=cut(x$df$layer,breaks))
   #   data=na.omit(data)
   
-  data(coast)
+  coast=NULL
+  data(coast,envir = environment())
   coast=coast[coast$X<=180,]
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
@@ -264,20 +268,20 @@ plot.pfGridding=function(x,continuous=TRUE,
   if(continuous==FALSE){
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_raster(data=x$df,aes(x, y, fill = class))+
+      geom_raster(data=x$df,aes(x=x, y=y, fill = class))+
       scale_fill_manual(values = pale,name="")+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
-    if(points==TRUE) p=p+geom_point(data=x$points,aes(x,y),colour="grey40")
+    if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
 
   } else {
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_raster(data=x$df,aes(x, y, fill = layer))+
+      geom_raster(data=x$df,aes(x=x, y=y, fill = layer))+
       scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
-    if(points==TRUE) p=p+geom_point(data=x$points,aes(x,y),colour="grey40")
+    if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
       
   }
   p
