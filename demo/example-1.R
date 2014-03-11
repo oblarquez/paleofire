@@ -84,3 +84,58 @@ COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save
+
+
+
+## Composite charcoal record for North America:
+ID=pfSiteSel(id_region=="WNA0" & l12==1)
+plot(ID)
+## Transform data
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+
+## Composite
+comp=pfComposite(res3,bins=seq(from=-500,to=12000,by=1000))
+plot(comp)
+
+
+## Composite charcoal record for North America:
+ID=pfSiteSel(id_region=="WNA0" | id_region=="ENA0")
+
+plot(ID, zoom="world")
+## Transform data
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+
+## Composite
+comp=pfComposite(res3,bins=seq(from=-500,to=12500,by=1000))
+plot(comp)
+
+## Kruskal Wallis Anova
+comparison=pfKruskal(comp,alpha=0.01, p.adj="BY")
+
+plot(comparison,trend=TRUE)
+
+## Here
+
+data=data.frame(na.omit(cbind(y=c(res3$TransData), x=c(res3$Age))))
+
+bins=seq(-500,12500,1000)
+xx=cut(data$x,breaks=bins)
+xx=as.numeric(xx)
+
+
+hbins=bins+diff(bins)/2
+hbins=hbins[1:(length(hbins)-1)]
+
+a=c()
+for (i in 1:nrow(data)){
+  a[i]=hbins[xx[i]]
+}
+
+
+
+
+
+
+
+
+

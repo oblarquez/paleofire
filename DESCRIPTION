@@ -8,7 +8,7 @@ Maintainer: Olivier Blarquez <blarquez@gmail.com>
 Description: The paleofire package provides tools to extract and analyse charcoal sedimentary data stored in the Global Charcoal Database. Main functionalities includes data extraction and sites selection, transformation and interpolation of the charcoal records as well as compositing.
 URL: http://gpwg.org
 License:  GPL (>= 2)
-Imports: locfit, gtools, caTools, pscl, Imap, RCurl, devtools, raster, sp, rgdal, ggplot2, lattice, RColorBrewer
+Imports: locfit, gtools, caTools, pscl, Imap, RCurl, devtools, raster, sp, rgdal, ggplot2, lattice, RColorBrewer, agricolae
 Depends: R(>= 2.10.0), methods, GCD, rworldmap
 LazyLoad: yes
 LazyData: no
