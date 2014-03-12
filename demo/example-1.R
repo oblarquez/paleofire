@@ -119,25 +119,14 @@ plot(comparison,ylim=c(-5,7))
 
 ## Here
 
-data=data.frame(na.omit(cbind(y=c(res3$TransData), x=c(res3$Age))))
+ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
 
-bins=seq(-500,12500,1000)
-xx=cut(data$x,breaks=bins)
-xx=as.numeric(xx)
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
+p=pfGridding(res3,age=1000)
+summary(p)
 
-hbins=bins+diff(bins)/2
-hbins=hbins[1:(length(hbins)-1)]
-
-a=c()
-for (i in 1:nrow(data)){
-  a[i]=hbins[xx[i]]
-}
-
-
-
-
-
+plot(p,points=T,empty_space=100)
 
 
 

@@ -42,7 +42,7 @@ O. Blarquez}
 ID=pfSiteSel(id_region=="WNA0" & l12==1)
 plot(ID)
 ## Transform data
-res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 ## Composite
 comp=pfComposite(res3,bins=seq(from=-500,to=12500,by=1000))

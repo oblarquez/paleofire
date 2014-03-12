@@ -15,7 +15,7 @@ pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=NULL,nboot=1000,conf=c(0.05,0.95),
   \item{TR}{
 An object returned by \code{\link{pfTransform}}}
   \item{tarAge}{
-Numeric, the target ages for prebinning given in years (e.g. tarAge=seq(0,10000,20)).
+Numeric, the target ages for prebinning given in years (e.g. tarAge = seq(0, 10000, 20)).
 If unspecified the sequence is defined as tarAge=seq(from=min age, to=max Age, by=median resolution).
 }
  \item{binhw}{

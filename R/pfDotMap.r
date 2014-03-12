@@ -15,11 +15,11 @@ pfDotMap = function(TR, bins,
   # functions at the end of this file (just run them once at the beginning of each session). 
   # And technically, don't run the '}' that closes the main function definition (though I think if you do it will 
   # run everything and just give a harmless error at the end.
-  # 
+#   # 
 #   rm(list=ls())
 #   
 #   #load('~/Drive/GPWG_MapPaper/Krige Maps/All_GPCD_Transformed_v2.rdata')
-#   
+#   TR =res3
 #   bins              = seq(0,2000,1000)
 #   fig.base.name     = '/Users/Olivier/Desktop/'
 #   base.map          = 'coasts'
@@ -30,7 +30,7 @@ pfDotMap = function(TR, bins,
 #   cx.minsize        = 0.3   # minimum dot size
 #   cx.mult           = 1     # multiplicative factor for scaling all dots
 #   
-#   # ---------------- END TEST BLOCK
+  # ---------------- END TEST BLOCK
   
   
   # ----- Libraries
@@ -38,6 +38,8 @@ pfDotMap = function(TR, bins,
   
   # ----- Load base map
   countriesCoarse<-coastsCoarse<-NULL
+  rm(countriesCoarse);rm(coastsCoarse)
+  
   data(countriesCoarse,envir = environment())  # A dataset in rworldmap used in the plots below
   data(coastsCoarse,envir = environment())     # An alternative base map. Needs one fix:
   ind = which(coastsCoarse@lines[[94]]@Lines[[1]]@coords[,1] > 180)
@@ -225,35 +227,10 @@ pfDotMap = function(TR, bins,
           scales=list(draw=T), sp.layout=list("sp.lines",base.map,col=grey(0.8)),
           main=paste("Charcoal Influx z-Scores: ", bins[j], "-", bins[j+1], " BP", sep="")) 
 
-    # Define Color ramp. Will likely modify. Also, may want to allow this to be altered via a function argument.
-    col.ramp = colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
-                                  "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
-    cuts = seq(-2,2,by=0.01) # Defines range and resolution of color scale
-    
-    # Determine cuts for sizing point.
-    # Specify symbol sizes for the two classes
-    cx.sizes = c(0.5,1) 
-    
-    # Assign symbol size based on whether CI contain 0 
-    cx = ifelse(sp.grd$CI.lower>0 | sp.grd$CI.upper<0, max(cx.sizes), min(cx.sizes))
-    
-    # The previous line will produce NA for cells with n=1 since CI are undefined. Give these "non-significant" 
-    # symbol size by default.
-    cx[which(sp.grd$n.sites==1)] = min(cx.sizes)
-    
-    # Finally, scale the symbol sizes according to cx.mult
-    cx = cx * cx.mult * 2
-    
-    # Create plot object (actually plotted later)
-    mean.plot = 
-      spplot(sp.grd, 'mean.CHAR', xlim=x.lim, ylim=y.lim,
-             cuts=cuts, colorkey=T, col.regions=col.ramp(length(cuts)), cex=cx, 
-             scales=list(draw=T), sp.layout=list("sp.lines",base.map,col=grey(0.8)),
-             main=paste("Mean CHAR: ", bins[j], "-", bins[j+1], " BP", sep="")) 
-    
+
     # ----- Plot Number of sites per grid cell
       # Generate dot sizes/colors and corresponding key. 
-        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5° resolution. 
+        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5?? resolution. 
         cuts      = c(0,1,5,10,20,1000) # Where to divide symbol sizes
         cols      = grey(0.2)   # Can be replaced by a vector if different colors are desired
         cx.legend = c("1", "2-5", "6-10", "11-20",">20") # legend text
@@ -278,41 +255,10 @@ pfDotMap = function(TR, bins,
           sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
           main="Number of sites per grid cell")
 
-    # Generate dot sizes and corresponding key. 
-    # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general 
-    # algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5 degree resolution. 
-    cx.cuts   = c(0,1,5,10,20,1000) # Where to divide symbol sizes
-    cx.legend = c("1", "2-5", "6-10", "11-20",">20") # legend text
-    n.cx = length(cx.cuts)-1   # number of bins represented
-    
-    # Define sizes of data points and legend entries by dividing data into bins and scale to range [0,1]. 
-    # This is a pretty good range for symbol 'cex' sizes, although can be modified with the cx.mult and cx.minsize 
-    # arguments. 'cut(..., labels=F)' returns integer classes from 1:n.cx. These are the same sizes to use in the key. 
-    cx = cut(sp.grd$n.sites, cx.cuts, labels=F) / n.cx 
-    cx.key = (1:n.cx) / n.cx
-    
-    # Adjust scale so that the low end corresponds to specified minimum symbol size
-    ind.non0 = which(cx>0) # Don't want to change size 0 (== not plotted)
-    cx.key = cx.key + cx.minsize - min(cx[ind.non0]) 
-    cx[ind.non0] = cx[ind.non0] + cx.minsize - min(cx[ind.non0])
-    
-    # Finally, scale the symbol sizes according to cx.mult
-    cx = cx * cx.mult
-    cx.key = cx.key * cx.mult
-    
-    cols = col.ramp(length(cx.cuts))
-    
-    # Create plot object (actually plotted later)
-    n.sites.plot = 
-      spplot(sp.grd, 'n.sites', xlim=x.lim, ylim=y.lim, scales=list(draw=F), 
-             cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cx.cuts, 
-             col.regions=col.ramp(length(cx.cuts)), 
-             sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
-             main="Number of sites per grid cell")
-    
+ 
     # ----- Plot Number of grid cells contributed per site
       # Generate dot sizes/colors and corresponding key. 
-        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5° resolution. 
+        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5?? resolution. 
         cuts   = c(0,1,2,3,4,100) # Where to divide symbol sizes
         cols      = grey(0.2)   # Can be replaced by a vector if different colors are desired
         cx.legend = c("1", "2", "3", "4",">4") # legend text
@@ -335,36 +281,7 @@ pfDotMap = function(TR, bins,
           sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
           main="Number of grid cells influenced by each site")
 
-    # Generate dot sizes and corresponding key. 
-    # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good 
-    # general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5degree 
-    # resolution. 
-    cx.cuts   = c(0,1,2,3,4,100) # Where to divide symbol sizes
-    cx.legend = c("1", "2", "3", "4",">4") # legend text
-    n.cx = length(cx.cuts)-1   # number of bins represented
-    
-    # Define sizes of data points and legend entries by dividing data into bins and scale to range [0,1]. 
-    # This is a pretty good range for symbol 'cex' sizes, although can be modified with the cx.mult and cx.minsize 
-    # arguments. 'cut(..., labels=F)' returns integer classes from 1:n.cx. These are the same sizes to use in the key. 
-    cx = cut(sp.sites$n.cells, cx.cuts, labels=F) / n.cx 
-    cx.key = (1:n.cx) / n.cx
-    
-    # Adjust scale so that the low end corresponds to specified minimum symbol size
-    ind.non0 = which(cx>0) # Don't want to change size 0 (== not plotted)
-    cx.key = cx.key + cx.minsize - min(cx[ind.non0]) 
-    cx[ind.non0] = cx[ind.non0] + cx.minsize - min(cx[ind.non0])
-    
-    # Finally, scale the symbol sizes according to cx.mult
-    cx = cx * cx.mult
-    cx.key = cx.key * cx.mult
-    
-    # Create plot object (actually plotted later)
-    n.cells.plot = 
-      spplot(sp.sites, 'n.cells', xlim=x.lim, ylim=y.lim,
-             cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cx.cuts, 
-             scales=list(draw=F), col.regions=col.ramp(length(cx.cuts)), 
-             sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
-             main="Number of grid cells influenced by each site")
+  
     
     # ----- Create time series plot
       timeSeries.dat = data.frame(
@@ -393,43 +310,14 @@ pfDotMap = function(TR, bins,
             panel.xyplot(x.j,y.j, type='l', col=2)
           })
 
-    ts.dat = data.frame(
-      age  = rep(bins,each=2)[2:(2*n.bin+1)],
-      char = rep(COMP$Result$MEAN, each=2),
-      lCI  = rep(COMP$Result[,3], each=2),
-      uCI  = rep(COMP$Result[,4], each=2) )
-    
-    
-    ts.plot =       
-      xyplot( char~age, data=ts.dat, 
-              ylim=c(-0.05,0.05)*diff(range(ts.dat[,3:4]))+range(ts.dat[,3:4]),
-              panel = function(x,y, ...) {
-                ind.j = (2*j-1):(2*j)
-                x.j   = x[ind.j]
-                y.j   = y[ind.j]
-                lCI.j = ts.dat$lCI[ind.j]
-                uCI.j = ts.dat$uCI[ind.j]
-                
-                panel.polygon(c(x,rev(x)), c(ts.dat$lCI, rev(ts.dat$uCI)), 
-                              col=grey(0.8), border=FALSE)
-                panel.polygon(c(x.j,rev(x.j)), c(lCI.j, rev(uCI.j)), 
-                              col=rgb(1,0,0,0.5), border=FALSE)
-                
-                panel.xyplot(x,y, type='l', col=1)
-                panel.xyplot(x.j,y.j, type='l', col=2)
-              })
-    
+
     # ----- Produce plots
       print(mean.plot, position=c(0,0.5,1,1), more=T)
       print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
       print(sitesPerCell.plot, position=c(0,0,0.5,0.3), more=T)
       print(cellsPerSite.plot, position=c(0.5,0,1,0.3))
 
-    print(mean.plot, position=c(0,0.5,1,1), more=T)
-    print(ts.plot, position=c(0,0.3,1,0.5), more=T)
-    print(n.sites.plot, position=c(0,0,0.5,0.3), more=T)
-    print(n.cells.plot, position=c(0.5,0,1,0.3))
-    
+
     # Close connection to external figure
     if(!is.null(fig.base.name))  dev.off()
 
@@ -445,7 +333,7 @@ pfDotMap = function(TR, bins,
   
 cat("\nAll done!\n\n")
   
-  cat("\nAll done!\n\n")
+
 } # End main function definition
 
 

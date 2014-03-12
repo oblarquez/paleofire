@@ -16,7 +16,7 @@ pfComposite(TR, bins = NULL, nboot = 1000, binning = TRUE, conf =
   \item{TR}{
 An object returned by \code{\link{pfTransform}}}
   \item{bins}{
-Numeric, the sequence for binning given in years (e.g. bins=seq(from=0,to=10000,by=200)).
+Numeric, the sequence for binning given in years (e.g. bins=seq(from=0, to=10000, by=200)).
 If unspecified the sequence is defined as bins=seq(from=min age, to=max age, by=median resolution).
 }
   \item{nboot}{
@@ -44,7 +44,7 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 ID=pfSiteSel(id_region=="WNA0" & l12==1)
 plot(ID)
 ## Transform data
-res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 ## Composite
 comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))

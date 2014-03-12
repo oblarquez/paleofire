@@ -44,7 +44,9 @@ summary.pfSiteSel=function(object,...){
   
   table=paleofiresites[paleofiresites$id_site %in% object$SitesIDS,]
   rownames(table)=table$site_name
-  table=subset(table, select=c(1,3,4,5,16,17,18,coln))
+  table=subset(table, select=c("id_site", "lat", "long",
+                               "elev", "min_est_age", "max_est_age", 
+                               "num_dating",  "date_int", "num_samp", "l12", "rf99"))
   #print(table)
   return(table)
 }

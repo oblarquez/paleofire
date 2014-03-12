@@ -8,9 +8,9 @@ Produce map graphics representing spatial variability in charcoal data from the 
 }
 \usage{
   pfDotMap(TR, bins, fig.base.name = NULL, base.map = "coasts",
-                 grd.res = 5, grd.ext = c(-180, 180, -90, 90), proj4 =
-                 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-                 n.boot = 1000, cx.minsize = 0.3, cx.mult = 1)
+                    grd.res = 5, grd.ext = c(-180,180,-90,90), 
+                    proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+                    n.boot = 1000, cx.minsize = 0.3, cx.mult = 1)
   }
 
 %- maybe also 'usage' for other objects documented here.
@@ -19,7 +19,7 @@ Produce map graphics representing spatial variability in charcoal data from the 
     An object returned by \code{\link{pfTransform}}
     }
   \item{bins}{
-    Numeric, the sequence for binning given in years (e.g. \code{bins=seq(from=0,to=10000,by=1000)}).
+    Numeric, the sequence for binning given in years (e.g. bins=seq(from=0, to=10000, by=1000)).
     }
   \item{fig.base.name}{
     Character sequence representing the base name for the figures. Can be preceded by a path as long as all directories in the path exist. One figure will be produced for each time bin, with years (and file suffix) appended to the base name automatically. A value of \code{NULL} (default) causes figures to be plotted to the current device in sequence.
@@ -42,7 +42,24 @@ Produce map graphics representing spatial variability in charcoal data from the 
   }
 
 \value{
-  Currently, nothing is returned, plots are just produced on the current device or in pdf files defined by \code{fig.base.name}.
+  Plots are produced on the current device or in pdf files defined by \code{fig.base.name}. In addition, a named list of useful objects is returned:
+
+  \item{COMP}{
+    The binned composite generated for plotting.
+    }
+  \item{bins}{
+    The list of bin endpoints.
+    }
+  \item{sp.grd}{
+    A \code{\link[sp]{SpatialPointsDataFrame-class}} object containing all the grid-level statistics produced and plotted (mean influx value, bootstrap confidence interval, and number of sites per grid cell).
+    }
+  \item{sp.sites}{
+    A \code{\link[sp]{SpatialPointsDataFrame-class}} object representing the number of grid cells influenced by each site.
+    }
+  \item{plots}{
+    A list with one element for each bin. These elements are themselves named lists of trellis objects representing each 
+    of the plots produced ("mean", "sitesPerCell", "cellsPerSite", "timeSeries"). Note that these objects can be edited to some degree with the \code{\link[lattice]{update.trellis}} function, and plotted or used in layouts as any other trellis graphics can. 
+    }
 }
 
 \details{
@@ -50,7 +67,7 @@ Takes any pfTransform object as input, and allows any set of one or more time bi
 
 Results will be plotted on a regular lon/lat grid. To determine which sites contribute to each grid cell value, the code searches within a specified great circle distance (i.e. on the surface of the globe) around each grid cell center. To avoid missing any sites, the distance is set equal to the greatest distance from a grid cell center to its most distant corner, which occurs at the equator where grid cells are largest. This conservative approach will result in many sites falling within multiple grid boxes. At all latitudes, the defined radii will overlap near the edges of the grid boxes. At higher latitudes, the lon/lat grid cells are physically much smaller, so overlap will be considerably greater. There are alternatives, like using a grid that is irregular in terms of lon/laton, or changing the area of grid cells depending on latitude. But all have their tradeoffs, and this one is simple. 
 
-Current version produces plots of mean CHAR, number of sites per grid cell, and number of grid cells contributed to by each site (due to overlapping radii described above). The mean plot additionally shows points in two sizes, representing those mean values whose 95% confidence intervals do (small dots) or do not (large dots) contain zero. Finally, a time series is plotted in each figure with the current time bin highlighted. 
+Current version produces plots of mean CHAR, number of sites per grid cell, and number of grid cells contributed to by each site (due to overlapping radii described above). The mean plot additionally shows points in two sizes, representing those mean values whose 95"\%" confidence intervals do (small dots) or do not (large dots) contain zero. Finally, a time series is plotted in each figure with the current time bin highlighted. 
 }
 
 \author{R. Kelly}
@@ -61,13 +78,20 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 
 \examples{
 ## Composite charcoal record for North America:
-ID=pfSiteSel(id_region==c("WNA0") & l12==1 & long<=-130)
-plot(ID,zoom="world")
+ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
+plot(ID)
 
 ## Transform data
-res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
+res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 ## Plot maps for 1000-yr bins spanning 3-0 kBP
 # dev.new(width=10,height=10) # A big plot area helps. 
-pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80))
+dotmap = pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80), 
+                   cx.minsize=2,cx.mult=3)
+summary(dotmap)
+
+# Plot the mean map from the first time bin
+# newmap = update(dotmap$plots[[1]]$mean, main="A relabeled map")
+# newmap
+
 }

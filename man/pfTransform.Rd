@@ -9,8 +9,8 @@ Charcoal data transformation, background estimation and homogenization for uniqu
 pfTransform(ID = NULL, add = NULL, Interpolate = FALSE, Age = NULL, method
                  = "Z-Score", BasePeriod = c(-100, 1e+09), span = 0.3,
                  RunWidth = 500, RunQParam = 0.5, stlYears = 500, type
-                 = "BoxCox1964", alpha = 0.01, QuantType = "INFL", MethodType = NULL,
-                 verbose = TRUE)
+                 = "BoxCox1964", alpha = 0.01, QuantType = "INFL", 
+                 MethodType = NULL, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,7 +56,7 @@ Character, the type of Box-Cox transformation, see \code{\link{pfBoxCox}} for de
 \item{QuantType}{
 Character, by default QuantType="INFL" and influx are automatically calculated, otherwise use QuantType="NONE" (not recommended).}
 \item{MethodType}{
-Character, by default (MethodType=NULL) imply that when for a specific site two charcoal unit exist the function pick the one define by pref_unit. By passing different arguments to MethodType user can modify the analysis to pick non preferred units by referring to more general methods for instance MethodType="POLS" will choose charcoal records from pollen slides, or MethodType="SIEV" sieved macro charcoal series. Type \code{(paleofiredata);levels(paleofiredata$METHOD)} for available methods.}
+Character, by default (MethodType=NULL) imply that when for a specific site two charcoal unit exist the function pick the one define by pref_unit. By passing different arguments to MethodType user can modify the analysis to pick non preferred units by referring to more general methods for instance MethodType = "POLS" will choose charcoal records from pollen slides, or MethodType = "SIEV" sieved macro charcoal series. Type (paleofiredata); levels(paleofiredata$METHOD) for available methods.}
  \item{verbose}{
 Logical, verbose or not...}
 }

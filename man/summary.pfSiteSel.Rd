@@ -18,7 +18,9 @@ Return a summary table for an object of the class "pfSiteSel"}
 }
 
 \value{
-Data.frame, returns the following informations: "ID_SITE", "LATITUDE", "LONGITUDE", "ELEV","MIN_EST_AGE", "MAX_EST_AGE", "NUM_DATING", "NUM_SAMP".
+Data.frame, returns the following informations: "id_site", "lat", "long"
+"elev", "min_est_age", "max_est_age", "num_dating",  "date_int", "num_samp", 
+"l12", "rf99".
 }
 
 \author{

@@ -1,0 +1,69 @@
+\name{plot.pfGridding}
+\alias{plot.pfGridding}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Plot a "pfGridding" object.}
+\description{
+Plot maps presenting gridded and transformed charcoal values obtained from the \code{\link{pfGridding}} function.}
+\usage{
+\method{plot}{pfGridding}(x, continuous = TRUE, col_class = NULL, 
+                          col_lim = NULL, xlim = NULL, ylim = NULL, 
+                          empty_space = 10, cpal = "YlGn", anomalies = TRUE, 
+                          file = NULL, points = FALSE, ...)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{x}{
+An object returned by \code{\link{pfGridding}}.}
+  \item{continuous}{
+Logical, plot continuous (TRUE) or discrete (FALSE) colors on the map. }
+  \item{col_class}{
+Numeric, if continuous is false define here color classes (single values: col_class=5, or sequences col_class=seq(-15,15,5) are accepted.) 
+}
+  \item{col_lim}{
+Numeric, limits for plotting grid cells values, grid cells with values beyond col_lim are not plotted.}
+  \item{xlim}{
+Numeric, map limits.}
+  \item{ylim}{
+Numeric, map limits.}
+  \item{empty_space}{
+Percentage, define empty space around the map.}
+  \item{cpal}{
+String, color palette to use see \code{\link[RColorBrewer]{brewer.pal}}}
+  \item{anomalies}{
+Logical, adapt output for plotting anomalies or not (color classes, etc..)}
+  \item{file}{
+Path/Filename.tiff, the function can output a GeoTiff file if desired.}
+  \item{points}{
+Logical, plot charcoal sites on the map?}
+  \item{\dots}{
+\dots}
+}
+
+\value{
+A ggplot2 "gg" object that could be further manipulated.
+}
+
+\author{
+O. Blarquez}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+\code{\link{pfGridding}}
+}
+\examples{
+ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+
+TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+
+p=pfGridding(TR,age=1000)
+
+plot(p,empty_space=100)
+
+# require(ggplot2)
+# pp=plot(p,empty_space=100)
+# pp+ggtitle("my title..")
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory
