@@ -190,7 +190,7 @@ if(class(TR)=="pfTransform") {
     # ----- Create mean plot
       # Define colors and cut locations 
 #       cols = c("#CA0020","#F4A582","#F7F7F7","#92C5DE","#0571B0") # from colorbrewer
-      cols = c("#CA0020","#F4A582",grey(0.9),"#92C5DE","#0571B0") # modified from colorbrewer
+      cols = c("#0571B0","#92C5DE",grey(0.9),"#F4A582","#CA0020") # modified from colorbrewer
       cuts = seq(-2.5,2.5,by=1) # Defines range and resolution of color scale
         
       # Determine cuts for sizing point.
