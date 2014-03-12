@@ -1,3 +1,4 @@
+#  v08
 #  v06
 
 pfDotMap = function(TR, bins, 
@@ -166,6 +167,8 @@ pfDotMap = function(TR, bins,
   # ---------- Plot
   cat("\nPlotting ", n.bin, " figures...\n", sep="")
   pb = txtProgressBar(0,n.bin,style=2) # progress bar
+  plotlist = list()
+
   
   # ----- Loop over all bins, one plot for each
   for(j in 1:n.bin) {  #     j=1
@@ -180,12 +183,12 @@ pfDotMap = function(TR, bins,
     
     # Convert stats to spatial data frames. Might not be necessary but sure makes it easy to use spplot() below.
     sp.grd = cbind(grd.lonlat, grd.n[,j], grd.mean[,j], grd.lCI[,j], grd.uCI[,j])
-    names(sp.grd) = c("lon","lat","n.sites","mean.CHAR","CI.lower","CI.upper")
+    names(sp.grd) = c("lon","lat","sitesPerCell","mean.CHAR","CI.lower","CI.upper")
     coordinates(sp.grd) = c('lon','lat')
     proj4string(sp.grd) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
     
     sp.sites = data.frame(sites.lon, sites.lat, dat.n.contributions[,j])
-    names(sp.sites) = c("lon","lat","n.cells")
+    names(sp.sites) = c("lon","lat","cellsPerSite")
     coordinates(sp.sites) = c('lon','lat')
     proj4string(sp.sites) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
     
@@ -200,6 +203,28 @@ pfDotMap = function(TR, bins,
     y.lim = bbox(sp.grd)[2,]
     
     # ----- Create mean plot
+      # Define colors and cut locations 
+#       cols = c("#CA0020","#F4A582","#F7F7F7","#92C5DE","#0571B0") # from colorbrewer
+      cols = c("#CA0020","#F4A582",grey(0.9),"#92C5DE","#0571B0") # modified from colorbrewer
+      cuts = seq(-2.5,2.5,by=1) # Defines range and resolution of color scale
+        
+      # Determine cuts for sizing point.
+        # Specify symbol sizes for the two classes
+        cx.sizes = cx.mult*c(0.5,1) 
+        
+        # Assign symbol size based on whether CI contain 0 
+        cx = ifelse(sp.grd$CI.lower>0 | sp.grd$CI.upper<0, max(cx.sizes), min(cx.sizes))
+        
+        # The previous line will produce NA for cells with n=1 since CI are undefined. Give these "non-significant" symbol size by default.
+        cx[which(sp.grd$sitesPerCell==1)] = min(cx.sizes)
+          
+      # Create plot object (actually plotted later)
+      mean.plot = 
+        spplot(sp.grd, 'mean.CHAR', xlim=x.lim, ylim=y.lim,
+          cuts=cuts, colorkey=T, col.regions=cols, cex=cx, edge.col=grey(0.3), lwd=0.3,
+          scales=list(draw=T), sp.layout=list("sp.lines",base.map,col=grey(0.8)),
+          main=paste("Charcoal Influx z-Scores: ", bins[j], "-", bins[j+1], " BP", sep="")) 
+
     # Define Color ramp. Will likely modify. Also, may want to allow this to be altered via a function argument.
     col.ramp = colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
                                   "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
@@ -227,6 +252,32 @@ pfDotMap = function(TR, bins,
              main=paste("Mean CHAR: ", bins[j], "-", bins[j+1], " BP", sep="")) 
     
     # ----- Plot Number of sites per grid cell
+      # Generate dot sizes/colors and corresponding key. 
+        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5° resolution. 
+        cuts      = c(0,1,5,10,20,1000) # Where to divide symbol sizes
+        cols      = grey(0.2)   # Can be replaced by a vector if different colors are desired
+        cx.legend = c("1", "2-5", "6-10", "11-20",">20") # legend text
+          n.cx = length(cuts)-1   # number of bins represented
+      
+        # Define sizes of data points and legend entries by dividing data into bins and scale to range [cx.minsize,1]*cx.mult. This is a pretty good range for symbol 'cex' sizes, although can be modified with the cx.mult and cx.minsize arguments. 'cut(..., labels=F)' returns integer classes from 1:n.cx. These are the same sizes to use in the key. 
+        cx.key = ( ((1:n.cx)-1)*(cx.mult-cx.minsize)/(n.cx-1) + cx.minsize )
+        cx = cx.key[ cut(sp.grd$sitesPerCell, cuts, labels=F) ]
+
+
+      # Adjust scale so that the low end corresponds to specified minimum symbol size
+      ind.non0 = which(cx>0) # Don't want to change size 0 (== not plotted)
+      cx.key = cx.key + cx.minsize - min(cx[ind.non0]) 
+      cx[ind.non0] = cx[ind.non0] + cx.minsize - min(cx[ind.non0])
+
+
+      # Create plot object (actually plotted later)
+      sitesPerCell.plot = 
+        spplot(sp.grd, 'sitesPerCell', xlim=x.lim, ylim=y.lim, scales=list(draw=F), 
+          cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cuts, 
+          col.regions=cols, edge.col="white", lwd=0.3,
+          sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
+          main="Number of sites per grid cell")
+
     # Generate dot sizes and corresponding key. 
     # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general 
     # algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5 degree resolution. 
@@ -260,6 +311,30 @@ pfDotMap = function(TR, bins,
              main="Number of sites per grid cell")
     
     # ----- Plot Number of grid cells contributed per site
+      # Generate dot sizes/colors and corresponding key. 
+        # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5° resolution. 
+        cuts   = c(0,1,2,3,4,100) # Where to divide symbol sizes
+        cols      = grey(0.2)   # Can be replaced by a vector if different colors are desired
+        cx.legend = c("1", "2", "3", "4",">4") # legend text
+          n.cx = length(cuts)-1   # number of bins represented
+      
+        # Define sizes of data points and legend entries. 
+        cx.key = ( ((1:n.cx)-1)*(cx.mult-cx.minsize)/(n.cx-1) + cx.minsize )
+        cx = cx.key[ cut(sp.sites$cellsPerSite, cuts, labels=F) ]
+
+      # Adjust scale so that the low end corresponds to specified minimum symbol size
+      ind.non0 = which(cx>0) # Don't want to change size 0 (== not plotted)
+      cx.key = cx.key + cx.minsize - min(cx[ind.non0]) 
+      cx[ind.non0] = cx[ind.non0] + cx.minsize - min(cx[ind.non0])
+        
+      # Create plot object (actually plotted later)
+      cellsPerSite.plot = 
+        spplot(sp.sites, 'cellsPerSite', xlim=x.lim, ylim=y.lim,
+          cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cuts, 
+          scales=list(draw=F), col.regions=cols, edge.col="white", lwd=0.3,
+          sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
+          main="Number of grid cells influenced by each site")
+
     # Generate dot sizes and corresponding key. 
     # Specify scale and legend. Would be good to automate this but it's pretty tricky to produce a good 
     # general algorithm. So, for now, hard-coding symbol sizes / labels that work well for global map at 5degree 
@@ -292,6 +367,32 @@ pfDotMap = function(TR, bins,
              main="Number of grid cells influenced by each site")
     
     # ----- Create time series plot
+      timeSeries.dat = data.frame(
+                age  = rep(bins,each=2)[2:(2*n.bin+1)],
+                char = rep(COMP$Result$MEAN, each=2),
+                lCI  = rep(COMP$Result[,3], each=2),
+                uCI  = rep(COMP$Result[,4], each=2) )
+
+
+      timeSeries.plot =       
+        xyplot( char~age, data=timeSeries.dat, 
+          ylim=c(-0.05,0.05)*diff(range(timeSeries.dat[,3:4]))+range(timeSeries.dat[,3:4]),
+          panel = function(x,y, ...) {
+            ind.j = (2*j-1):(2*j)
+            x.j   = x[ind.j]
+            y.j   = y[ind.j]
+            lCI.j = timeSeries.dat$lCI[ind.j]
+            uCI.j = timeSeries.dat$uCI[ind.j]
+            
+            panel.polygon(c(x,rev(x)), c(timeSeries.dat$lCI, rev(timeSeries.dat$uCI)), 
+              col=grey(0.8), border=FALSE)
+            panel.polygon(c(x.j,rev(x.j)), c(lCI.j, rev(uCI.j)), 
+              col=rgb(1,0,0,0.5), border=FALSE)
+
+            panel.xyplot(x,y, type='l', col=1)
+            panel.xyplot(x.j,y.j, type='l', col=2)
+          })
+
     ts.dat = data.frame(
       age  = rep(bins,each=2)[2:(2*n.bin+1)],
       char = rep(COMP$Result$MEAN, each=2),
@@ -319,6 +420,11 @@ pfDotMap = function(TR, bins,
               })
     
     # ----- Produce plots
+      print(mean.plot, position=c(0,0.5,1,1), more=T)
+      print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
+      print(sitesPerCell.plot, position=c(0,0,0.5,0.3), more=T)
+      print(cellsPerSite.plot, position=c(0.5,0,1,0.3))
+
     print(mean.plot, position=c(0,0.5,1,1), more=T)
     print(ts.plot, position=c(0,0.3,1,0.5), more=T)
     print(n.sites.plot, position=c(0,0,0.5,0.3), more=T)
@@ -326,8 +432,18 @@ pfDotMap = function(TR, bins,
     
     # Close connection to external figure
     if(!is.null(fig.base.name))  dev.off()
+
+    # ----- Store plot objects
+      plotlist[[j]] = list("mean"=mean.plot,"sitesPerCell"=sitesPerCell.plot,"cellsPerSite"=cellsPerSite.plot,"timeSeries"=timeSeries.plot)
+
     
   } # End loop over all bins
+
+  # ----- Return
+    output = list(COMP=COMP,bins=bins,sp.grd=sp.grd,sp.sites=sp.sites,plots=plotlist)
+    return(output)
+  
+cat("\nAll done!\n\n")
   
   cat("\nAll done!\n\n")
 } # End main function definition

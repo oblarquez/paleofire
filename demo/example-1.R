@@ -99,9 +99,9 @@ plot(comp)
 
 
 ## Composite charcoal record for North America:
-ID=pfSiteSel(id_region=="WNA0" | id_region=="ENA0")
+ID=pfSiteSel(id_region=="WNA0" & l12==1)
 
-plot(ID, zoom="world")
+plot(ID, zoom="world" )
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
 
@@ -110,9 +110,12 @@ comp=pfComposite(res3,bins=seq(from=-500,to=12500,by=1000))
 plot(comp)
 
 ## Kruskal Wallis Anova
-comparison=pfKruskal(comp,alpha=0.01, p.adj="BY")
-
+comparison=pfKruskal(comp,alpha=0.05, p.adj="none")
 plot(comparison,trend=TRUE)
+
+## Kruskal Wallis Anova
+comparison=pfKruskal(res3,alpha=0.05)
+plot(comparison,ylim=c(-5,7))
 
 ## Here
 

@@ -6,12 +6,12 @@ Plot a "pfKruskal" object.}
 \description{
 Plot a "pfKruskal" object using boxplots and showing significant differences between the periods using letters.}
 \usage{
-\method{plot}{pfKruskal}(x, trend = FALSE, outliers = TRUE,  xlim = NULL, ylim = NULL,...)
+\method{plot}{pfKruskal}(x, trend = FALSE, outliers = FALSE,  xlim = NULL, ylim = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A "pfKruskal" object.}
+An object returned by \code{\link{pfKruskal}}.}
   \item{trend}{
 Logical, show trend using linear regression?}
   \item{outliers}{
@@ -26,7 +26,9 @@ Numeric, y axis limits.}
 \value{
 Return a ggplot2 "gg" object.
 }
-
+\details{
+If two periods share the same letter their rank (median) is not significantly different at the confidence level specified by \code{alpha}. If not, equality could be rejected at the confidence level specified by \code{alpha}.
+}
 \author{
 O. Blarquez}
 

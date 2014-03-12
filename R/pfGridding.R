@@ -5,9 +5,8 @@ pfGridding=function(data,cell_sizex=NULL,
                     cell_size=NULL,
                     time_buffer=NULL,
                     distance_buffer=NULL,
-                    threshold=0.5,
                     raster_extent=NULL,
-                    elevation_range=NULL,
+                    elevation_buffer=NULL,
                     proj4=NULL,
                     sea_mask=FALSE,
                     verbose=TRUE){
@@ -43,7 +42,7 @@ pfGridding=function(data,cell_sizex=NULL,
   xy <-cbind(data[,1],data[,2])
   
   ### LOAD DEM if required
-  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
+  if(is.null(elevation_buffer)==FALSE | sea_mask==TRUE){
     cat("Preparing data and loading DEM...")
     cat("\n")
     ## dem is GMTED2010
@@ -86,7 +85,7 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(distance_buffer)) distance_buffer=300000
   
   ## Elevation stuff (median elevation in each predicted cell)  
-  if(is.null(elevation_range)==FALSE | sea_mask==TRUE){
+  if(is.null(elevation_buffer)==FALSE | sea_mask==TRUE){
     temp=rasterToPoints(dem1)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=mean)
     z=raster::intersect(temp1,r)
@@ -114,11 +113,11 @@ pfGridding=function(data,cell_sizex=NULL,
     d=cbind(dat2,data[,3],d,triCube(d,distance_buffer))
     
     ## Elevation range search
-    if(is.null(elevation_range)==FALSE ){
+    if(is.null(elevation_buffer)==FALSE ){
       elev2=extract(dem1,d[,1:2])
       elev1=extract(temp1,dat1[i,1:2])
-      elev2[elev2<elev1-elevation_range]=NA
-      elev2[elev2>elev1+elevation_range]=NA
+      elev2[elev2<elev1-elevation_buffer]=NA
+      elev2[elev2>elev1+elevation_buffer]=NA
       d=cbind(d,elev2)
       d[is.na(d[,6]),5]=0
     }
@@ -127,7 +126,7 @@ pfGridding=function(data,cell_sizex=NULL,
     ## Time weight
     d1=cbind(d1,triCube(age-d1[,3],time_buffer))
     # head(d)
-    if(is.null(elevation_range)==FALSE){
+    if(is.null(elevation_buffer)==FALSE){
       colnames(d1)=c("x","y","age","dist","dweight","elev","tweight")
     } else colnames(d1)=c("x","y","age","dist","dweight","tweight")
     
@@ -135,6 +134,7 @@ pfGridding=function(data,cell_sizex=NULL,
     d1$data=data[d[,5]!=0,4]
     
     ## Combine time and distance weights
+    threshold=0.5
     if(sum(d1$weight,na.rm=TRUE)>threshold){
       dat1[i,3]=sum(d1$data*d1$weight,na.rm=TRUE)/sum(d1$weight,na.rm=TRUE)
     } else dat1[i,3]=NA

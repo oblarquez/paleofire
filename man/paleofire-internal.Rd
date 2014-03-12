@@ -2,7 +2,6 @@
 
 \alias{bootCI}
 \alias{haverdist}
-\alias{pfGridding}
 \alias{plot.pfGridding}
 \alias{triCube}
 \alias{dem}

@@ -51,7 +51,7 @@ pfKruskal=function(data,p.adj="none",
 
 plot.pfKruskal=function(x,trend=FALSE,outliers=FALSE, xlim = NULL, ylim = NULL, ...){  
   
-  y<-lpos<-posthoc<-NULL
+  y<-lpos<-lab<-NULL
   
   ### GGplot2 boxplot
   p=ggplot(data=x$data,aes(x=x,y=y))
