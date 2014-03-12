@@ -1,4 +1,23 @@
-paleofire 1.0
-===============
 
-2014-01-08 Initial release of the package
+paleofire 1.1
+-----------------------------------------
+
+New features:
+
+* Rewritten pfSiteSel for more flexibility (use of | & > < <= >= != %in% etc.)
+
+* Added pfKruskal for testing time periods for equality in transformed char
+
+* Added pfDotMap and pfGridding to produce map graphics representing spatial variability in charcoal data
+
+Minor new features:
+
+* Graphics controls enhancements
+
+* verbose options
+
+
+paleofire 1.0
+-----------------------------------------
+
+* Initial release of the package
