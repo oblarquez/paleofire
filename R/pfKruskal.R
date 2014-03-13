@@ -52,7 +52,7 @@ pfKruskal=function(data,p.adj="none",
 plot.pfKruskal=function(x,trend=FALSE,outliers=FALSE, xlim = NULL, ylim = NULL, ...){  
   
   y<-lpos<-lab<-NULL
-  
+  x$data=na.omit(x$data)
   ### GGplot2 boxplot
   p=ggplot(data=x$data,aes(x=x,y=y))
   if(outliers==TRUE) p=p+geom_boxplot(fill="grey90",outlier.size = 1,show_guide = FALSE)

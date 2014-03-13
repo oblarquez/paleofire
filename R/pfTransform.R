@@ -72,7 +72,7 @@ pfTransform=function(ID=NULL,
       
       #paleofiredata=na.omit(paleofiredata)
       # Sites are:
-      ID=ID$SitesIDS
+      ID=ID$id_site
       # Use only paleofiredata corresponding to ID
       paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
       
@@ -106,8 +106,8 @@ pfTransform=function(ID=NULL,
         }
         paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
         # Print which sites are dropped from the analysis
-        cat(IDChar$SitesNames[!(IDChar$SitesIDS %in% unique(paleofiredata[,1]))],"\n")
-        cat(length(IDChar$SitesNames)-length(unique(paleofiredata[,1])), 
+        cat(IDChar$site_name[!(IDChar$id_site %in% unique(paleofiredata[,1]))],"\n")
+        cat(length(IDChar$site_name)-length(unique(paleofiredata[,1])), 
             " sites were excluded from the analysis \n")
         ID=unique(paleofiredata[,1])
         if(QuantType=="INFL"){
@@ -194,7 +194,7 @@ pfTransform=function(ID=NULL,
     
     for (k in 1:length(ID)){
       if(length(paleofiredata[paleofiredata[,1]==ID[k],3])>=3){
-        rawI[,k]=approx(paleofiredata[paleofiredata[,1]==ID[k],3],paleofiredata[paleofiredata[,1]==ID[k],4],AgeN, method = "linear")$y} else print(paste(IDChar$SitesNames[k], "has < 3 charcoal values and was excluded", sep=" "))
+        rawI[,k]=approx(paleofiredata[paleofiredata[,1]==ID[k],3],paleofiredata[paleofiredata[,1]==ID[k],4],AgeN, method = "linear")$y} else print(paste(IDChar$site_name[k], "has < 3 charcoal values and was excluded", sep=" "))
     }
     
     # Calculates Interpolated depths

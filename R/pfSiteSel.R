@@ -24,9 +24,9 @@ pfSiteSel <- function(...) {
   } else id=paleofiresites$id_site
   
   ## Output:
-  SitesNames=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
+  site_name=as.character(paleofiresites$site_name[paleofiresites$id_site %in% id])
   
-  output=list(SitesIDS=id,SitesNames=SitesNames)
+  output=list(id_site=id,site_name=site_name)
   class(output)="pfSiteSel"
   return(output)
 }
@@ -42,7 +42,7 @@ summary.pfSiteSel=function(object,...){
   data(paleofiredata,envir = environment())
   coln=length(paleofiresites[1,])
   
-  table=paleofiresites[paleofiresites$id_site %in% object$SitesIDS,]
+  table=paleofiresites[paleofiresites$id_site %in% object$id_site,]
   rownames(table)=table$site_name
   table=subset(table, select=c("id_site", "lat", "long",
                                "elev", "min_est_age", "max_est_age", 
@@ -66,11 +66,11 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
   ## Chronology
   if(type=="Chronology"){
     data(paleofiredata,envir = environment())
-    paleofiredata=paleofiredata[paleofiredata$id_site %in% x$SitesIDS,]
+    paleofiredata=paleofiredata[paleofiredata$id_site %in% x$id_site,]
     
-    IDsorted=data.frame(IDs = c(x$SitesIDS),
-                        Lat = c(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat),
-                        labels = as.character(paleofiresites$site_name[paleofiresites$id_site %in% x$SitesIDS]))
+    IDsorted=data.frame(IDs = c(x$id_site),
+                        Lat = c(paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat),
+                        labels = as.character(paleofiresites$site_name[paleofiresites$id_site %in% x$id_site]))
     
     IDsorted=IDsorted[with(IDsorted, order(Lat)), ]
     ## Xlim
@@ -79,9 +79,9 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
     ## Plot
     par(mar=c(4,14,2,8))
     plot(NULL, type = "n", 
-         ylim = c(1,length(x$SitesIDS)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
+         ylim = c(1,length(x$id_site)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
     n=c()
-    for(i in 1:length(x$SitesIDS)){
+    for(i in 1:length(x$id_site)){
       samples=paleofiredata$EST_AGE[paleofiredata$id_site %in% IDsorted$IDs[i]]
       points(samples,rep(i,length(samples)),pch=pch,cex=cex)
       n[i]=length(samples)
@@ -107,8 +107,8 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
       plot(paleofiresites$long,paleofiresites$lat,
            col="blue",xlab="Longitude",ylab="Latitude")
       lines(coast$X,coast$Y)
-      points(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long,
-             paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat, 
+      points(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long,
+             paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat, 
              bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
       if(is.null(add)==FALSE)
         points(add$metadata$LONGITUDE,
@@ -118,8 +118,8 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
     
     if(zoom=="Sites"|zoom=="sites"){
       # Draw map
-      xl=as.vector(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long)
-      yl=as.vector(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat)
+      xl=as.vector(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long)
+      yl=as.vector(paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat)
       
       if(is.null(xlim))
         xlim=range(xl[!is.na(xl) & is.finite(xl)])
@@ -128,7 +128,7 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
       
       
       plot(paleofiresites$long,paleofiresites$lat,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
-      points(paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$long,paleofiresites[paleofiresites$id_site %in% x$SitesIDS,]$lat,bg="red",col = "red",pch = 21)
+      points(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long,paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat,bg="red",col = "red",pch = 21)
       lines(coast$X,coast$Y)
       if(is.null(add)==FALSE)
         points(add$metadata$LONGITUDE,

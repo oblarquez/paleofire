@@ -22,7 +22,7 @@ pfDiagnostic=function(ID,
     data(paleofiredata,envir = environment())
     data(paleofiresites,envir = environment())
     #paleofiredata=na.omit(paleofiredata)
-    ID=ID$SitesIDS
+    ID=ID$id_site
     # Use only paleofiredata corresponding to ID
     paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
     
@@ -78,7 +78,7 @@ pfDiagnostic=function(ID,
     # Site info
     siteinfo=paleofiresites[paleofiresites[,1]==ID1,]
     # List for pfTransform function
-    IDt=list(SitesIDS=ID1,SitesNames=as.character(siteinfo$site_name))
+    IDt=list(id_site=ID1,site_name=as.character(siteinfo$site_name))
     
     
     # Little TRICK for sites without depths = Assume depths == 1:length(Record)

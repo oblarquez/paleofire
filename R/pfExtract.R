@@ -4,6 +4,6 @@ pfExtract=function(ID){
   
   # Extract data for sites
   data(paleofiredata, envir = environment())
-  if(is.numeric(ID)){  Ext=paleofiredata[paleofiredata[,1] %in% ID,] } else Ext=paleofiredata[paleofiredata[,1] %in% ID$SitesIDS,]
+  if(is.numeric(ID)){  Ext=paleofiredata[paleofiredata[,1] %in% ID,] } else Ext=paleofiredata[paleofiredata[,1] %in% ID$id_site,]
   return(Ext)
 }

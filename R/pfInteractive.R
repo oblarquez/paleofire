@@ -53,9 +53,9 @@ three vertices. Right click or click finish when ready.")
   
   ## Retrive site IDs ans site names
   
-  SitesNames=as.character(paleofiresites$site_name[paleofiresites$id_site%in% IDs])
+  site_name=as.character(paleofiresites$site_name[paleofiresites$id_site%in% IDs])
   ## Return output ID list
-  output=list(SitesIDS=IDs,SitesNames=SitesNames)
+  output=list(id_site=IDs,site_name=site_name)
   class(output)="pfSiteSel"
   ## Remove data
   #rm(paleofiresites,envir = globalenv())

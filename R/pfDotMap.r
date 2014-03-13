@@ -76,7 +76,7 @@ pfDotMap = function(TR, bins,
   # Lookup info from the database
   paleofiresites=NULL; rm(paleofiresites)  
   data(paleofiresites,envir = environment())
-  site.dat=paleofiresites[paleofiresites$id_site %in% TR$params$ID$SitesIDS, ]
+  site.dat=paleofiresites[paleofiresites$id_site %in% TR$params$ID$id_site, ]
   
   
   # Extract coordinates, including in radians for use in the distance function

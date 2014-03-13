@@ -41,16 +41,16 @@ plot(ID,zoom="sites")
 ## Simple test for transforming data
 # Select site 1 (Cygnet Lake)
 
-ID=pfSiteSel(ID=1)
-plot(ID)
+ID1=pfSiteSel(id_site==1)
+plot(ID1)
 
 # Transformation of data
-TR=pfTransform(ID,method=c("MinMax", "Box-Cox", "Z-Score"))
+TR=pfTransform(ID1,method=c("MinMax", "Box-Cox", "Z-Score"))
 
 # Plot Transformed and raw data
 # First retrieve raw data for Cygnet using pfExtract
 
-RAW=pfExtract(ID=1)
+RAW=pfExtract(ID1)
 
 dev.off()
 par(mfrow=(c(2,1)))
@@ -62,7 +62,7 @@ plot(TR$Age,TR$TransData,type="l")
 ## Transforming and Compositing
 ## Example 1: Usage as in Power et al. 2008
 ## Data transformation
-ID=pfSiteSel(Latlim=c(50,70),Longlim=c(-90,-50), DateInt=3000)
+
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Diagnostic pdf file with transformed series:
@@ -75,7 +75,7 @@ COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,8000,500))
 plot(COMP)
 
 ## The result matrix can be saved
-write.csv(COMP$Result,file="temp.csv")
+# write.csv(COMP$Result,file="temp.csv")
 
 
 ## Compositing: Using the locfit package equivalent procedure to Daniau et al. 2012
@@ -84,7 +84,6 @@ COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save
-
 
 
 ## Composite charcoal record for North America:
