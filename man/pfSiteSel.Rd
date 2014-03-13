@@ -19,7 +19,7 @@ Use data(paleofiresites);names(paleofiresites) to retrieve the conditions that c
  id_basin_size, id_catch_size, id_land_desc, dating_type, min_est_age, max_est_age, num_dating, age_model, 
  data_source, qtype, rf99, l12, num_samp, date_int.}
 \value{
-An object of the class "pfSiteSel".
+An object of the class "pfSiteSel" (list) with "id_site" and "site_name" components.
 }
 \seealso{\code{\link[GCD]{paleofiresites}}}
 \author{
