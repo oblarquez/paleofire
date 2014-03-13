@@ -12,6 +12,8 @@ New features:
 
 Minor new features:
 
+* Renamed variables for consistency (?pfSiteSel)
+
 * Graphics controls enhancements
 
 * verbose options
