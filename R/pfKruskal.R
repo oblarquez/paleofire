@@ -12,7 +12,7 @@ pfKruskal=function(data,p.adj="none",
     if(is.null(bins)) bins=seq(-500,12500,1000)
     xx=as.numeric(cut(data$x,breaks=bins))
     
-    hbins=bins+diff(bins)/2
+    hbins=bins+max(diff(bins)/2)
     hbins=data.frame(cbind(1:(length(hbins)-1),hbins[1:(length(hbins)-1)]))
     id <- with(hbins, X2[match(xx,X1)])
     

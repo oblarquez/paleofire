@@ -62,6 +62,7 @@ plot(TR$Age,TR$TransData,type="l")
 ## Transforming and Compositing
 ## Example 1: Usage as in Power et al. 2008
 ## Data transformation
+TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000),MethodType="SIEV")
 
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
@@ -83,21 +84,9 @@ plot(COMP)
 COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
-## And save
 
 
-## Composite charcoal record for North America:
-ID=pfSiteSel(id_region=="WNA0" & l12==1)
-plot(ID)
-## Transform data
-res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000),Interpolate=FALSE)
-
-## Composite
-comp=pfComposite(res3,bins=seq(from=-500,to=12000,by=1000))
-plot(comp)
-
-
-## Composite charcoal record for North America:
+## Composite charcoal record for western North America:
 ID=pfSiteSel(id_region=="WNA0" & l12==1)
 
 plot(ID, zoom="world" )
@@ -113,8 +102,9 @@ comparison=pfKruskal(comp,alpha=0.05, p.adj="none")
 plot(comparison,trend=TRUE)
 
 ## Kruskal Wallis Anova
-comparison=pfKruskal(res3,alpha=0.05)
+comparison=pfKruskal(res3,alpha=0.05,bins=seq(from=-500,to=12500,by=1000))
 plot(comparison,ylim=c(-5,7))
+
 
 ## Here
 
