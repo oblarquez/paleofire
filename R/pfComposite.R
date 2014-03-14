@@ -107,7 +107,7 @@ pfComposite=function(TR,
 
 ######PLOT########
 
-plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE",...){
+plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE",text=FALSE,main=NULL,...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
@@ -119,7 +119,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE"
     bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
     plot(x$BinCentres,x$BootMean, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T)), axes=F, mgp=c(2,0,0),
-         main=paste("Composite"), font.main=1, lab=c(8,5,5), 
+         main=main, font.main=1, lab=c(8,5,5), 
          ylab="Composite", xlab="Age (cal yr BP)", cex.lab=1, pch=16, cex=0.5, type="o")
     axis(1); axis(2, cex.axis=1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
@@ -127,7 +127,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE"
     for (i in 1:length(conf)){
       lines(x$BinCentres,bootci1[,i],lty=2)
       pos=which.min(is.na(bootci1[,i]))
-      text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
+      if(text==TRUE) text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
     }
     
     # Plot site number
@@ -150,7 +150,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE"
     bootci1=bootci1[is.na(bootci1[,1])==FALSE,]
     n=length(bootci1[1,])
     ## PLOT
-    plot(NULL, type = "n", xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim = range(bootci1),axes=FALSE,ylab="Composite",xlab="Age",main="Percentiles")
+    plot(NULL, type = "n", xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w), ylim = range(bootci1),axes=FALSE,ylab="Composite",xlab="Age",main=main)
     if(palette=="jet"){pal = colorRampPalette(rev(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
     if(palette=="BW"){
       pal = colorRampPalette(rev(c("white","black")))}
@@ -162,7 +162,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE"
     }
     for (i in c(2,11,51,91,100)){
       lines(bins1,bootci1[,i],col="grey",lty=2)
-      text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
+      if(text==TRUE) text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
     }
     axis(1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
@@ -185,7 +185,7 @@ plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE"
     if(palette=="jet"){pal = colorRampPalette((c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")))} 
     if(palette=="BW"){
       pal = colorRampPalette((c("white","black")))}
-    image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main="Density plot",axes=F, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w))
+    image(x$BinCentres, seqI, t(img),col = pal(100),xlab="Age",ylab="Composite",main=main,axes=F, xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w))
     axis(1, cex.axis=1, xaxp=c(0,99000,99)); axis(2, cex.axis=1)
     lines(x$BinCentres,rowMeans(x$mboot, na.rm=T))
     z=matrix(1:100,nrow=1)

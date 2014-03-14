@@ -36,11 +36,10 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 # ID=pfInteractive()
 
 ## Site selection using criterions
-# date_int parameter is used to set the mean interval which is required between two
-# dating points (ex 14C) for sites to be selected for a complete list of criterions
-# that can be used see pfSiteSel function
+# Boreal Eastern North American sites with at least one
+# dating point each 2500 year
 
-ID=pfSiteSel(lat>50, lat<70, long>-90, long<(-50), date_int<=3000)
+ID=pfSiteSel(lat>50, lat<70, long>-90, long<(-50), date_int<=2500, l12==1)
 plot(ID,zoom="world")
 
 ## Modify plot
@@ -83,7 +82,7 @@ COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,8000,500))
 plot(COMP)
 
 ## The result matrix can be saved
-write.csv(COMP$Result,file="temp.csv")
+# write.csv(COMP$Result,file="temp.csv")
 
 
 ## Compositing: Using the locfit package equivalent procedure to Daniau et al. 2012
@@ -92,6 +91,6 @@ COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save
-write.csv(COMP2$Result,file="temp2.csv")
+# write.csv(COMP2$Result,file="temp2.csv")
 
 }

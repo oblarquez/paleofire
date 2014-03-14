@@ -7,7 +7,7 @@ plot.pfComposite}
 Plot a pfComposite object}
 \usage{
 \method{plot}{pfComposite}(x, type = "ci", conf = c(0.05, 0.95), palette = "jet",
-                 add = "NONE", ...)
+                 add = "NONE", text = FALSE, main = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,10 @@ Numeric, confidence levels.}
 Character, color palette used with type=c("prctile", "density") among "jet" and "BW".}
  \item{add}{
 Character, add="NONE" by default, add="sitenum" could be specified to plot the sites number in eah bin along with the composite curve.}
+\item{main}{
+Character, title of the plot.}
+ \item{text}{
+Logical, text options.}
 \item{\dots}{\dots}
 }
 

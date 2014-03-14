@@ -200,7 +200,7 @@ pfCompositeLF=function(TR,hw=250,
 ######PLOT########
 
 plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="jet",xlim=NULL,
-                            ylim=NULL,main="Composite",...){
+                            ylim=NULL,main="Composite",text=FALSE,...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
@@ -227,7 +227,7 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     for (i in 1:length(conf)){
       lines(x$BinCentres,bootci1[,i],lty=2)
       pos=which.min(is.na(bootci1[,i]))
-      text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
+      if(text==TRUE) text(min(x$BinCentres)-200,bootci1[pos,i],paste(conf[i]*100,"%",sep=""),col="black")
     }
     # Plot site number
     if(add=="sitenum"){
@@ -262,7 +262,7 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     }
     for (i in c(2,11,51,91,100)){
       lines(bins1,bootci1[,i],col="grey",lty=2)
-      text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
+      if(text==TRUE) text(min(bins1)-200,median(bootci1[1:round(length(bootci1[,1])*0.02),i]),paste(i-1,"%",sep=""),col="grey")
     }
     axis(1)
     axis(side = 1, at = seq(0, 99000, by = 500), 
