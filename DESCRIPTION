@@ -1,7 +1,7 @@
 Package: paleofire
 Type: Package
 Title: paleofire: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning
-Version: 1.1
+Version: 1.1-2
 Date: 2014-03-10
 Author: Global Paleofire Working Group <paleofire@gmail.com>
 Maintainer: Olivier Blarquez <blarquez@gmail.com>

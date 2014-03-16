@@ -81,8 +81,8 @@ plot.pfCircular=function(x,...){
   t=c(x$BootMean,x$BootCirc)
   plot(x$yr,x$BootMean,type="o",
        ylim=c(min(t,na.rm=TRUE),max(t,na.rm=TRUE)),
-       xlim=c(max(x$yr),min(x$yr)),xlab="Age (cal yr BP)",ylab="Composite",font.main=1, lab=c(8,5,5), 
-       cex.lab=1, pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
+       xlim=c(max(x$yr),min(x$yr)),xlab="Age (cal yr BP)",ylab="Composite", lab=c(8,5,5), 
+       pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
   for (i in 1:length(x$BootCirc[1,])){
     lines(x$yr,x$BootCirc[,i],lty=2)
     text(min(x$yr)-200,x$BootCirc[1,i],paste(x$conf[i]*100,"%",sep=""),col="black")
