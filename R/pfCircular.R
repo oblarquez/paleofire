@@ -75,7 +75,7 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
 }
 
 ##--------------------------------------------------------------------------------------------------------
-plot.pfCircular=function(x,ylim=NULL,xlim=NULL,ylab=NULL,xlab=NULL,text=FALSE,...){
+plot.pfCircular=function(x,ylim=NULL,xlim=NULL,ylab=NULL,xlab=NULL,main=NULL,text=FALSE,...){
   ## Plot
   
   t=c(x$BootMean,x$BootCirc)
@@ -83,13 +83,14 @@ plot.pfCircular=function(x,ylim=NULL,xlim=NULL,ylab=NULL,xlab=NULL,text=FALSE,..
   if(is.null(xlim)) xlim=c(max(x$yr),min(x$yr))
   if(is.null(xlab)) xlab="Age (cal yr BP)"
   if(is.null(ylab)) ylab="Composite"
+  if(is.null(main)) main=""
   
   plot(x$yr,x$BootMean,type="o",
        ylim=ylim,
        xlim=xlim,
        xlab=xlab,
        ylab=ylab, lab=c(8,5,5), 
-       pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
+       pch=16, cex=0.5,axes=F, mgp=c(2,0,0), main=main)
   for (i in 1:length(x$BootCirc[1,])){
     lines(x$yr,x$BootCirc[,i],lty=2)
     if(text==TRUE) text(min(x$yr)-200,x$BootCirc[1,i],paste(x$conf[i]*100,"%",sep=""),col="black")

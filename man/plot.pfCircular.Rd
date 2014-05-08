@@ -7,13 +7,25 @@ plot.pfCircular}
 Plot circular block bootstrap percentiles.
 }
 \usage{
-\method{plot}{pfCircular}(x, \dots)
+\method{plot}{pfCircular}(x,ylim=NULL,xlim=NULL,ylab=NULL,xlab=NULL,main=NULL,text=FALSE,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
 A "pfCircular" object.
 }
+\item{ylim}{
+Numeric, x axis limits.}
+ \item{xlim}{
+Numeric, y axis limits.}
+\item{ylab}{
+Character, y axis label.}
+ \item{xlab}{
+Character, x axis label.}
+ \item{main}{
+Character, title of the plot.}
+ \item{text}{
+Logical, text options.}
 \item{\dots}{\dots}
 
 }
