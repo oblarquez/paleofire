@@ -9,7 +9,7 @@ checkGCDversion <- function() {
     Checks <- "Failed"
   } else {
     # Compare version numbers
-    temp <- getURL("https://raw.github.com/paleofire/GCD/master/DESCRIPTION",
+    temp <- RCurl::getURL("https://raw.githubusercontent.com/paleofire/GCD/master/DESCRIPTION",
                    ssl.verifypeer = FALSE)      
     CurrentVersion <- gsub("^\\s|\\s$", "", 
                            gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
