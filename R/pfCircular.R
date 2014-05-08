@@ -75,17 +75,24 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
 }
 
 ##--------------------------------------------------------------------------------------------------------
-plot.pfCircular=function(x,...){
+plot.pfCircular=function(x,ylim=NULL,xlim=NULL,ylab=NULL,xlab=NULL,text=FALSE,...){
   ## Plot
   
   t=c(x$BootMean,x$BootCirc)
+  if(is.null(ylim)) ylim=c(min(t,na.rm=TRUE),max(t,na.rm=TRUE))
+  if(is.null(xlim)) xlim=c(max(x$yr),min(x$yr))
+  if(is.null(xlab)) xlab="Age (cal yr BP)"
+  if(is.null(ylab)) ylab="Composite"
+  
   plot(x$yr,x$BootMean,type="o",
-       ylim=c(min(t,na.rm=TRUE),max(t,na.rm=TRUE)),
-       xlim=c(max(x$yr),min(x$yr)),xlab="Age (cal yr BP)",ylab="Composite", lab=c(8,5,5), 
+       ylim=ylim,
+       xlim=xlim,
+       xlab=xlab,
+       ylab=ylab, lab=c(8,5,5), 
        pch=16, cex=0.5,axes=F, mgp=c(2,0,0))
   for (i in 1:length(x$BootCirc[1,])){
     lines(x$yr,x$BootCirc[,i],lty=2)
-    text(min(x$yr)-200,x$BootCirc[1,i],paste(x$conf[i]*100,"%",sep=""),col="black")
+    if(text==TRUE) text(min(x$yr)-200,x$BootCirc[1,i],paste(x$conf[i]*100,"%",sep=""),col="black")
   }
   axis(1); axis(2, cex.axis=1)
   axis(side = 1, at = seq(0, 99000, by = 500), 
