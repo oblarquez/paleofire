@@ -28,7 +28,7 @@ Rignt click or click finish when ready.")
   ## Use select.pts for selection
   cat("\n")
   cat("\nInteractively select points by drawing a polygon composed of at least 
-three vertices. Right click or click finish when ready.")
+three vertices (polygon must be convex ). Right click or click finish when ready.")
   a=select.pts(pp)
   
   
