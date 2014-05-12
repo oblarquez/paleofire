@@ -3,8 +3,8 @@
 
 
 library(devtools)
-install_github("paleofire", repo="GCD",ref="release3.0.1")
-install_github("paleofire", repo="paleofire",ref="release1.1")
+install_github("paleofire", repo="GCD",ref="master")
+install_github("paleofire", repo="paleofire",ref="master")
 
 library(GCD)
 library(paleofire)

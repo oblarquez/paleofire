@@ -86,6 +86,12 @@ pfGridding=function(data,cell_sizex=NULL,
   if(is.null(elevation_buffer)==FALSE | sea_mask==TRUE){
     temp=rasterToPoints(dem1)
     temp1=rasterize(temp[, 1:2], r, temp[,3], fun=mean)
+    ## ???????? Hack for Sea Mask NEW 12 may 14
+    dem2=dem1
+    dem2[is.na(dem2)]=-9999
+    dem2=rasterToPoints(dem2)
+    temp2=rasterize(dem2[, 1:2], r, dem2[,3], fun=median)
+    ## !!!!!!!!
     z=raster::intersect(temp1,r)
     # plot(temp1)
     elev1=rasterToPoints(temp1)[,3]
@@ -149,7 +155,7 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## SEA MASK  
   if(sea_mask==TRUE){
-    r2 <- is.na(temp1)  ## sea is now 1
+    r2 <- temp2<(-1000) ## sea is now 1
     r2[r2==1]=NA
     #plot(r2) 
     # !!!!!!MASK
