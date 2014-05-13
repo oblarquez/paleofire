@@ -255,7 +255,8 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   ## SAME COLORS 
   if(continuous==FALSE & is.numeric(col_class) & length(col_class)>1){
-    c1=breaks+(mean(diff(breaks)/2))
+    options(warn=-1)
+    c1=breaks+(diff(breaks)/2)
     c3=cbind(xlim[2]+1e+6,ylim[2]+1e+6,c1)
     c3=c3[1:(length(c3[,1])-1),]
     c3=data.frame(c3,rr=(cut(c3[,3],breaks)))
@@ -263,7 +264,7 @@ plot.pfGridding=function(x,continuous=TRUE,
     x$df=rbind(x$df,c3)
   }
   ## 
-  pale=testcol(length(unique(x$df$class)))
+  pale=testcol(length(levels(x$df$class)))
   
   #display.brewer.pal(12,"Spectral")
   #pal=c(pal[9],pal[8],pal[6:1])
