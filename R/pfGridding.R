@@ -9,15 +9,16 @@ pfGridding=function(data,cell_sizex=NULL,
                     elevation_buffer=NULL,
                     proj4=NULL,
                     sea_mask=FALSE,
+                    other_mask=NULL,
                     verbose=TRUE){
   
   ## pfTransform object
   if(class(data)=="pfTransform"){
-      data<-data.frame(
-        x=rep(summary(data$params$ID)$long,each=length(data$TransData[,1])),
-        y=rep(summary(data$params$ID)$lat,each=length(data$TransData[,1])),
-        age=c(data$Age),
-        char=c(data$TransData));
+    data<-data.frame(
+      x=rep(summary(data$params$ID)$long,each=length(data$TransData[,1])),
+      y=rep(summary(data$params$ID)$lat,each=length(data$TransData[,1])),
+      age=c(data$Age),
+      char=c(data$TransData));
     data=na.omit(data)
     ## Remove extreme outliers i.e. 3*sd (sometimes happens... why? probably baseperiod related)
     data=data[data[,4]<3*sd(data[,4]) & data[,4]>-(3*sd(data[,4])) ,]
@@ -157,7 +158,17 @@ pfGridding=function(data,cell_sizex=NULL,
   if(sea_mask==TRUE){
     r2 <- temp2<(-1000) ## sea is now 1
     r2[r2==1]=NA
-    #plot(r2) 
+    ## Other mask (e.g. ice) see help for details
+    if(is.null(other_mask)==FALSE){
+      plot(r2) 
+      r3=mask(r2,other_mask)
+      plot(r3)
+      r3[r3==0]=1
+      r3[is.na(r3)]=0
+      plot(r2-r3)
+      r2=r2-r3;r2[r2!=0]=NA
+      plot(r2)
+    }
     # !!!!!!MASK
     r1=(r1-r2)
   }
@@ -175,12 +186,12 @@ pfGridding=function(data,cell_sizex=NULL,
 }
 
 plot.pfGridding=function(x,continuous=TRUE,
-                col_class=NULL,
-                col_lim=NULL,
-                xlim=NULL,ylim=NULL,empty_space=10,
-                cpal="YlGn",
-                anomalies=TRUE,
-                file=NULL,points=FALSE,...){
+                         col_class=NULL,
+                         col_lim=NULL,
+                         xlim=NULL,ylim=NULL,empty_space=10,
+                         cpal="YlGn",
+                         anomalies=TRUE,
+                         file=NULL,points=FALSE,...){
   
   y=NULL ##  no visible binding for global variable 'y' ?
   
@@ -231,8 +242,8 @@ plot.pfGridding=function(x,continuous=TRUE,
     ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
   
   ## Crop coast using limits
-    coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
-                  coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
+  coast=coast[coast$x>xlim[1]-8000000 & coast$x<xlim[2]+8000000 &
+                coast$y>ylim[1]-8000000 & coast$y<ylim[2]+8000000,]
   #plot(coast[,1],coast[,2],type="l")
   
   x$points=data.frame(na.omit(x$points))
@@ -278,7 +289,7 @@ plot.pfGridding=function(x,continuous=TRUE,
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
     if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-
+    
   } else {
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
@@ -287,7 +298,7 @@ plot.pfGridding=function(x,continuous=TRUE,
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
     if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-      
+    
   }
   p
   if(is.null(file)==FALSE){
