@@ -196,7 +196,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   y=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))
-    
+  
   # Define classes for colors
   if(is.null(col_class)){
     if(anomalies==TRUE){
@@ -256,14 +256,14 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   testcol  <- colorRampPalette(pal)
   
-#   ## LIMITS
-#   if(is.null(xlim)){
-#     xplus=(x$extent@xmax-x$extent@xmin)*0.1
-#     xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
-#   
-#   if(is.null(ylim)){
-#     yplus=(x$extent@ymax-x$extent@ymin)*0.1
-#     ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
+  #   ## LIMITS
+  #   if(is.null(xlim)){
+  #     xplus=(x$extent@xmax-x$extent@xmin)*0.1
+  #     xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
+  #   
+  #   if(is.null(ylim)){
+  #     yplus=(x$extent@ymax-x$extent@ymin)*0.1
+  #     ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
   
   ## SAME COLORS 
   if(continuous==FALSE & is.numeric(col_class) & length(col_class)>1){
@@ -282,9 +282,9 @@ plot.pfGridding=function(x,continuous=TRUE,
   #pal=c(pal[9],pal[8],pal[6:1])
   ## On fait une carte avec ggplot2
   #pdf(file="/Users/Olivier/Desktop/x$dfMap.pdf",height=6,width=9)
+  width=xres(x$raster)
+  height=yres(x$raster)
   if(continuous==FALSE){
-    width=xres(x$raster)
-      height=yres(x$raster)
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
       geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=width,height=height))+
