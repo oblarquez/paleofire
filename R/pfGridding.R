@@ -282,8 +282,8 @@ plot.pfGridding=function(x,continuous=TRUE,
   #pal=c(pal[9],pal[8],pal[6:1])
   ## On fait une carte avec ggplot2
   #pdf(file="/Users/Olivier/Desktop/x$dfMap.pdf",height=6,width=9)
-  width=xres(x$raster)
-  height=yres(x$raster)
+  width=raster::xres(x$raster)
+  height=raster::yres(x$raster)
   if(continuous==FALSE){
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
