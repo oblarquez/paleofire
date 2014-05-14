@@ -196,6 +196,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   y=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))
+    
   # Define classes for colors
   if(is.null(col_class)){
     if(anomalies==TRUE){
@@ -255,14 +256,14 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   testcol  <- colorRampPalette(pal)
   
-  ## LIMITS
-  if(is.null(xlim)){
-    xplus=(x$extent@xmax-x$extent@xmin)*0.1
-    xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
-  
-  if(is.null(ylim)){
-    yplus=(x$extent@ymax-x$extent@ymin)*0.1
-    ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
+#   ## LIMITS
+#   if(is.null(xlim)){
+#     xplus=(x$extent@xmax-x$extent@xmin)*0.1
+#     xlim=c(x$extent@xmin-xplus,x$extent@xmax+xplus)}
+#   
+#   if(is.null(ylim)){
+#     yplus=(x$extent@ymax-x$extent@ymin)*0.1
+#     ylim=c(x$extent@ymin-yplus,x$extent@ymax+yplus)}
   
   ## SAME COLORS 
   if(continuous==FALSE & is.numeric(col_class) & length(col_class)>1){
@@ -282,9 +283,11 @@ plot.pfGridding=function(x,continuous=TRUE,
   ## On fait une carte avec ggplot2
   #pdf(file="/Users/Olivier/Desktop/x$dfMap.pdf",height=6,width=9)
   if(continuous==FALSE){
+    width=xres(x$raster)
+      height=yres(x$raster)
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_raster(data=x$df,aes(x=x, y=y, fill = class))+
+      geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=width,height=height))+
       scale_fill_manual(values = pale,name="")+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
@@ -293,7 +296,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   } else {
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_raster(data=x$df,aes(x=x, y=y, fill = layer))+
+      geom_tile(data=x$df,aes(x=x, y=y, fill = layer,width=xres(x$raster),height=yres(x$raster)))+
       scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
