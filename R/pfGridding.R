@@ -296,7 +296,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   } else {
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_tile(data=x$df,aes(x=x, y=y, fill = layer,width=xres(x$raster),height=yres(x$raster)))+
+      geom_tile(data=x$df,aes(x=x, y=y, fill = layer,width=width,height=height))+
       scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
