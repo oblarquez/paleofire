@@ -160,14 +160,14 @@ pfGridding=function(data,cell_sizex=NULL,
     r2[r2==1]=NA
     ## Other mask (e.g. ice) see help for details
     if(is.null(other_mask)==FALSE){
-      plot(r2) 
+#       plot(r2) 
       r3=mask(r2,other_mask)
-      plot(r3)
+#       plot(r3)
       r3[r3==0]=1
       r3[is.na(r3)]=0
-      plot(r2-r3)
+#       plot(r2-r3)
       r2=r2-r3;r2[r2!=0]=NA
-      plot(r2)
+#       plot(r2)
     }
     # !!!!!!MASK
     r1=(r1-r2)
@@ -191,7 +191,7 @@ plot.pfGridding=function(x,continuous=TRUE,
                          xlim=NULL,ylim=NULL,empty_space=10,
                          cpal="YlGn",
                          anomalies=TRUE,
-                         file=NULL,points=FALSE,...){
+                         file=NULL,points=FALSE,add=NULL,...){
   
   y=NULL ##  no visible binding for global variable 'y' ?
   
@@ -282,6 +282,19 @@ plot.pfGridding=function(x,continuous=TRUE,
   #pal=c(pal[9],pal[8],pal[6:1])
   ## On fait une carte avec ggplot2
   #pdf(file="/Users/Olivier/Desktop/x$dfMap.pdf",height=6,width=9)
+  
+  ## Add shp to the plot
+  if(is.null(add)==FALSE){
+    theclass=lapply(add@data, class) 
+    theclass=which(theclass=="factor")
+    add@data$id = add@data[,as.numeric(theclass[1])]
+    add.points = fortify(add, region="id")
+    add.df = join(add.points, add@data, by="id")    
+  }
+  
+  ##
+  
+  
   width=raster::xres(x$raster)
   height=raster::yres(x$raster)
   if(continuous==FALSE){
@@ -292,6 +305,9 @@ plot.pfGridding=function(x,continuous=TRUE,
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
     if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
+    if(is.null(add)==FALSE){
+      p=p+geom_path(data=add.df,aes(x=long,y=lat,group=group),color="black")
+    }
     
   } else {
     p=ggplot(x$df) +
@@ -301,7 +317,9 @@ plot.pfGridding=function(x,continuous=TRUE,
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
     if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-    
+    if(is.null(add)==FALSE){
+      p=p+geom_path(data=add.df,aes(x=long,y=lat,group=group),color="black")
+    }
   }
   p
   if(is.null(file)==FALSE){
