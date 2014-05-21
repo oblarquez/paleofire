@@ -78,7 +78,7 @@ pfGridding=function(data,cell_sizex=NULL,
   nc=ceiling((e@xmax-e@xmin)/cell_sizex)
   nr=ceiling((e@ymax-e@ymin)/cell_sizey)
   
-  r <- raster(e, ncol=nc, nrow=nr) # Empty raster
+  r <- raster(e, ncol=nc, nrow=nr, resolution=c(cell_sizex,cell_sizey)) # Empty raster
   projection(r)<-proj4
   
   if(is.null(distance_buffer)) distance_buffer=300000
@@ -160,14 +160,14 @@ pfGridding=function(data,cell_sizex=NULL,
     r2[r2==1]=NA
     ## Other mask (e.g. ice) see help for details
     if(is.null(other_mask)==FALSE){
-#       plot(r2) 
+      #       plot(r2) 
       r3=mask(r2,other_mask)
-#       plot(r3)
+      #       plot(r3)
       r3[r3==0]=1
       r3[is.na(r3)]=0
-#       plot(r2-r3)
+      #       plot(r2-r3)
       r2=r2-r3;r2[r2!=0]=NA
-#       plot(r2)
+      #       plot(r2)
     }
     # !!!!!!MASK
     r1=(r1-r2)
@@ -179,7 +179,7 @@ pfGridding=function(data,cell_sizex=NULL,
   
   ## End of DATA part --------------------------------------------------------------------
   
-  out=list(raster=r1,df=dat1,proj4=proj4,extent=e,points=dat2)
+  out=list(raster=r1,df=dat1,proj4=proj4,extent=e,points=dat2,res=c(cell_sizex,cell_sizey))
   class(out)="pfGridding"
   return(out)
   
@@ -293,14 +293,12 @@ plot.pfGridding=function(x,continuous=TRUE,
   }
   
   ##
+  x$df$res1=x$res[1]; x$df$res2=x$res[2]
   
-  
-  width=raster::xres(x$raster)
-  height=raster::yres(x$raster)
   if(continuous==FALSE){
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=width,height=height))+
+      geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=res1,height=res2))+
       scale_fill_manual(values = pale,name="")+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)
@@ -308,11 +306,10 @@ plot.pfGridding=function(x,continuous=TRUE,
     if(is.null(add)==FALSE){
       p=p+geom_path(data=add.df,aes(x=long,y=lat,group=group),color="black")
     }
-    
   } else {
     p=ggplot(x$df) +
       geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_tile(data=x$df,aes(x=x, y=y, fill = layer,width=width,height=height))+
+      geom_tile(data=x$df,aes(x=x, y=y, fill = layer, width=res1, height=res2))+
       scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
       coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
       theme_bw(base_size = 16)

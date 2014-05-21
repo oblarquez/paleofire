@@ -1,7 +1,6 @@
 ## Interactive sites selection:
 # ID=pfInteractive()
 
-
 library(devtools)
 install_github("paleofire", repo="GCD",ref="master")
 install_github("paleofire", repo="paleofire",ref="master")
@@ -31,8 +30,6 @@ plot(ID)
 
 ID=pfSiteSel(lat>0, rf99==6 | l12==1, elev<=1000)
 plot(ID)
-
-## Filter sites based on sample number using summary function
 
 
 ## Associated plots
@@ -106,17 +103,18 @@ comparison=pfKruskal(res3,alpha=0.05,bins=seq(from=-500,to=12500,by=1000))
 plot(comparison,ylim=c(-5,7))
 
 
-## Here
+## Example: Obtaining the number of sites at each binned interval from pfComposite:
 
-ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
-
-res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
-
-p=pfGridding(res3,age=1000)
-summary(p)
-
-plot(p,points=T,empty_space=100)
-
-
+# Select some sites:
+ID=pfSiteSel(lat>0, rf99==6 | l12==1, elev<=1000, id_region=="EURO")
+# Transform
+TR=pfTransform(ID,method=c("MinMax", "Box-Cox", "Z-Score"))
+# Compositing
+COMP=pfComposite(TR, binning=TRUE, bins=seq(0,12000,500))
+plot(COMP)
+# Count number of Non NA values in binned data (i.e. number of sites at each bin)
+n=rowSums(!is.na(COMP$BinnedData)) 
+# Plot it
+plot(COMP$BinCentres,n,type="l")
 
 
