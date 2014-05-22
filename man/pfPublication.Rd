@@ -3,7 +3,7 @@
 \alias{pfPublication}
 \title{Get citations for charcoal sites}
 \usage{
-pfPublications(x, output = "data.frame")
+pfPublication(x, output = "data.frame")
 }
 \arguments{
 \item{x}{A "pfSiteSel" object}
@@ -17,8 +17,10 @@ A list or data frame with citation informations related to charcoal sites.
 Get citations for charcoal sites
 }
 \examples{
+\dontrun{
 x=pfSiteSel(id_site \%in\% c(1:4))
 pfPublication(x,output="list")
+}
 }
 \author{
 O. Blarquez
