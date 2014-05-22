@@ -8,7 +8,7 @@ pfGridding=function(data,cell_sizex=NULL,
                     raster_extent=NULL,
                     elevation_buffer=NULL,
                     proj4=NULL,
-                    sea_mask=FALSE,
+                    sea_mask=TRUE,
                     other_mask=NULL,
                     verbose=TRUE){
   
