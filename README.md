@@ -28,6 +28,6 @@ To test everything is working you can plot a map of all charcoal records include
 plot(pfSiteSel())
 ```
 
-For details and examples about `paleofire` please refer to the included [manual](https://github.com/paleofire/paleofire/raw/master/paleofire-manual.pdf).
+For details and examples about `paleofire` please refer to the included [manual](http://cran.r-project.org/web/packages/paleofire/paleofire.pdf).
 
 Maintainer: Olivier Blarquez <blarquez@gmail.com>

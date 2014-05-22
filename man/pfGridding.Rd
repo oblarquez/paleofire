@@ -11,7 +11,7 @@ pfGridding(data, cell_sizex = NULL, cell_sizey = NULL, age = 0,
            cell_size = NULL, time_buffer = NULL, 
            distance_buffer = NULL, raster_extent = NULL, 
            elevation_buffer = NULL, proj4 = NULL, 
-           sea_mask = FALSE, verbose = TRUE)
+           sea_mask = FALSE, other_mask = NULL ,verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +38,8 @@ String, proj.4 string representing the desired projection for plotted maps. Defa
 }
   \item{sea_mask}{
 Logical, mask cells falling in the sea.}
+ \item{other_mask}{
+A sp object (SpatialPolygonsDataFrame) used to mask data i.e. for not interpollating pixels under the mask (classical usage: ice extent mask). Note that the SpatialPolygonsDataFrame projection must be used in the analysis and defined using \code{proj4} argument, otherwise the mask should be reprojected (e.g. using rgdal::spTransform).}
   \item{verbose}{
 Logical, verbose or not...}
 }

@@ -8,7 +8,7 @@
 #' x=pfSiteSel(id_site %in% c(1:4))
 #' pfPublications(x,output="list")
 
-pfPublications <- function(x,output="data.frame",...) {
+pfPublications <- function(x,output="data.frame") {
   
   pub_key<-pub<-NULL
   data(pub,envir = environment())

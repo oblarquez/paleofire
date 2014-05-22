@@ -3,7 +3,7 @@
 \alias{pfPublications}
 \title{Get citations for charcoal sites}
 \usage{
-pfPublications(x, output = "data.frame", ...)
+pfPublications(x, output = "data.frame")
 }
 \arguments{
 \item{x}{A "pfSiteSel" object}

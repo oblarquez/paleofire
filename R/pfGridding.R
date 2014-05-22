@@ -193,7 +193,7 @@ plot.pfGridding=function(x,continuous=TRUE,
                          anomalies=TRUE,
                          file=NULL,points=FALSE,add=NULL,...){
   
-  y=NULL ##  no visible binding for global variable 'y' ?
+  y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))
   
@@ -289,7 +289,7 @@ plot.pfGridding=function(x,continuous=TRUE,
     theclass=which(theclass=="factor")
     add@data$id = add@data[,as.numeric(theclass[1])]
     add.points = fortify(add, region="id")
-    add.df = join(add.points, add@data, by="id")    
+    add.df = plyr::join(add.points, add@data, by="id")    
   }
   
   ##
