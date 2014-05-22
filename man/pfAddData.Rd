@@ -14,7 +14,7 @@ pfAddData(files, metadata, type = "NULL", Int = TRUE, first =
   \item{files}{
 Character, names and path to csv files.}
  \item{metadata}{
-Character, names and path to metadata csv file.}
+Character, name and path to the (unique) metadata csv file.}
  \item{type}{
 Character, "NONE": user defined csv (default), "CharAnalysis": CharAnalysis data file.}
   \item{Int}{
