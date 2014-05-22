@@ -1,6 +1,21 @@
 paleofire 1.1.2
 -----------------------------------------
 
+New features:
+
+* pfPublications function to get citation for charcoal series
+
+* Option added to pfGridding for using additionnal spatailpolygons dataframe as mask in the analysis 
+
+Fixes:
+
+* Fixed projection and cell sizes in pfGridding and colors in associated plot
+
+* Minor fixes for graphical outputs
+
+paleofire 1.1.2
+-----------------------------------------
+
 Fix for windows compil related to sink usage...
 
 paleofire 1.1
