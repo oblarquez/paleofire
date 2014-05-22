@@ -24,8 +24,9 @@ O. Blarquez}
 \seealso{ \code{\link{pfSiteSel}}}
 
 \examples{
-## Type 
-#ID=pfInteractive()
-## And follow text instructions
+\dontrun{
+# Type: 
+ID=pfInteractive()
+# And follow text instructions}
 
 }

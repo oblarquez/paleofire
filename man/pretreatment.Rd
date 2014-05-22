@@ -38,22 +38,21 @@ O. Blarquez translated from P. Higuera CharPretreatment.m function}
 
 
 \examples{
-# not run
-
-## In this example we will use the charcoal record of the Lac du Loup from Blarquez et al. (2010).
+\dontrun{
+# In this example we will use the charcoal record of the Lac du Loup from Blarquez et al. (2010).
 # Blarquez, O., C. Carcaillet, B. Mourier, L. Bremond, and O. Radakovitch. 2010. Trees in the 
 # subalpine belt since 11 700 cal. BP: origin, expansion and alteration of the modern forest. 
 # The Holocene 20:139-146.
 
-## Load raw charcoal data in mm^2
-# A=read.csv("http://blarquez.com/public/code/loupchar.csv")
-# C_=A[,6] # charcoal areas
-# P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume 
+# Load raw charcoal data in mm^2
+A=read.csv("http://blarquez.com/public/code/loupchar.csv")
+C_=A[,6] # charcoal areas
+P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume 
 
-
-## Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)
-# CHAR=pretreatment(params=P_,serie=C_,Int=TRUE)
-# plot(CHAR)
+# Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)
+CHAR=pretreatment(params=P_,serie=C_,Int=TRUE)
+plot(CHAR)
+}
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

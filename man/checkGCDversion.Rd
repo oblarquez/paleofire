@@ -21,7 +21,7 @@ Last GCD database version is donwloaded and installed using:
 O. Blarquez}
 
 \examples{
-#checkGCDversion()
+\dontrun{checkGCDversion()}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
