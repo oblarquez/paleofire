@@ -164,9 +164,14 @@ pfDotMap = function(TR, bins,
     }
   }
   close(pb) # close progress bar
-  
-  
-  # ---------- Plot
+
+  grd.site.ind = list()
+  for(i in 1:n.grd) {
+      grd.site.ind[[i]] = which(dists[i,]<max.dist)         # all sites within range
+  }
+
+
+# ---------- Plot
   cat("\nPlotting ", n.bin, " figures...\n", sep="")
   pb = txtProgressBar(0,n.bin,style=2) # progress bar
   plotlist = spgrdlist = spsitelist = list()
@@ -203,7 +208,7 @@ pfDotMap = function(TR, bins,
     # the bottom-right plot will have different extent than other two.
     x.lim = bbox(sp.grd)[1,]
     y.lim = bbox(sp.grd)[2,]
-    
+
     # ----- Create mean plot
       # Define colors and cut locations 
 #       cols = c("#CA0020","#F4A582","#F7F7F7","#92C5DE","#0571B0") # from colorbrewer
