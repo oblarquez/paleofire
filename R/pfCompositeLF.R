@@ -271,6 +271,7 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
   }
   
   if (type=="density"){
+    bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
     seqI=seq(min(na.omit(x$mboot)),max(na.omit(x$mboot)),len=1000)
     img=matrix(nrow=1000,ncol=length(x$mboot[,1]))
     
