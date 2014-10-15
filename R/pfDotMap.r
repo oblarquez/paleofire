@@ -164,12 +164,17 @@ pfDotMap = function(TR, bins,
     }
   }
   close(pb) # close progress bar
-  
-  
-  # ---------- Plot
+
+  grd.site.ind = list()
+  for(i in 1:n.grd) {
+      grd.site.ind[[i]] = which(dists[i,]<max.dist)         # all sites within range
+  }
+
+
+# ---------- Plot
   cat("\nPlotting ", n.bin, " figures...\n", sep="")
   pb = txtProgressBar(0,n.bin,style=2) # progress bar
-  plotlist = list()
+  plotlist = spgrdlist = spsitelist = list()
 
   
   # ----- Loop over all bins, one plot for each
@@ -203,11 +208,12 @@ pfDotMap = function(TR, bins,
     # the bottom-right plot will have different extent than other two.
     x.lim = bbox(sp.grd)[1,]
     y.lim = bbox(sp.grd)[2,]
-    
+
     # ----- Create mean plot
       # Define colors and cut locations 
 #       cols = c("#CA0020","#F4A582","#F7F7F7","#92C5DE","#0571B0") # from colorbrewer
-      cols = c("#CA0020","#F4A582",grey(0.9),"#92C5DE","#0571B0") # modified from colorbrewer
+#       cols = c("#CA0020","#F4A582",grey(0.9),"#92C5DE","#0571B0") # modified from colorbrewer
+      cols = c("#0571B0","#92C5DE",grey(0.9),"#F4A582","#CA0020") # modified from colorbrewer
       cuts = seq(-2.5,2.5,by=1) # Defines range and resolution of color scale
         
       # Determine cuts for sizing point.
@@ -323,12 +329,14 @@ pfDotMap = function(TR, bins,
 
     # ----- Store plot objects
       plotlist[[j]] = list("mean"=mean.plot,"sitesPerCell"=sitesPerCell.plot,"cellsPerSite"=cellsPerSite.plot,"timeSeries"=timeSeries.plot)
+      spgrdlist[[j]] = sp.grd
+      spsitelist[[j]] = sp.sites
+      
 
-    
   } # End loop over all bins
 
   # ----- Return
-    output = list(COMP=COMP,bins=bins,sp.grd=sp.grd,sp.sites=sp.sites,plots=plotlist)
+    output = list(COMP=COMP, bins=bins, sp.grd=spgrdlist, sp.sites=spsitelist, grd.site.ind=grd.site.ind, site.dat=site.dat, plots=plotlist)
     return(output)
   
 cat("\nAll done!\n\n")
