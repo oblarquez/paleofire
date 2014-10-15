@@ -191,7 +191,7 @@ plot.pfGridding=function(x,continuous=TRUE,
                          xlim=NULL,ylim=NULL,empty_space=10,
                          cpal="YlGn",
                          anomalies=TRUE,
-                         file=NULL,points=FALSE,add=NULL,...){
+                         file=NULL,points=FALSE,add=NULL,add_color="white",...){
   
   y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
@@ -251,7 +251,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   colnames(x$points)=c("x","y")
   
   if(anomalies==TRUE) {
-    cpal="RdBu"
+    if(cpal=="YlGn") {cpal="RdBu"}
     pal=rev(brewer.pal(9,cpal))} else pal=brewer.pal(9,cpal)
   
   testcol  <- colorRampPalette(pal)
@@ -277,6 +277,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   }
   ## 
   pale=testcol(length(levels(x$df$class)))
+  if(cpal=="Greys") {pale=rev(testcol(length(levels(x$df$class))+1)[1:(length(levels(x$df$class)))])}
   
   #display.brewer.pal(12,"Spectral")
   #pal=c(pal[9],pal[8],pal[6:1])
@@ -295,29 +296,44 @@ plot.pfGridding=function(x,continuous=TRUE,
   ##
   x$df$res1=x$res[1]; x$df$res2=x$res[2]
   
-  if(continuous==FALSE){
-    p=ggplot(x$df) +
-      geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=res1,height=res2))+
-      scale_fill_manual(values = pale,name="")+
-      coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
-      theme_bw(base_size = 16)
-    if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-    if(is.null(add)==FALSE){
-      p=p+geom_path(data=add.df,aes(x=long,y=lat,group=group),color="black")
-    }
-  } else {
-    p=ggplot(x$df) +
-      geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-      geom_tile(data=x$df,aes(x=x, y=y, fill = layer, width=res1, height=res2))+
-      scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
-      coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
-      theme_bw(base_size = 16)
-    if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-    if(is.null(add)==FALSE){
-      p=p+geom_path(data=add.df,aes(x=long,y=lat,group=group),color="black")
+  ## Plot only points
+  if(points=="Only"){
+      p=ggplot(x$df) +
+        geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
+        coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+        theme_bw(base_size = 16)+
+        geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
+      if(is.null(add)==FALSE){
+        p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
+      }
+    } else {
+    ## Plot interp data
+    if(continuous==FALSE){
+      p=ggplot(x$df) 
+      if(cpal=="Greys") {p=p+geom_polygon(data=coast,aes(x=x,y=y),colour="black",fill="white")
+      } else {p=p+geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")}
+      p=p+geom_tile(data=x$df,aes(x=x, y=y, fill = class,width=res1,height=res2))+
+        scale_fill_manual(values = pale,name="")+
+        coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+        theme_bw(base_size = 16)
+      if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
+      if(is.null(add)==FALSE){
+        p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
+      }
+    } else {
+      p=ggplot(x$df) +
+        geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
+        geom_tile(data=x$df,aes(x=x, y=y, fill = layer, width=res1, height=res2))+
+        scale_fill_gradient2(high=pal[9],low=pal[1],mid="white",limits=col_lim)+
+        coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+        theme_bw(base_size = 16)
+      if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
+      if(is.null(add)==FALSE){
+        p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
+      }
     }
   }
+  
   p
   if(is.null(file)==FALSE){
     projection(x$raster)<-CRS(x$proj4)

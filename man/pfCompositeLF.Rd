@@ -4,7 +4,7 @@
 \title{
 Produce a composite serie from multiple charcoal records using a local regression procedure (from the locfit package)}
 \description{
-Produce a composite serie from multiple charcoal local fits produced using the locfit procedure on bootstraped series subsamples, the sites charcoal values are prebinned prior to sites resampling. This procedure is equivalent to Daniau et al. (2012).
+Produces a composite series from multiple charcoal records by using a robust locally weighted scatterplot smoother (LOWESS). The robust LOWESS uses the locfit function from the locfit package and is applied repeatedly (nboot times) on bootstrapped charcoal sites samples. The records charcoal values are pre-binned prior to sites resampling. This procedure is equivalent to Daniau et al. (2012).
 }
 \usage{
 pfCompositeLF(TR,hw=250,tarAge=NULL,binhw=NULL,nboot=1000,conf=c(0.05,0.95),
