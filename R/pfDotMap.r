@@ -213,8 +213,12 @@ pfDotMap = function(TR, bins,
       # Define colors and cut locations 
 #       cols = c("#CA0020","#F4A582","#F7F7F7","#92C5DE","#0571B0") # from colorbrewer
 #       cols = c("#CA0020","#F4A582",grey(0.9),"#92C5DE","#0571B0") # modified from colorbrewer
-      cols = c("#0571B0","#92C5DE",grey(0.9),"#F4A582","#CA0020") # modified from colorbrewer
-      cuts = seq(-2.5,2.5,by=1) # Defines range and resolution of color scale
+#       cols = c("#0571B0","#92C5DE",grey(0.9),"#F4A582","#CA0020") # modified from colorbrewer
+#       cuts = seq(-2.5,2.5,by=1) # Defines range and resolution of color scale
+  cols = rev(c("#b2182b","#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166ac"))
+  zlim = c(-1.75,1.75)
+  cuts = c(-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75)
+
         
       # Determine cuts for sizing point.
         # Specify symbol sizes for the two classes
