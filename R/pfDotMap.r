@@ -1,7 +1,7 @@
 #  v08
 #  v06
 
-pfDotMap = function(TR, bins, 
+pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), 
                     fig.base.name=NULL, base.map='coasts',
                     grd.res=5, grd.ext=c(-180,180,-90,90), 
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", n.boot=1000,
@@ -17,24 +17,21 @@ pfDotMap = function(TR, bins,
   # run everything and just give a harmless error at the end.
 #   # 
 #   rm(list=ls())
-#   
-#   #load('~/Drive/GPWG_MapPaper/Krige Maps/All_GPCD_Transformed_v2.rdata')
-#   TR =res3
-#   bins              = seq(0,2000,1000)
-#   fig.base.name     = '/Users/Olivier/Desktop/'
+#   library(lattice)
+#   TR                = readRDS('data/All_GCDv1.1_Transformed_v02.rds')
+#   tarAge            = seq(0,2000,1000)
+#   hw                = 250
+#   binhw             = 500
+#   fig.base.name     = '~/Desktop/'
 #   base.map          = 'coasts'
 #   grd.res           = 5
 #   grd.ext           = c(-180,180,-90,90)
-#   proj4             = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "  # Corrsponds to unprojected maps
+#   proj4             = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
 #   n.boot            = 10    # too small, but OK for a teest
 #   cx.minsize        = 0.3   # minimum dot size
 #   cx.mult           = 1     # multiplicative factor for scaling all dots
-#   
+  
   # ---------------- END TEST BLOCK
-  
-  
-  # ----- Libraries
-  
   
   # ----- Load base map
   countriesCoarse<-coastsCoarse<-NULL
@@ -53,15 +50,15 @@ pfDotMap = function(TR, bins,
   }
   base.map = spTransform(base.map, CRS(proj4))
   
-  
   # ----- Create composite
   if(class(TR)=="pfTransform") {
     cat("Creating composite...")
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
-    # (I've checked "by hand" and it is accurate and efficient.)
-    COMP = pfComposite(TR, bins=bins, nboot=1000, binning=T)
+    # (I've checked "by hand" and it is accurate and efficient.) 
+    # No need for bootstraps--we're only going to use the actual composite for now. Will bootstrap by site later. 
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1)
     CHAR = t(COMP$BinnedData)
-    n.bin = length(bins) - 1
+    n.bin = length(tarAge)
     cat("done!\n")
   } else {
     stop("Input PF must be a pfTransform object.")
@@ -185,7 +182,7 @@ pfDotMap = function(TR, bins,
     
     # Open file connection, if saving the plot
     if(!is.null(fig.base.name))
-      pdf(paste(fig.base.name, "_", bins[j], "-", bins[j+1], "bp.pdf", sep=""), 
+      pdf(paste(fig.base.name, "_", tarAge[j]-binhw, "-", tarAge[j]+binhw, "bp.pdf", sep=""), 
           width=12, height=12)
     
     # Convert stats to spatial data frames. Might not be necessary but sure makes it easy to use spplot() below.
@@ -235,7 +232,7 @@ pfDotMap = function(TR, bins,
         spplot(sp.grd, 'mean.CHAR', xlim=x.lim, ylim=y.lim,
           cuts=cuts, colorkey=T, col.regions=cols, cex=cx, edge.col=grey(0.3), lwd=0.3,
           scales=list(draw=T), sp.layout=list("sp.lines",base.map,col=grey(0.8)),
-          main=paste("Charcoal Influx z-Scores: ", bins[j], "-", bins[j+1], " BP", sep="")) 
+          main=paste("Charcoal Influx z-Scores: ", tarAge[j]-binhw, "-", tarAge[j]+binhw, " BP", sep="")) 
 
 
     # ----- Plot Number of sites per grid cell
@@ -295,7 +292,7 @@ pfDotMap = function(TR, bins,
     
     # ----- Create time series plot
       timeSeries.dat = data.frame(
-                age  = rep(bins,each=2)[2:(2*n.bin+1)],
+                age  = as.numeric(rbind(tarAge-binhw, tarAge+binhw)),
                 char = rep(COMP$Result$MEAN, each=2),
                 lCI  = rep(COMP$Result[,3], each=2),
                 uCI  = rep(COMP$Result[,4], each=2) )
@@ -340,7 +337,7 @@ pfDotMap = function(TR, bins,
   } # End loop over all bins
 
   # ----- Return
-    output = list(COMP=COMP, bins=bins, sp.grd=spgrdlist, sp.sites=spsitelist, grd.site.ind=grd.site.ind, site.dat=site.dat, plots=plotlist)
+    output = list(COMP=COMP, tarAge=tarAge, sp.grd=spgrdlist, sp.sites=spsitelist, grd.site.ind=grd.site.ind, site.dat=site.dat, plots=plotlist)
     return(output)
   
 cat("\nAll done!\n\n")
