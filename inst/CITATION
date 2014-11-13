@@ -1,0 +1,21 @@
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("paleofire")
+
+citHeader("To cite use of 'paleofire' in publications use:")
+
+citEntry(entry="Article",
+	title   = "paleofire: An R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning",
+    author = "Olivier Blarquez and Boris Vannière and Jennifer R. Marlon and Anne-Laure Daniau and Mitchell J. Power and Simon Brewer and Patrick J. Bartlein",	
+	journal = "Computers & Geosciences ",
+    volume = "72",
+    pages = "255 - 261",
+    year = "2014",
+    issn = "0098-3004",
+    doi = "http://dx.doi.org/10.1016/j.cageo.2014.07.020",
+    url = "http://www.sciencedirect.com/science/article/pii/S0098300414001861",
+textVersion =
+	paste("Blarquez O., Vannière B., Marlon J. R., Daniau A.-L. Power M. J. Brewer S. and Bartlein P. J. 2014.", 
+              "paleofire: An R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning.",
+	      "Computers and Geosciences, 72, 255-261")
+)
+
+
