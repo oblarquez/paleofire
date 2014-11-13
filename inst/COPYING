@@ -1,0 +1,39 @@
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2
+    as published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, 
+    MA 02110-1301 USA.
+
+
+The files COPYING and share/licences/GPL-2 in the R top-level directory are 
+a copy of the 'GNU General Public License'.
+
+
+DATA POLICY: GLOBAL CHARCOAL DATABASE (GCD)
+=======
+
+May 2013 - Present
+
+The following data access policy is designed to cover all types of data contributed to the Global Charcoal Database (GCD). The GCD is a relational database containing sedimentary records of fire. It is our policy to acknowledge (including co-authorship) all data contributors and provide secure storage of records for perpetuity. We assume all contributors and users have read and understand the data access policy. All data available through the Global Charcoal Database are free to use for non-commercial purposes (see Creative Commons license at http://creativecommons.org/licenses/by-nc/3.0/).
+The aim of the Global Charcoal Database is to provide a platform for sharing paleofire data for research and educational purposes within the science and education communities.
+The data held in the Global Charcoal Database may be used by members and/or collaborators for analyses. All planned research with the database that incorporates regional and global-scale data should be described in the planned analysis section of the website.
+Researchers contributing fire data (charcoal, black carbon, levoglucosan, etc.) to the GCD will be co-authors of the database publication.
+All new data contributed to the Global Charcoal Database are considered public-access following the publication of the new version of the database (when a manuscript has been officially accepted as “in press”). Few exceptions will be allowed if data contributors are in process of publishing original data that has been contributed. These data will be considered under a moratorium that will expire in one year following the date of the submission. Extensions to the moratorium can be granted on in rare circumstances when at the request of data contributors. It is the responsibility of data contributors to notify the coordination team if an extension is desired.
+We have the right to refuse data contributions that are not appropriate for inclusion in the Global Charcoal Database.
+A current version of the Global Charcoal Database is available to all project members throughout the course of a project via the project website or through the project contact. Members who wish to use the data for new analyses should contact the Coordination Team and provide a description of their planned analyses.
+On publication, the most current version of the database will be accessible by the community through the Paleofire Research Community web page and archived at NOAA-NGDC WDC-A (Palaeoclimatology). Additional products (e.g. time series outputs, animated maps) developed during analysis from the database will also be accessible upon publication through the Paleofire Research Community website.
+When a version of the database is used for further analyses after a publication co-authorship of these subsequent analyses will be determined by lead scientists and based on the intellectual input by members toward these analyses, not by contribution of data.
+ 
+ 
+Normal ethics apply to co-authorship of scientific publications. The contributor should be invited to be a co-author if a user makes significant use of any individual contributor’s data, if any individual contributor’s data comprise a substantial portion of a larger dataset analyzed, or if a contributor makes a significant contribution to the analysis of the data or to the interpretation of the results. For synoptic studies using numerous datasets, contacting all contributors or making them co-authors may not be practical, possible, or reasonable. In no circumstances should authorship be attributed to data contributors, individually or collectively, without their explicit consent.
