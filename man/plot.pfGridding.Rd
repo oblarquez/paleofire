@@ -9,7 +9,8 @@ Plot maps presenting gridded and transformed charcoal values obtained from the \
 \method{plot}{pfGridding}(x, continuous = TRUE, col_class = NULL, 
                           col_lim = NULL, xlim = NULL, ylim = NULL, 
                           empty_space = 10, cpal = "YlGn", anomalies = TRUE, 
-                          file = NULL, points = FALSE, add = NULL, ...)
+                          file = NULL, points = FALSE, add = NULL, 
+                          add_color="white", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -37,6 +38,7 @@ Path/Filename.tiff, the function can output a GeoTiff file if desired.}
   \item{points}{
 Logical, plot charcoal sites on the map?}
   \item{add}{An object of the class "SpatialPolygonsDataFrame" (sp) to be ploted on the map.}
+   \item{add_color}{Color of the added SpatialPolygonsDataFrame.}
   \item{\dots}{
 \dots}
 }
