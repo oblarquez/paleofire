@@ -1,34 +1,29 @@
 Package: paleofire
 Type: Package
-Title: Analysis of sedimentary charcoal records from the
-    Global Charcoal Database to reconstruct past biomass burning
+Title: Analysis of Charcoal Records from the Global Charcoal Database 
 Version: 1.1.4
 Date: 2014-05-22
 Author: Global Paleofire Working Group <paleofire@gmail.com>
 Maintainer: Olivier Blarquez <blarquez@gmail.com>
-Description: The paleofire package provides tools to extract and analyse
-    charcoal sedimentary data stored in the Global Charcoal Database. Main
-    functionalities includes data extraction and sites selection,
-    transformation and interpolation of the charcoal records as well as
-    compositing.
+Description: Tools to extract and analyse charcoal sedimentary data stored in the Global 
+             Charcoal Database. Main functionalities includes data extraction and sites selection, 
+             transformation and interpolation of the charcoal records as well as compositing.
 URL: http://gpwg.org
 License: GPL (>= 2)
 Imports:
     locfit,
     gtools,
     caTools,
-    pscl,
     Imap,
-    RCurl,
-    devtools,
     raster,
-    sp,
     rgdal,
     ggplot2,
     lattice,
     RColorBrewer,
-    agricolae,
-    plyr
+    plyr,
+    sp,
+    pscl,
+    agricolae
 Depends:
     R(>= 2.10.0),
     methods,

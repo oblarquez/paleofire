@@ -8,30 +8,21 @@ checkGCDversion <- function() {
   if (!"GCD" %in% utils::installed.packages()[, 1]) {
     Checks <- "Failed"
   } else {
-    # Compare version numbers
-    temp <- RCurl::getURL("https://raw.githubusercontent.com/paleofire/GCD/master/DESCRIPTION",
-                   ssl.verifypeer = FALSE)      
-    CurrentVersion <- gsub("^\\s|\\s$", "", 
-                           gsub(".*Version:(.*)\\nDate.*", "\\1", temp))
-    
-    if (utils::packageVersion("GCD") == CurrentVersion) {
-      Checks <- "Passed"
-    }
-    if (utils::packageVersion("GCD") < CurrentVersion) {
+    oldones=old.packages()
+    if ("GCD" %in% oldones[,1]) {
       Checks <- "Failed"
-    }
+    } else Checks <- "Passed"
   }
-  
   switch(
     Checks,
-    Passed = { message("Everything looks OK! GCD up to date: v",CurrentVersion) },
+    Passed = { message("Everything looks OK! GCD up to date: v", packageVersion("GCD")) },
     Failed = {
 #       ans = readline(
 #         "GCD is either outdated or not installed. Update now? (y/n) ")
 #       if (ans != "y")
 #         return(invisible())
       packageStartupMessage("GCD is either outdated or not installed. Installing...")
-      install_github("GCD",username="paleofire",ref="master")
+      install.packages("GCD")
     })
   # packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 }
