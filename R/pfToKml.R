@@ -9,9 +9,9 @@ pfToKml=function(x,file="NULL")
 # file="/Users/Olivier/Desktop/truc.kml"
 
 df=data.frame(name=row.names(summary(x)),summary(x))
-coordinates(df) = ~long+lat
+sp::coordinates(df) = ~long+lat
 
-proj4string(df)<-CRS("+init=epsg:4326")
+sp::proj4string(df)<-sp::CRS("+init=epsg:4326")
 
 options(warn=-1)
 rgdal::writeOGR(df, dsn=file, layer= "df", driver="KML", dataset_options=c("NameField=name"))

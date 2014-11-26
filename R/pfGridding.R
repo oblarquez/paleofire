@@ -192,6 +192,10 @@ plot.pfGridding=function(x,continuous=TRUE,
                          cpal="YlGn",
                          anomalies=TRUE,
                          file=NULL,points=FALSE,add=NULL,add_color="white",...){
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    install.packages("RColorBrewer")
+  }
+  require("RColorBrewer")
   
   y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
@@ -252,7 +256,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   if(anomalies==TRUE) {
     if(cpal=="YlGn") {cpal="RdBu"}
-    pal=rev(brewer.pal(9,cpal))} else pal=brewer.pal(9,cpal)
+    pal=rev(RColorBrewer::brewer.pal(9,cpal))} else pal=RColorBrewer::brewer.pal(9,cpal)
   
   testcol  <- colorRampPalette(pal)
   
@@ -336,7 +340,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   p
   if(is.null(file)==FALSE){
-    projection(x$raster)<-CRS(x$proj4)
+    projection(x$raster)<-sp::CRS(x$proj4)
     writeRaster(x$raster, filename=file, format="GTiff",overwrite=TRUE)
   }
   return(p)

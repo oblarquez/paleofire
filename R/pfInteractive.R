@@ -1,5 +1,6 @@
 pfInteractive=function(addata=NULL){
   
+  install.packages("Imap");require(Imap)
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)
@@ -20,7 +21,7 @@ will zoom out. Double left clicking on the same spot will reset the plot.
 Rignt click or click finish when ready.")
   plot(pp,bg="blue",col = "black",pch = 21,ylim=c(-90,90),xlim=c(-180,180), ylab="Latitude",xlab="Longitude")
   par(bg="white")
-  imap(yy,fill=F,zoom=T,col="black",poly = rgb(238/255,220/255,130/255),add.all=T,grid=T)
+  Imap::imap(yy,fill=F,zoom=T,col="black",poly = rgb(238/255,220/255,130/255),add.all=T,grid=T)
   points(pp,bg="blue",col = "black",pch = 21,ylim=c(-90,90))
   if (is.matrix(addata)){
     lines(addata[,1],addata[,2])
@@ -29,7 +30,7 @@ Rignt click or click finish when ready.")
   cat("\n")
   cat("\nInteractively select points by drawing a polygon composed of at least 
 three vertices (polygon must be convex ). Right click or click finish when ready.")
-  a=select.pts(pp)
+  a=Imap::select.pts(pp)
   
   
   ## Plot selected points

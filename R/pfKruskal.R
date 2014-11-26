@@ -2,6 +2,11 @@ pfKruskal=function(data,p.adj="none",
                    alpha=0.05,bins=NULL,
                    verbose=TRUE){
   
+  if (!requireNamespace("agricolae", quietly = TRUE)) {
+  install.packages("agricolae")
+  }
+  require("agricolae")
+  
   if(class(data)=="pfComposite"){
     data=cbind(x=rep(data$BinCentres,ncol(data$BinnedData)),y=c(data$BinnedData))
     data=data.frame(data)
@@ -21,7 +26,7 @@ pfKruskal=function(data,p.adj="none",
   
   ## Post-hoc  
   data$x=as.factor(data$x)
-  comparison=kruskal(data$y, data$x,alpha = alpha, p.adj=p.adj, group=TRUE, main = NULL)
+  comparison=agricolae::kruskal(data$y, data$x,alpha = alpha, p.adj=p.adj, group=TRUE, main = NULL)
   
   ## Data prep
   signifL=as.data.frame(comparison$group)

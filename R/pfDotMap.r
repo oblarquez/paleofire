@@ -7,6 +7,11 @@ pfDotMap = function(TR, bins,
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", n.boot=1000,
                     cx.minsize=0.3, cx.mult=1
 ) {
+  if (!requireNamespace("rworldmap", quietly = TRUE)) {
+    install.packages("rworldmap")
+  }
+  require("rworldmap")
+  
   
   # ---------------- TEST BLOCK
   # Easier to test without running the code as a function. Comment everything above here (function definition) and 
@@ -51,7 +56,7 @@ pfDotMap = function(TR, bins,
   } else {
     base.map = coastsCoarse
   }
-  base.map = spTransform(base.map, CRS(proj4))
+  base.map = sp::spTransform(base.map, sp::CRS(proj4))
   
   
   # ----- Create composite
@@ -191,23 +196,23 @@ pfDotMap = function(TR, bins,
     # Convert stats to spatial data frames. Might not be necessary but sure makes it easy to use spplot() below.
     sp.grd = cbind(grd.lonlat, grd.n[,j], grd.mean[,j], grd.lCI[,j], grd.uCI[,j])
     names(sp.grd) = c("lon","lat","sitesPerCell","mean.CHAR","CI.lower","CI.upper")
-    coordinates(sp.grd) = c('lon','lat')
-    proj4string(sp.grd) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
+    sp::coordinates(sp.grd) = c('lon','lat')
+    sp::proj4string(sp.grd) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
     
     sp.sites = data.frame(sites.lon, sites.lat, dat.n.contributions[,j])
     names(sp.sites) = c("lon","lat","cellsPerSite")
-    coordinates(sp.sites) = c('lon','lat')
-    proj4string(sp.sites) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
+    sp::coordinates(sp.sites) = c('lon','lat')
+    sp::proj4string(sp.sites) = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
     
     # Now project the data to be plotted
-    sp.grd     = spTransform(sp.grd, CRS(proj4))
-    sp.sites   = spTransform(sp.sites, CRS(proj4))
+    sp.grd     = sp::spTransform(sp.grd, sp::CRS(proj4))
+    sp.sites   = sp::spTransform(sp.sites, sp::CRS(proj4))
     
     # Get x/y lims (could add option to override later). Only purpose currently is that sites vs. grid have 
     # different bounding boxes, which is the default extent for spplot(). I.e. without setting all the same, 
     # the bottom-right plot will have different extent than other two.
-    x.lim = bbox(sp.grd)[1,]
-    y.lim = bbox(sp.grd)[2,]
+    x.lim = sp::bbox(sp.grd)[1,]
+    y.lim = sp::bbox(sp.grd)[2,]
 
     # ----- Create mean plot
       # Define colors and cut locations 
@@ -228,7 +233,7 @@ pfDotMap = function(TR, bins,
           
       # Create plot object (actually plotted later)
       mean.plot = 
-        spplot(sp.grd, 'mean.CHAR', xlim=x.lim, ylim=y.lim,
+        sp::spplot(sp.grd, 'mean.CHAR', xlim=x.lim, ylim=y.lim,
           cuts=cuts, colorkey=T, col.regions=cols, cex=cx, edge.col=grey(0.3), lwd=0.3,
           scales=list(draw=T), sp.layout=list("sp.lines",base.map,col=grey(0.8)),
           main=paste("Charcoal Influx z-Scores: ", bins[j], "-", bins[j+1], " BP", sep="")) 
@@ -255,7 +260,7 @@ pfDotMap = function(TR, bins,
 
       # Create plot object (actually plotted later)
       sitesPerCell.plot = 
-        spplot(sp.grd, 'sitesPerCell', xlim=x.lim, ylim=y.lim, scales=list(draw=F), 
+        sp::spplot(sp.grd, 'sitesPerCell', xlim=x.lim, ylim=y.lim, scales=list(draw=F), 
           cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cuts, 
           col.regions=cols, edge.col="white", lwd=0.3,
           sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",
@@ -281,7 +286,7 @@ pfDotMap = function(TR, bins,
         
       # Create plot object (actually plotted later)
       cellsPerSite.plot = 
-        spplot(sp.sites, 'cellsPerSite', xlim=x.lim, ylim=y.lim,
+        sp::spplot(sp.sites, 'cellsPerSite', xlim=x.lim, ylim=y.lim,
           cex=cx, cex.key=cx.key, legendEntries=cx.legend, cuts=cuts, 
           scales=list(draw=F), col.regions=cols, edge.col="white", lwd=0.3,
           sp.layout=list("sp.lines",base.map,col=grey(0.8)), key.space="right",

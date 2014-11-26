@@ -29,6 +29,15 @@ pfTransform=function(ID=NULL,
   warntype=type[(type %in% types)==FALSE]
   if(length(warntype)!=0){stop(paste(warntype, "is not a valid type for pfBoxCox", sep=" "))}
   
+  if(method=="RunMean" || method=="RunMin" || method=="RunMed" || method=="RunMax" || 
+       method=="RunQuantile") {
+    install.packages("caTools")
+    require(caTools)
+    install.packages("gtools")
+    require(gtools)
+  }
+  
+  if(identical(method, "Hurdle") ) {install.packages("pscl");require(pscl)}
   
   ## 0 Save parameters
   params=list(ID=ID,
@@ -305,28 +314,28 @@ pfTransform=function(ID=NULL,
         }
         if (methodj=="RunMed") {
           w=round(RunWidth/((max(tmp[,1])-min(tmp[,1]))/length(tmp[,1])))
-          if (odd(w)) w=w else w=w+1
+          if (gtools::odd(w)) w=w else w=w+1
           transI[,k]=approx(tmp[,1],runmed(tmp[,2],w),Ages[,k])$y
         }
         if (methodj=="RunMean") {
           w=round(RunWidth/((max(tmp[,1])-min(tmp[,1]))/length(tmp[,1])))
-          if (odd(w)) w=w else w=w+1
-          transI[,k]=approx(tmp[,1],runmean(tmp[,2],w),Ages[,k])$y
+          if (gtools::odd(w)) w=w else w=w+1
+          transI[,k]=approx(tmp[,1],caTools::runmean(tmp[,2],w),Ages[,k])$y
         }
         if (methodj=="RunMin") {
           w=round(RunWidth/((max(tmp[,1])-min(tmp[,1]))/length(tmp[,1])))
-          if (odd(w)) w=w else w=w+1
-          transI[,k]=approx(tmp[,1],runmin(tmp[,2],w),Ages[,k])$y
+          if (gtools::odd(w)) w=w else w=w+1
+          transI[,k]=approx(tmp[,1],caTools::runmin(tmp[,2],w),Ages[,k])$y
         }
         if (methodj=="RunMax") {
           w=round(RunWidth/((max(tmp[,1])-min(tmp[,1]))/length(tmp[,1])))
-          if (odd(w)) w=w else w=w+1
-          transI[,k]=approx(tmp[,1],runmax(tmp[,2],w),Ages[,k])$y
+          if (gtools::odd(w)) w=w else w=w+1
+          transI[,k]=approx(tmp[,1],caTools::runmax(tmp[,2],w),Ages[,k])$y
         }
         if (methodj=="RunQuantile") {
           w=round(RunWidth/((max(tmp[,1])-min(tmp[,1]))/length(tmp[,1])))
-          if (odd(w)) w=w else w=w+1
-          transI[,k]=approx(tmp[,1],runquantile(tmp[,2],w,RunQParam),Ages[,k])$y
+          if (gtools::odd(w)) w=w else w=w+1
+          transI[,k]=approx(tmp[,1],caTools::runquantile(tmp[,2],w,RunQParam),Ages[,k])$y
         }
         if (methodj=="SmoothSpline") {
           transI[,k]=approx(tmp[,1],smooth.spline(tmp[,1],tmp[,2],spar=span)$y,Ages[,k])$y
@@ -337,7 +346,7 @@ pfTransform=function(ID=NULL,
         if (methodj=="Hurdle"){
           # Transform data to count using pfMinMax
           tmp[,2]=round(pfMinMax(tmp[,2])*100)
-          transI[,k]=approx(tmp[,1],hurdle(tmp[,2]~tmp[,1])$fitted.values,Ages[,k])$y
+          transI[,k]=approx(tmp[,1],pscl::hurdle(tmp[,2]~tmp[,1])$fitted.values,Ages[,k])$y
         }
       }
       if(k %in% values & verbose==TRUE & j==length(method)){

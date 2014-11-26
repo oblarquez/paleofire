@@ -1,7 +1,11 @@
 exportPattern("^[[:alpha:]]+")
-import(locfit,gtools,caTools,Imap,methods,raster,rgdal,ggplot2,lattice,
-       GCD,rworldmap,RColorBrewer,sp,pscl)
-importFrom(agricolae,kruskal)
+import(methods,raster,ggplot2,
+       GCD,rgdal,lattice)
+#importFrom(agricolae,kruskal)
+importFrom(locfit,locfit,lp)
+#importFrom(Imap,imap)
+#importFrom(Imap,select.pts)
+
 S3method(plot,pfCircular)
 S3method(plot,pfKruskal)
 S3method(plot,pfGridding)
