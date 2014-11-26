@@ -28,6 +28,20 @@ To test everything is working you can plot a map of all charcoal records include
 plot(pfSiteSel())
 ```
 
-For details and examples about `paleofire` please refer to the included [manual](http://cran.r-project.org/web/packages/paleofire/paleofire.pdf).
+For details and examples about `paleofire` please refer to the included [manual](http://cran.r-project.org/web/packages/paleofire/paleofire.pdf) or [vignette](http://cran.r-project.org/web/packages/paleofire/vignettes/paleofire-paper.pdf).
+
+Citation:
+=============
+
+To cite `paleofire` in publications use:
+
+  Blarquez O., Vannière B., Marlon J. R., Daniau A.-L. Power M. J. Brewer S.
+  and Bartlein P. J. 2014. paleofire: An R package to analyse sedimentary
+  charcoal records from the Global Charcoal Database to reconstruct past
+  biomass burning. Computers and Geosciences, 72, 255-261
+  
+```R
+citation (package="paleofire")
+```
 
 Maintainer: Olivier Blarquez <blarquez@gmail.com>
