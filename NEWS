@@ -1,3 +1,11 @@
+paleofire 1.1.5 25/11/2014
+-----------------------------------------
+
+* Numerous bug fixes 
+
+* Moving of packages used in a single function to Suggests
+
+
 paleofire 1.1.4 18/11/2014
 -----------------------------------------
 
