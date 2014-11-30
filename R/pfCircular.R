@@ -1,12 +1,8 @@
 pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   ## R function developped from SEA.m   
-<<<<<<< HEAD
   set.seed(1)
-=======
-  set.seed(123)
->>>>>>> 6e94fcae12c6e9aea5c60dcdef9722fa8d3af75a
-  
+
   ## Load matrix
   Temp=comp$BinnedData
   
@@ -27,11 +23,8 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   
   ## Arrange data
-<<<<<<< HEAD
   a=matrix(nrow=max(na.omit(b)),ncol=ncol(Temp))
-=======
-  a=matrix(nrow=max(na.omit(b)),ncol=length(Temp[1,]))
->>>>>>> 6e94fcae12c6e9aea5c60dcdef9722fa8d3af75a
+
   a[is.na(a)]=-999
   T_=rbind(a,Temp,a)
   
