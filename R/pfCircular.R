@@ -1,7 +1,7 @@
 pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   ## R function developped from SEA.m   
-  
+  set.seed(1)
   
   ## Load matrix
   Temp=comp$BinnedData
@@ -23,16 +23,16 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   
   ## Arrange data
-  a=matrix(nrow=b,ncol=length(Temp[1,]))
+  a=matrix(nrow=max(na.omit(b)),ncol=ncol(Temp))
   a[is.na(a)]=-999
   T_=rbind(a,Temp,a)
   
   ## Declare values for the boot process
-  y_m=matrix(ncol=nboot,nrow=length(Temp[,1]))
+  y_m=matrix(ncol=nboot,nrow=nrow(Temp))
   cat("# of Bootstrap:")
   
   for(k in 1:nboot){
-    y_n=matrix(nrow=length(Temp[,1]),ncol=length(Temp[1,]))
+    y_n=matrix(nrow=nrow(Temp),ncol=ncol(Temp))
     for(i in 1:length(Temp[1,])){
       n=ceiling(length(T_[,1])/b[i])
       q=trunc(length(T_[,1])-b[i])+1

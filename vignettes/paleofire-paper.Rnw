@@ -263,17 +263,15 @@ The optimal block size for a given series is given by: $b=2\times(-1/log(\rho))$
 The circular block bootstrap method is commonly used in Superposed Epoch Analysis, a compositing technique that aims to find the response of a variable to one or multiple particular events, for instance insect outbreaks \citep[e.g.]{Nola2006} or fires \citep[e.g.]{Swetnam1993} using dendrochronological series or paleoecological proxy series \citep{Blarquez2010a}. The \texttt{R} implementation follows the Matlab SEA function available at \url{http://blarquez.com} that was inspired by \citet{Adams2003} methodology. The \texttt{pfCircular} function is called using the following command and returns an object of class \texttt{pfCircular} that can be plotted using the generic plot function:
 
 
-<<circ, echo=TRUE , results=hide>>=
+<<circ, echo=TRUE , results=hide, eval=FALSE>>=
 circboot <- pfCircular(COMP1, b=NULL, nboot=100,
-                       conf=c(0.005,0.025,0.975,0.995))
+                        conf=c(0.005,0.025,0.975,0.995))
 plot(circboot)
 @
 
 \begin{figure}
 \centering
-<<label=fig3,fig=TRUE, echo=FALSE, width=8,height=5>>=
-plot(circboot)
-@
+\includegraphics{paleofire-paper-fig3}
 
 \caption{Composite mean of charcoal series for Eastern North American sites (black line) and associated confidence intervals estimated using a circular block bootstrap procedure (dashed lines). Dashed lines correspond to the 99.5th, 97.5th, 2.5th and 0.5th bootstrapped percentiles, respectively.}
 \end{figure}
