@@ -26,3 +26,27 @@ checkGCDversion <- function() {
     })
   # packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 }
+
+
+loessGCV <- function (x) {
+  ## Modified from code by Michael Friendly
+  ## http://tolstoy.newcastle.edu.au/R/help/05/11/15899.html
+  if (!(inherits(x,"loess"))) stop("Error: argument must be a loess object")
+  ## extract values from loess object
+  span <- x$pars$span
+  n <- x$n
+  traceL <- x$trace.hat
+  sigma2 <- sum(resid(x)^2) / (n-1)
+  gcv  <- n*sigma2 / (n-traceL)^2
+  result <- list(span=span, gcv=gcv)
+  result
+}
+
+bestLoess <- function(model, spans = c(.05, .95)) {
+  f <- function(span) {
+    mod <- update(model, span = span)
+    loessGCV(mod)[["gcv"]]
+  }
+  result <- optimize(f, spans)
+  result
+}
