@@ -60,8 +60,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
     cat("Creating composite...")
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
     # (I've checked "by hand" and it is accurate and efficient.) 
-    # No need for bootstraps--we're only going to use the actual composite for now. Will bootstrap by site later. 
-    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1)
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1000)
     CHAR = t(COMP$BinnedData)
     n.bin = length(tarAge)
     cat("done!\n")
@@ -294,13 +293,12 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
           main="Number of grid cells influenced by each site")
 
   
-    
     # ----- Create time series plot
       timeSeries.dat = data.frame(
                 age  = as.numeric(rbind(tarAge-binhw, tarAge+binhw)),
-                char = rep(COMP$Result$MEAN, each=2),
-                lCI  = rep(COMP$Result[,3], each=2),
-                uCI  = rep(COMP$Result[,4], each=2) )
+                char = rep(COMP$Result$LocFit, each=2),
+                lCI  = rep(COMP$Result[,4], each=2),
+                uCI  = rep(COMP$Result[,5], each=2) )
 
 
       timeSeries.plot =       
