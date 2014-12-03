@@ -1,39 +1,40 @@
 pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
   
   ## R function developped from SEA.m   
-  
-  
+  set.seed(1)
+
   ## Load matrix
-  T=comp$BinnedData
+  Temp=comp$BinnedData
   
   ## Define Age limits
   if(is.null(AgeLim)==FALSE){
-    T=T[comp$BinCentres>AgeLim[1] & comp$BinCentres<AgeLim[2], ]
+    Temp=Temp[comp$BinCentres>AgeLim[1] & comp$BinCentres<AgeLim[2], ]
   }
   
   ## Block size calculus
   if(is.null(b)==TRUE){
     b=c()
-    for(i in 1:length(T[1,])){
-      r=cor(T[1:length(T[,1])-1,i],T[2:length(T[,1]),i],use="pairwise.complete.obs")
+    for(i in 1:length(Temp[1,])){
+      r=cor(Temp[1:length(Temp[,1])-1,i],Temp[2:length(Temp[,1]),i],use="pairwise.complete.obs")
       yb=2*(-1/log(abs(r)))
       b[i]=c(ceiling(yb/mean(diff(comp$BinCentres))))
     }
-    b[b==0 | b==1 | is.na(b) | is.finite(b)==FALSE]=2} else {b=rep(b,length(T[1,]))}
+    b[b==0 | b==1 | is.na(b) | is.finite(b)==FALSE]=2} else {b=rep(b,length(Temp[1,]))}
   
   
   ## Arrange data
-  a=matrix(nrow=b,ncol=length(T[1,]))
+  a=matrix(nrow=max(na.omit(b)),ncol=ncol(Temp))
+
   a[is.na(a)]=-999
-  T_=rbind(a,T,a)
+  T_=rbind(a,Temp,a)
   
   ## Declare values for the boot process
-  y_m=matrix(ncol=nboot,nrow=length(T[,1]))
+  y_m=matrix(ncol=nboot,nrow=nrow(Temp))
   cat("# of Bootstrap:")
   
   for(k in 1:nboot){
-    y_n=matrix(nrow=length(T[,1]),ncol=length(T[1,]))
-    for(i in 1:length(T[1,])){
+    y_n=matrix(nrow=nrow(Temp),ncol=ncol(Temp))
+    for(i in 1:length(Temp[1,])){
       n=ceiling(length(T_[,1])/b[i])
       q=trunc(length(T_[,1])-b[i])+1
       y=matrix(nrow=b[i],ncol=q)
@@ -43,7 +44,7 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
       o=sample(1:q,n*2,replace=TRUE)
       yy=c(y[,o])
       yy=yy[!yy == -999] 
-      y_n[,i]=yy[1:length(T[,1])]
+      y_n[,i]=yy[1:length(Temp[,1])]
     }
     y_m[,k]=rowMeans(y_n,na.rm=TRUE)
     

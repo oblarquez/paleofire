@@ -18,12 +18,14 @@ pfPublication <- function(x,output="data.frame") {
   
   ## data.frame output
   if(output=="data.frame"){ 
-    a=b=id_pub_list=NULL
+    
+    a=b=id_pub_list=list()
     for(i in 1:length(x$id_site)){
       id_pub_list[[i]]=pub_key[pub_key[,1]==x$id_site[i],2]
       a[[i]]=rep(x$id_site[i],length(pub_key[pub_key[,1]==x$id_site[i],2]))
       b[[i]]=rep(x$site_name[i],length(pub_key[pub_key[,1]==x$id_site[i],2]))
     }
+    
     c=cbind(unlist(a),unlist(b),unlist(id_pub_list))
     for(i in 1:nrow(c))
       c[i,3]=c(as.character(pub[pub[,1]== c[i,3],2]))

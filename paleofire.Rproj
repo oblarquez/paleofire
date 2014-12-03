@@ -7,11 +7,13 @@ AlwaysSaveHistory: Default
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
 NumSpacesForTab: 2
-Encoding: ASCII
+Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 BuildType: Package
-PackageInstallArgs: --no-multiarch --with-keep.source
-PackageCheckArgs: --as-cran
+PackageInstallArgs: --no-multiarch --with-keep.source --configure-args="--disable-long-double"
+PackageBuildArgs: --configure-args="--disable-long-double"
+PackageBuildBinaryArgs: --configure-args="--disable-long-double"
+PackageCheckArgs: --as-cran  --force-multiarch --configure-args="--disable-long-double"

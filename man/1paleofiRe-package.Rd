@@ -32,6 +32,7 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 \url{http://gpwg.org}
 }
 \examples{
+\dontrun{
 ## Interactive sites selection:
 # ID=pfInteractive()
 
@@ -91,6 +92,6 @@ COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), binhw=20, hw=500,nboot=100)
 plot(COMP2)
 
 ## And save
-# write.csv(COMP2$Result,file="temp2.csv")
-
+write.csv(COMP2$Result,file="temp2.csv")
+}
 }

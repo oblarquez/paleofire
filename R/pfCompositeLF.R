@@ -208,7 +208,8 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
   if (type=="ci") bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE)) 
   if (type=="prctile") bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
   if(is.null(xlim)) xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w)
-  if(is.null(ylim)) ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T))
+  if(is.null(ylim)) {bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
+    ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T))}
   
   if (type=="ci"){
     
@@ -271,6 +272,7 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
   }
   
   if (type=="density"){
+    #bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
     seqI=seq(min(na.omit(x$mboot)),max(na.omit(x$mboot)),len=1000)
     img=matrix(nrow=1000,ncol=length(x$mboot[,1]))
     

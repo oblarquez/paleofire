@@ -1,4 +1,28 @@
-paleofire 1.1.3
+paleofire 1.1.5 25/11/2014
+-----------------------------------------
+
+* Numerous bug fixes 
+
+* Moving of packages used in a single function to Suggests
+
+
+paleofire 1.1.4 18/11/2014
+-----------------------------------------
+
+New features:
+
+* New pfToKml function for easy producing kml files from pfSiteSel objects
+
+* New vignette based on the Computers and Geosciences paper see citation(package="paleofire")
+
+* Updates to pfDotMap 
+
+Fixes:
+
+* Minor bug fixes in pfGridding and others.
+
+
+paleofire 1.1.3 22/05/2014
 -----------------------------------------
 
 New features:
@@ -13,12 +37,12 @@ Fixes:
 
 * Minor fixes for graphical outputs
 
-paleofire 1.1.2
+paleofire 1.1.2 15/03/2014
 -----------------------------------------
 
 Fix for windows compil related to sink usage...
 
-paleofire 1.1
+paleofire 1.1 14/03/2014
 -----------------------------------------
 
 New features:
@@ -38,7 +62,7 @@ Minor new features:
 * verbose options
 
 
-paleofire 1.0
+paleofire 1.0 08/01/2014
 -----------------------------------------
 
 * Initial release of the package
