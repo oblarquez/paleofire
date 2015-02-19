@@ -8,7 +8,7 @@ Plot pfCompositeLF object}
 \usage{
 \method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL", conf = c(0.05, 0.95),
                  palette = "jet", xlim = NULL, ylim = NULL, main =
-                 "Composite", text = FALSE, ...)
+                 "Composite", text = FALSE, what="locfit" ...)
 }
 \arguments{
   \item{x}{
@@ -29,6 +29,10 @@ Numeric, y axis limits.}
 Character, title of the plot.}
  \item{text}{
 Logical, text options.}
+\item{what}{
+Character, indicates which transformed charcoal trend is used for the plot (type="ci"), default "locfit" 
+indicates that the trend is the locfit applied to All binned data, use "mean" or "median" to plot the mean 
+or median of the locfit relplicates given by the bootstrap procedure.}
   \item{\dots}{\dots}
 }
 
