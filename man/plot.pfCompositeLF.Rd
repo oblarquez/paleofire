@@ -8,7 +8,7 @@ Plot pfCompositeLF object}
 \usage{
 \method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL", conf = c(0.05, 0.95),
                  palette = "jet", xlim = NULL, ylim = NULL, main =
-                 "Composite", text = FALSE, what="locfit" ...)
+                 "Composite", text = FALSE, what="locfit", ...)
 }
 \arguments{
   \item{x}{
