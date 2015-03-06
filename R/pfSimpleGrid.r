@@ -1,4 +1,4 @@
-pfSimpleGrid = function(TR, bins, fun=mean,
+pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
                     n.boot=0, prob.CI=c(0.025,0.975), test.val=0, 
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
                     res=5, ext=c(-180,180,-90,90), 
@@ -74,10 +74,10 @@ pfSimpleGrid = function(TR, bins, fun=mean,
   if(class(TR)=="pfTransform") {
     cat("Creating composite...")
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
-    # (I've checked "by hand" and it is accurate and efficient.)
-    COMP = pfComposite(TR, bins=bins, nboot=1000, binning=T)
+    # (I've checked "by hand" and it is accurate and efficient.) 
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1000)
     CHAR = t(COMP$BinnedData)
-    n.bin = length(bins) - 1
+    n.bin = length(tarAge)
     cat("done!\n")
   } else {
     stop("Input PF must be a pfTransform object.")
