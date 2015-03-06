@@ -136,6 +136,7 @@ pfCompositeLF=function(TR,hw=250,
   
   bootci=t(apply(mboot, 1, quantile, probs = conf,  na.rm = TRUE))
   bootmean=t(apply(mboot, 1, mean,  na.rm = TRUE))
+  bootmed=t(apply(mboot, 1, median,  na.rm = TRUE))
   
   ## Locfit of all stacked data
   rm(x,y,dat)
@@ -186,6 +187,7 @@ pfCompositeLF=function(TR,hw=250,
                         halfwidth=hw,
                         conf=conf,
                         locfitAll=locfitAll,
+                        BootMed=structure(bootmed,row.names = as.character(centres),col.names=c("Median"),class = "matrix"), 
                         BootMean=structure(bootmean,row.names = as.character(centres),col.names=c("Mean"),class = "matrix"), 
                         BootCi=structure(bootci,row.names = as.character(centres),class = "matrix") ))
   class(output)="pfCompositeLF"
@@ -200,7 +202,7 @@ pfCompositeLF=function(TR,hw=250,
 ######PLOT########
 
 plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="jet",xlim=NULL,
-                            ylim=NULL,main="Composite",text=FALSE,...){
+                            ylim=NULL,main="Composite",text=FALSE,what="locfit",...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2
   
@@ -208,8 +210,17 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
   if (type=="ci") bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE)) 
   if (type=="prctile") bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
   if(is.null(xlim)) xlim=c(max(x$BinCentres)+w,min(x$BinCentres)-w)
-  if(is.null(ylim)) {bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
-    ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T))}
+  if(is.null(ylim)) {
+    #bootci1=t(apply(x$mboot, 1, quantile, probs = seq(0, 1, .01),  na.rm = TRUE))
+    #ylim= c(min(bootci1,na.rm=T),max(bootci1,na.rm=T))
+    ylim= range( x$Result[,4:5])}
+  
+  # What to plot as the trend:
+  if (what=="mean") trend=x$BootMean
+  if (what=="median") trend=x$BootMed
+  if (what=="locfit") trend=x$locfitAll
+  
+  # Now plot:
   
   if (type=="ci"){
     
@@ -218,7 +229,7 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
     
     bootci1=t(apply(x$mboot, 1, quantile, probs = conf,  na.rm = TRUE))    
     
-    plot(x$BinCentres,x$BootMean, 
+    plot(x$BinCentres,trend, 
          xlim=xlim, ylim=ylim, axes=F, mgp=c(2,0,0),
          main=main, font.main=1, lab=c(8,5,5), 
          ylab="Composite", xlab="Age (cal yr BP)", cex.lab=1, pch=16, cex=0.5, type="l")

@@ -50,3 +50,4 @@ bestLoess <- function(model, spans = c(.05, .95)) {
   result <- optimize(f, spans)
   result
 }
+

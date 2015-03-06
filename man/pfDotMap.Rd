@@ -7,10 +7,11 @@ Produce maps of paleofire data}
 Produce map graphics representing spatial variability in charcoal data from the Global Charcoal Database. 
 }
 \usage{
-  pfDotMap(TR, bins, fig.base.name = NULL, base.map = "coasts",
-                    grd.res = 5, grd.ext = c(-180,180,-90,90), 
-                    proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-                    n.boot = 1000, cx.minsize = 0.3, cx.mult = 1)
+  pfDotMap(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), 
+                    fig.base.name=NULL, base.map='coasts',
+                    grd.res=5, grd.ext=c(-180,180,-90,90), 
+                    proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", n.boot=1000,
+                    cx.minsize=0.3, cx.mult=1) 
   }
 
 %- maybe also 'usage' for other objects documented here.
@@ -18,9 +19,14 @@ Produce map graphics representing spatial variability in charcoal data from the 
   \item{TR}{
     An object returned by \code{\link{pfTransform}}
     }
-  \item{bins}{
-    Numeric, the sequence for binning given in years (e.g. bins=seq(from=0, to=10000, by=1000)).
-    }
+   \item{tarAge}{
+Numeric, the target ages for prebinning given in years (e.g. tarAge = seq(0, 10000, 20)).
+If unspecified the sequence is defined as tarAge=seq(from=min age, to=max Age, by=median resolution).
+}
+\item{hw}{
+Numeric, the half window width for the locfit procedure (in years).}
+ \item{binhw}{
+Numeric, bin half width for the prebinning procedure (use the same value as tarAge intervals for overlapping bins or tarAge intervals/2 for non-overlapping bins).}
   \item{fig.base.name}{
     Character sequence representing the base name for the figures. Can be preceded by a path as long as all directories in the path exist. One figure will be produced for each time bin, with years (and file suffix) appended to the base name automatically. A value of \code{NULL} (default) causes figures to be plotted to the current device in sequence.
     }
@@ -77,6 +83,7 @@ Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F. Mayle, A. Ballouche
 }
 
 \examples{
+\dontrun{
 ## Composite charcoal record for North America:
 ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
 plot(ID)
@@ -86,12 +93,12 @@ res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000
 
 ## Plot maps for 1000-yr bins spanning 3-0 kBP
 # dev.new(width=10,height=10) # A big plot area helps. 
-dotmap = pfDotMap( TR=res3, bins=seq(0,3000,1000), grd.ext=c(-170,-80,40,80), 
+dotmap = pfDotMap( TR=res3, tarAge=seq(0,2000,1000), hw=500, grd.ext=c(-170,-80,40,80), 
                    cx.minsize=2,cx.mult=3)
 summary(dotmap)
 
 # Plot the mean map from the first time bin
 # newmap = update(dotmap$plots[[1]]$mean, main="A relabeled map")
 # newmap
-
+}
 }

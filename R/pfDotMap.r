@@ -5,8 +5,8 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
                     fig.base.name=NULL, base.map='coasts',
                     grd.res=5, grd.ext=c(-180,180,-90,90), 
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", n.boot=1000,
-                    cx.minsize=0.3, cx.mult=1
-) {
+                    cx.minsize=0.3, cx.mult=1) {
+  
   if (!requireNamespace("rworldmap", quietly = TRUE)) {
     install.packages("rworldmap")
   }
