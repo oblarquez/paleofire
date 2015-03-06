@@ -219,6 +219,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 #   cols = rev(c("#b2182b","#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166ac"))
 #   zlim = c(-1.75,1.75)
 #   cuts = c(-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75)
+
         
       # Determine cuts for sizing point.
         # Specify symbol sizes for the two classes
