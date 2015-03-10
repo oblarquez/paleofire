@@ -21,22 +21,22 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
   # And technically, don't run the '}' that closes the main function definition (though I think if you do it will 
   # run everything and just give a harmless error at the end.
 #   # 
-  rm(list=ls())
-  library(lattice)
-  TR                = readRDS('/Work/Research/GPWG/GCD v3.0 Paper figures/Data/All_GCDv1.1_Transformed_v02.rds')
-  tarAge            = seq(0,2000,1000)
-  hw                = 250
-  binhw             = 500
-  fig.base.name     = '~/Desktop/'
-  base.map          = 'coasts'
-  grd.res           = 5
-  grd.ext           = c(-180,180,-90,90)
-  grd.lonlat        = NULL
-  proj4             = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
-  n.boot            = 10    # too small, but OK for a teest
-  cx.minsize        = 0.3   # minimum dot size
-  cx.mult           = 1     # multiplicative factor for scaling all dots
-  
+#   rm(list=ls())
+#   library(lattice)
+#   TR                = readRDS('/Work/Research/GPWG/GCD v3.0 Paper figures/Data/All_GCDv1.1_Transformed_v02.rds')
+#   tarAge            = seq(0,2000,1000)
+#   hw                = 250
+#   binhw             = 500
+#   fig.base.name     = '~/Desktop/'
+#   base.map          = 'coasts'
+#   grd.res           = 5
+#   grd.ext           = c(-180,180,-90,90)
+#   grd.lonlat        = NULL
+#   proj4             = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
+#   n.boot            = 10    # too small, but OK for a teest
+#   cx.minsize        = 0.3   # minimum dot size
+#   cx.mult           = 1     # multiplicative factor for scaling all dots
+#   
   # ---------------- END TEST BLOCK
   
   # ----- Load base map
