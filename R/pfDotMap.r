@@ -325,6 +325,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 
   
     # ----- Create time series plot
+    if(n.bin>1) {
       timeSeries.dat = data.frame(
                 age  = as.numeric(rbind(tarAge-binhw, tarAge+binhw)),
                 char = rep(COMP$Result$LocFit, each=2),
@@ -350,11 +351,13 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
             panel.xyplot(x,y, type='l', col=1)
             panel.xyplot(x.j,y.j, type='l', col=2)
           })
-
+      } else {
+        timeSeries.plot = NULL
+      }
 
     # ----- Produce plots
       print(mean.plot, position=c(0,0.5,1,1), more=T)
-      print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
+      if(n.bin>1) print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
       print(sitesPerCell.plot, position=c(0,0,0.5,0.3), more=T)
       print(cellsPerSite.plot, position=c(0.5,0,1,0.3))
 
