@@ -101,6 +101,10 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
     # and could be way off for unusual grids. However it's fine for something like T31, etc.
     # where the grid is only slightly irregular. 
     grd.res = c(max(diff(sort(grd.lonlat$lon))), max(diff(sort(grd.lonlat$lat))))
+
+    # Also standardize longitude to (-180,180), in case it's not already
+    grd.lonlat$lon = ((grd.lonlat$lon+360) %% 360) # First put in (0,360) range
+      grd.lonlat$lon[ grd.lonlat$lon>180 ] = grd.lonlat$lon[grd.lonlat$lon>180] - 360
   } else {
     # Otherwise, use grd.res and grd.ext to define a regular grid
     if(length(grd.res)==1)    # Assume equal x/y resolution if single number given
@@ -118,7 +122,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
   # Now define derived variables
   n.grd = nrow(grd.lonlat)
   grd.lonlat.rad = grd.lonlat*pi/180   # Will need lat/lon in radians later  
-
+  
 
   # ----- Figure out radius for including sites in cell-level stats
   #  As discussed at AGU (Marlon, Bartlein, Higuera, Kelly), to avoid missing any sites 
