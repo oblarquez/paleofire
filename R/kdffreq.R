@@ -1,35 +1,3 @@
-## -------------------------------------------------------------------------------------------
-#'  Fire frequency using kernel density
-#'   
-#'    O. Blarquez
-#'   
-#'      Computes paleo-fire frequency for a set of fire events 
-#'      using a gaussian kernel density estimation procedure 
-#'      based on a defined bandwidth. Pseudo-replicated values are used 
-#'      to correct for edge bias, equivalent to "minimum slope" correction in Mann(2004).
-#'
-#' @param fevent Numeric vector, set of dates 
-#' @param up Numeric, upper age for fire frequnecy calculus
-#' @param lo Numeric, lower age for fire frequnecy calculus
-#' @param bandwidth Numeric, bandwidth in years, or character for automatic bandwidth calculation (e.g. "bw.ucv" 
-#' for unbiased cross validation) see \code{\link{bandwidth}}  for details
-#' @param nbboot Numeric, number of bootstrap replicates
-#' @param alpha Numeric, confidence interval (default 0.01)
-#' @return ff data.frame, with fire frequency, bandwidth and CIs
-#' @export
-#' @seealso \code{\link{plot.kdffreq}} 
-#' @examples
-#'  
-#'  set.seed(123)
-#'  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
-#' 
-#'  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
-#'  @method plot kdffreq
-
-
-
-
-
 #' Fire frequency using kernel density
 #' 
 #' O. Blarquez
@@ -44,7 +12,7 @@
 #' @param lo Numeric, lower age for fire frequnecy calculus
 #' @param bandwidth Numeric, bandwidth in years, or character for automatic
 #' bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
-#' \code{\link{bandwidth}} for details
+#' \code{\link[stats]{bandwidth}} for details
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)
 #' @return ff data.frame, with fire frequency, bandwidth and CIs
@@ -130,16 +98,15 @@ kdffreq=function(fevent,
   return(ff)
 }
 
-#'  Plot kdffreq object
-#'   
-#'    O. Blarquez
-#'   
-#'    Plot fire frequency calculated using the \code{\link{kdffreq}} function 
-#'  @method plot kdffreq
+#' plot.kdffreq
+#' 
+#' Plot fire frequency calculated using the \code{\link[paleofire]{kdffreq}} function 
+#' 
+#' @method plot kdffreq
 #' @param x Object returned by kdffreq
 #' @param xlim Numeric x axis limits
 #' @param ylim Numeric, y axis limits
-#' @seealso \code{\link{kdffreq}} 
+#' @seealso \code{\link[paleofire]{kdffreq}} 
 #'  @examples
 #'  
 #'  set.seed(123)
@@ -149,28 +116,6 @@ kdffreq=function(fevent,
 #'  plot(ff)
 
 
-
-
-
-
-#' Plot kdffreq object
-#' 
-#' O. Blarquez
-#' 
-#' Plot fire frequency calculated using the \code{\link{kdffreq}} function
-#' 
-#' @param x Object returned by kdffreq
-#' @param xlim Numeric x axis limits
-#' @param ylim Numeric, y axis limits
-#' @seealso \code{\link{kdffreq}}
-#' @examples
-#' 
-#' set.seed(123)
-#'  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
-#' 
-#'  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
-#'  plot(ff)
-#' 
 plot.kdffreq=function(x,ylim=NULL,xlim=NULL,...){
   
   if(is.null(ylim)) ylim=c(min(x$lo),max(x$up))

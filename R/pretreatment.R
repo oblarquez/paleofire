@@ -217,7 +217,8 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 #' Original accumulation rates are presented using grey bars, accumulation
 #' rates interpolated at equal time steps are presented by a black curve.
 #' 
-#' 
+#' @method plot CHAR
+#' @S3method plot CHAR
 #' @param x An object of the class "CHAR".
 #' @param \dots \dots{}
 #' @author O. Blarquez

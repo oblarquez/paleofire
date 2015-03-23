@@ -3,8 +3,8 @@
 \alias{kdffreq}
 \title{Fire frequency using kernel density}
 \usage{
-\method{plot}{kdffreq}(fevent, up = NULL, lo = NULL, bandwidth = NULL,
-  nbboot = NULL, alpha = NULL)
+kdffreq(fevent, up = NULL, lo = NULL, bandwidth = NULL, nbboot = NULL,
+  alpha = NULL)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
@@ -13,8 +13,9 @@
 
 \item{lo}{Numeric, lower age for fire frequnecy calculus}
 
-\item{bandwidth}{Numeric, bandwidth in years, or character for automatic bandwidth calculation (e.g. "bw.ucv"
-for unbiased cross validation) see \code{\link{bandwidth}}  for details}
+\item{bandwidth}{Numeric, bandwidth in years, or character for automatic
+bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
+\code{\link[stats]{bandwidth}} for details}
 
 \item{nbboot}{Numeric, number of bootstrap replicates}
 
@@ -27,10 +28,10 @@ ff data.frame, with fire frequency, bandwidth and CIs
 O. Blarquez
 }
 \details{
-Computes paleo-fire frequency for a set of fire events
-     using a gaussian kernel density estimation procedure
-     based on a defined bandwidth. Pseudo-replicated values are used
-     to correct for edge bias, equivalent to "minimum slope" correction in Mann(2004).
+Computes paleo-fire frequency for a set of fire events using a gaussian
+kernel density estimation procedure based on a defined bandwidth.
+Pseudo-replicated values are used to correct for edge bias, equivalent to
+"minimum slope" correction in Mann(2004).
 }
 \examples{
 set.seed(123)

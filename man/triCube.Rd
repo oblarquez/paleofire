@@ -6,21 +6,23 @@
 triCube(d, h)
 }
 \arguments{
-\item{d}{numeric vector of distances from the point of estimation to the given sample value}
+\item{d}{numeric vector of distances from the point of estimation to the
+given sample value}
 
-\item{h}{numeric value, the half-window width, measured in the same units as d}
+\item{h}{numeric value, the half-window width, measured in the same units as
+d}
 }
 \value{
 w numeric vector of weights, all 0<=w<=1
 }
 \description{
-From the EGRET package http://usgs-r.github.io/EGRET/
-  Robert Hirsch and Laura De Cicco
+From the EGRET package http://usgs-r.github.io/EGRET/ Robert Hirsch and
+Laura De Cicco
 }
 \details{
 Computes the tricube weight function on a vector of distance values (d),
-     based on a half-window width of h,
-     and returns a vector of weights that range from zero to 1.
+based on a half-window width of h, and returns a vector of weights that
+range from zero to 1.
 }
 \examples{
 h<-10
