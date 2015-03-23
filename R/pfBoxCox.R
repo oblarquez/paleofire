@@ -1,3 +1,38 @@
+#' Box-Cox transformation of Charcoal series
+#' 
+#' Box-Cox transformation of charcoal series, the maximum likelihood estimation
+#' of lambda is derived from the boxcox.R function in the Venables and Ripley
+#' MASS library included in R 2.6.1
+#' 
+#' 
+#' @param serie A vector of charcoal values.
+#' @param alpha Numeric, the "shift" parameter, default=0.01.
+#' @param type Character, the Box-Cox transformation formulation, can be either
+#' "BoxCox1964" (default) for the original Box & Cox (1964) formulation, or
+#' "JohnDraper" for the John & Draper (1980) modulus transformation.
+#' @return
+#' 
+#' \item{X}{Vector of transformed charcoal values}
+#' @author P. Bartlein
+#' @seealso \code{\link{pfTransform}}
+#' @references Venables, W. N., Ripley, B. D., & Venables, W. N. (1994). Modern
+#' applied statistics with S-PLUS (Vol. 250). New York: Springer-verlag. \cr
+#' \cr Box, G.E.P. & Cox, D. R.(1964) An analysis of transformations, Journal
+#' of the Royal Statistical Society, Series B, 26, 211-252. \cr \cr John, J. A.
+#' & Draper N. R. (1980) Analternative family of transformations, Applied
+#' Statistics, 29, 190-197.
+#' @examples
+#' 
+#' # Select a site
+#' ID=pfSiteSel(site_name=="Pas-de-Fond")
+#' 
+#' # Extract data
+#' A=pfExtract(ID)
+#' 
+#' B=pfBoxCox(A[,4],0.1)
+#' plot(B,type="l")
+#' 
+#' 
 pfBoxCox=function(serie,alpha=0.01,type="BoxCox1964")
 {
   types=c("BoxCox1964", "JohnDraper")

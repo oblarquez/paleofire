@@ -1,4 +1,21 @@
-
+#' Are cores sampled contiguously?
+#' 
+#' The function checks wether cores have been sampled contiguously or with a
+#' depth resolution <1cm.
+#' 
+#' 
+#' @param x An object of the class "pfSiteSel"
+#' @param threshold Numeric, threshold for considering two samples as
+#' contiguous (default=1cm)
+#' @return Summary table of sites with the added contiguous logical column
+#' (TRUE--FALSE)
+#' @author O. Blarquez
+#' @seealso \code{\link{pfResolution}}
+#' @examples
+#' 
+#' x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
+#' contiguous(x)
+#' 
 contiguous=function(x,threshold=1){
   
   #x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
@@ -35,6 +52,29 @@ contiguous=function(x,threshold=1){
   return(sumsit)
 }
 
+
+
+
+
+#' Plot "contiguous" object
+#' 
+#' Plot an object returned by contiguous, plot contiguous cores (or sites) in
+#' green (T) and non-contiguous cores in red (F).
+#' 
+#' 
+#' @param x An object returned by contiguous
+#' @param ylim Numeric, ylim for the graph
+#' @param xlim Numeric, xlim for the graph
+#' @param \dots \dots{}
+#' @return A plot.
+#' @author O. Blarquez
+#' @seealso \code{\link{contiguous}}
+#' @examples
+#' 
+#' x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
+#' cont=contiguous(x)
+#' plot(cont)
+#' 
 plot.contiguous=function(x,ylim=NULL,xlim=NULL,...){
   
   # sumsit

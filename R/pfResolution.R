@@ -1,3 +1,24 @@
+#' Calculates age resolution indicators for charcoal records
+#' 
+#' Calculates age resolution indicators for charcoal records selected using
+#' \code{\link{pfSiteSel}} or \code{\link{pfInteractive}} functions.
+#' 
+#' 
+#' @param ID An object of the class "pfSiteSel"
+#' @param AgeLim Numeric, defines age limits for age resolution calculations
+#' (e.g. AgeLim=c(-50,6000))
+#' @return
+#' 
+#' \item{data.frame}{A data frame with the following informations: ID_SITE,
+#' SITE_NAME, Median Resolution of the record, Mean Resolution and Standard
+#' deviation}
+#' @author O. Blarquez
+#' @examples
+#' 
+#' ID=pfSiteSel(lat>40, lat<90, long>-100, long<=-50)
+#' Res=pfResolution(ID,AgeLim=c(-50,8000))
+#' head(Res)
+#' 
 pfResolution=function(ID,AgeLim=NULL){
   
   # Temporal resolution of records

@@ -1,3 +1,61 @@
+#' Print diagnostic pdf for individual transformed series
+#' 
+#' Print diagnostic pdf for individual transformed series, successive
+#' transformations could be specified (see example)
+#' 
+#' 
+#' @param ID An object returned by \code{\link{pfSiteSel}} or
+#' \code{\link{pfTransform}}
+#' @param add An object returned by \code{\link{pfAddData}}
+#' @param Interpolate Logical, indicates wether data should be interpolated or
+#' not, default=FALSE
+#' @param Age Numeric, if Interpolate=TRUE, Age is used to specified the ages
+#' where the interpolation took place, If Age=0 the interpolated ages are
+#' automatically specified using the median resolution of the record(s) If Age
+#' is specified as a vector (e.g. Age=(from=0,to=10000, by=10)) the
+#' interpolation took place at specified ages
+#' @param method A character indicating the transformation method: "Z-Score",
+#' Z-Score, "LOESS", Locally weighted regression, "SmoothSpline", Smoothing
+#' spline, "Box-Cox", Box-Cox transformation, "MinMax", Minimax transformation,
+#' "RunMed", Running median, "RunMean", Running mean, "RunQuantile", Running
+#' quantile, "RunMin", Running min, "RunMax", Running max, "stl", Decompose a
+#' time series into seasonal, trend and irregular components using loess, based
+#' on \code{\link[stats]{stl}} function.
+#' @param BasePeriod Numeric, a parameter specifying the base period for
+#' calculating Z-score given in years BP (e.g. BasePeriod=c(0, 4000)), if empty
+#' or unspecified the base period corresponds to record length.
+#' @param span Numeric, the span parameter for the LOESS or Smoothing spline
+#' methods
+#' @param RunWidth Numeric, the width of the window for the"RunMed", "RunMean",
+#' "RunQuantile", "RunMin", and "RunMax" methods in years.
+#' @param RunQParam Numeric, the parameter specifying which quantile should be
+#' calculated for the method "RunQuantile" (default=0.5 i.e. median).
+#' @param stlYears Numeric, the bandwith for stl decomposition, default=500
+#' years.
+#' @param alpha Numeric, alpha value to add before BoxCox calculation, see
+#' \code{\link{pfBoxCox}}.
+#' @param type Character, the type of Box-Cox transformation, see
+#' \code{\link{pfBoxCox}} for details
+#' @param FileName Character, define output pdf file name e.g.
+#' FileName="mydata.pdf"
+#' @param QuantType Character, by default QuantType="INFL" and influx are
+#' automatically calculated, otherwise use QuantType="NONE" (not recommended).
+#' @return
+#' 
+#' \item{Filename.pdf }{A diagnostic file is printed, each sites being printed
+#' on separate pages (specified using FileName="myfile.pdf"")}
+#' @author O. Blarquez
+#' @examples
+#' 
+#' # Select boreal sites from Levavasseur 2012 PNV in Western North America
+#' ID=pfSiteSel(id_region=="WNA0", l12==1, long>=-160 & long<=-140)
+#' 
+#' # Print a diagnostic pdf for Box-Cox, Smoothed and Z-score tranformed data 
+#' # (base period = 200-2000 BP)
+#' pfDiagnostic(ID,method=c("Box-Cox", "SmoothSpline","Z-Score"),
+#'              span=0.3,BasePeriod=c(200,4000))
+#' 
+#' 
 pfDiagnostic=function(ID,
                       add=NULL,
                       Age=0,
