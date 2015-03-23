@@ -33,6 +33,9 @@ Numeric, bin half width for the prebinning procedure (use the same value as tarA
   \item{grd.res, grd.ext}{
     Desired grid resolution and extent in degrees. If \code{grd.res} is a single number, the grid will be defined with equal lon/lat resolution; a two-element vector (lon,lat) can also be supplied for unequal resolution. \code{grd.ext} is specified as a vector of the form \code{c(min-lon,max-lon,min-lat,max-lat)}. 
   }
+  \item{grd.lonlat}{
+    A data frame of coordinates for every grid cell center, to be used in cases where an irregular grid is desired. Columns must be named 'lon' and 'lat'. If specified, grd.res and grd.ext are ignored. Note that this option could have undesirable results for unusual grid definitions. In particular, the maximum radius for including sites in a grid cell is always calculated at the equator. For a regular lon/lat grid, this guarantees all sites will be included in at least one cell, because equatorial cells are largest at the equator. If an irregular grid is specified such that this is not true, the maximum radius calculated could lead to sites excluded from all cells. In this case a warning is printed but the function proceeds anyway. 
+  }
   \item{base.map}{
     Currently, either \code{'coasts'} or \code{'countries'} to choose which base map (from required library \code{'rworldmap'}) to be plotted as the base map for all plots. Could easily be modified to accept any SpatialPolygons object.
     }

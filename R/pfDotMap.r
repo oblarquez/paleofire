@@ -3,7 +3,7 @@
 
 pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), 
                     fig.base.name=NULL, base.map='coasts',
-                    grd.res=5, grd.ext=c(-180,180,-90,90), 
+                    grd.res=5, grd.ext=c(-180,180,-90,90), grd.lonlat=NULL, 
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", n.boot=1000,
                     cx.minsize=0.3, cx.mult=1) {
   
@@ -23,7 +23,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 #   # 
 #   rm(list=ls())
 #   library(lattice)
-#   TR                = readRDS('data/All_GCDv1.1_Transformed_v02.rds')
+#   TR                = readRDS('/Work/Research/GPWG/GCD v3.0 Paper figures/Data/All_GCDv1.1_Transformed_v02.rds')
 #   tarAge            = seq(0,2000,1000)
 #   hw                = 250
 #   binhw             = 500
@@ -31,11 +31,12 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 #   base.map          = 'coasts'
 #   grd.res           = 5
 #   grd.ext           = c(-180,180,-90,90)
+#   grd.lonlat        = NULL
 #   proj4             = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
 #   n.boot            = 10    # too small, but OK for a teest
 #   cx.minsize        = 0.3   # minimum dot size
 #   cx.mult           = 1     # multiplicative factor for scaling all dots
-  
+#   
   # ---------------- END TEST BLOCK
   
   # ----- Load base map
@@ -60,7 +61,8 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
     cat("Creating composite...")
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
     # (I've checked "by hand" and it is accurate and efficient.) 
-    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1000)
+    # No need for bootstraps--we're only going to use the actual composite for now. Will bootstrap by site later. 
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1)
     CHAR = t(COMP$BinnedData)
     n.bin = length(tarAge)
     cat("done!\n")
@@ -93,22 +95,57 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
   
   
   # ----- Define prediction grid
-  if(length(grd.res)==1)    # Assume equal x/y resolution if single number given
-    grd.res     = rep(grd.res,2)
+  if(!is.null(grd.lonlat)) {
+    # If the grid is already defined via the grd.lonlat input, conservatively set grd.res
+    # to the maximum lat/lon gap between adjacent rows/cols. This isn't strictly right
+    # and could be way off for unusual grids. However it's fine for something like T31, etc.
+    # where the grid is only slightly irregular. 
+    grd.res = c(max(diff(sort(grd.lonlat$lon))), max(diff(sort(grd.lonlat$lat))))
+
+    # Also standardize longitude to (-180,180), in case it's not already
+    grd.lonlat$lon = ((grd.lonlat$lon+360) %% 360) # First put in (0,360) range
+      grd.lonlat$lon[ grd.lonlat$lon>180 ] = grd.lonlat$lon[grd.lonlat$lon>180] - 360
+  } else {
+    # Otherwise, use grd.res and grd.ext to define a regular grid
+    if(length(grd.res)==1)    # Assume equal x/y resolution if single number given
+      grd.res     = rep(grd.res,2)
   
-  # Find grid cell centers
-  grd.lon = seq( grd.ext[1]+grd.res[1]/2, grd.ext[2], grd.res[1])
-  grd.lat = seq( grd.ext[3]+grd.res[2]/2, grd.ext[4], grd.res[2])
+    # Find grid cell centers
+    grd.lon = seq( grd.ext[1]+grd.res[1]/2, grd.ext[2], grd.res[1])
+    grd.lat = seq( grd.ext[3]+grd.res[2]/2, grd.ext[4], grd.res[2])
   
-  # Expand to obtain every combination of lon/lat
-  grd.lonlat = expand.grid(grd.lon,grd.lat)
-  names(grd.lonlat) = c("lon", "lat") # column names for convenience
+    # Expand to obtain every combination of lon/lat
+    grd.lonlat = expand.grid(grd.lon,grd.lat)
+    names(grd.lonlat) = c("lon", "lat") # column names for convenience
+  }
+  
+  # Now define derived variables
   n.grd = nrow(grd.lonlat)
+  grd.lonlat.rad = grd.lonlat*pi/180   # Will need lat/lon in radians later  
   
-  # Again, will need lat/lon in radians later  
-  grd.lonlat.rad = grd.lonlat*pi/180
+
+  # ----- Figure out radius for including sites in cell-level stats
+  #  As discussed at AGU (Marlon, Bartlein, Higuera, Kelly), to avoid missing any sites 
+  # we want to search within a radius equal to the greatest distance from a grid cell 
+  # center to its most distant corner. 
+  #
+  # For a regular lat/lon grid, this should occur at the equator, where grid cells are largest. 
+  # Note that this conservative approach will result in many sites falling within multiple grid 
+  # boxes--even at the equator,  the defined circles will overlap near the edges of the grid boxes. 
+  # At higher latitudes, the grid cells are much smaller, so overlap will be considerably greater. 
+  # There are alternatives, like using a grid that is irregular in terms of lat/lon, or changing
+  # the area of grid cells depending on latitude. But all have their tradeoffs (we thought), 
+  # and this one is simple. 
+  #
+  # For an arbitrary grid (input as grd.lonlat), it is possible that this definition of max.dist will
+  # fail us (e.g. if polar grid cells are defined larger than equatorial). For now we will use 
+  # it anyway, and just post a warning below if it results in any site being omitted from
+  # all grid cells.
   
-  
+  # Find the max distance just discussed, i.e. the center-to-corner distance for a cell at the origin:
+  max.dist = haverdist(0,0, (grd.res[1]/2)*(pi/180), (grd.res[2]/2)*(pi/180))
+
+
   # ------ Calculate distances from sites to grid cell centers
   cat("\nCalculating distances...\n")
   # Output space and progress bar definition
@@ -121,22 +158,16 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
     setTxtProgressBar(pb, i)
   } 
   close(pb) # Close progress bar
-  
+
+  # Warning if somehow we've failed to include sites in at least one grid cell
+  ind = which(apply( (dists<=max.dist), 2, sum ) < 1)
+  if(length(ind>0)) {
+    warning(paste0("Some sites aren't contributing to any grid cells. Check max.dist! (Sites are ", paste(ind, collapse=","), ")."))
+  }
+
   
   # ----- Compute stats for each grid cell
   cat("\nComputing stats for each grid cell X time slice...\n")
-  #  As discussed at AGU (Marlon, Bartlein, Higuera, Kelly), a simple way is to search within a radius 
-  # around each grid cell center, equal to the greatest distance from a grid cell center to its most distant corner. 
-  # This should occur at the equator, where grid cells are largest. Note that this conservative approach will
-  # result in many sites falling within multiple grid boxes--even at the equator, 
-  # the defined circles will overlap near the edges of the grid boxes. At higher latitudes,
-  # the grid cells are much smaller, so overlap will be considerably greater. 
-  # There are alternatives, like using a grid that is irregular in terms of lat/lon, 
-  # or changing the area of grid cells depending on latitude. But all have their tradeoffs (we thought), 
-  # and this one is simple. 
-  
-  # Find the max distance just discussed. The center-to-corner distance for a cell at the origin should work:
-  max.dist = haverdist(0,0, (grd.res[1]/2)*(pi/180), (grd.res[2]/2)*(pi/180))
   
   # Set aside space for some grid-cell statistics
   grd.n   = matrix(0, nrow=n.grd, ncol=n.bin)
@@ -219,6 +250,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 #   cols = rev(c("#b2182b","#ef8a62", "#fddbc7", "#f7f7f7", "#d1e5f0", "#67a9cf", "#2166ac"))
 #   zlim = c(-1.75,1.75)
 #   cuts = c(-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75)
+
         
       # Determine cuts for sizing point.
         # Specify symbol sizes for the two classes
@@ -293,6 +325,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
 
   
     # ----- Create time series plot
+    if(n.bin>1) {
       timeSeries.dat = data.frame(
                 age  = as.numeric(rbind(tarAge-binhw, tarAge+binhw)),
                 char = rep(COMP$Result$LocFit, each=2),
@@ -318,11 +351,13 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
             panel.xyplot(x,y, type='l', col=1)
             panel.xyplot(x.j,y.j, type='l', col=2)
           })
-
+      } else {
+        timeSeries.plot = NULL
+      }
 
     # ----- Produce plots
       print(mean.plot, position=c(0,0.5,1,1), more=T)
-      print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
+      if(n.bin>1) print(timeSeries.plot, position=c(0,0.3,1,0.5), more=T)
       print(sitesPerCell.plot, position=c(0,0,0.5,0.3), more=T)
       print(cellsPerSite.plot, position=c(0.5,0,1,0.3))
 
