@@ -1,6 +1,6 @@
 pfInteractive=function(addata=NULL){
   
-  install.packages("Imap");require(Imap)
+  # install.packages("Imap");require(Imap)
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)
