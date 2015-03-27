@@ -289,7 +289,8 @@ pfGridding=function(data,cell_sizex=NULL,
 #' Plot maps presenting gridded and transformed charcoal values obtained from
 #' the \code{\link{pfGridding}} function.
 #' 
-#' 
+#' @method plot pfGridding
+#' @S3method plot pfGridding
 #' @param x An object returned by \code{\link{pfGridding}}.
 #' @param continuous Logical, plot continuous (TRUE) or discrete (FALSE) colors
 #' on the map.

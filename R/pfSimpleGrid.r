@@ -44,13 +44,13 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
 # base.map.lwd      = 0.5
 # title.text        = ""
 # ---------------- END TEST BLOCK
+  
   # ----- Constants
   # Number of bins
     n.bin = length(bins) - 1
   
   # proj4 string for the GCD data
     proj4.GCD = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
-
 
   # ----- Base map
   countriesCoarse<-coastsCoarse<-NULL
@@ -67,7 +67,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
   } else {
     base.map = coastsCoarse
   }
-  base.map = spTransform(base.map, CRS(proj4))
+  base.map = sp::spTransform(base.map, sp::CRS(proj4))
   
   
   # ----- Create composite
@@ -96,8 +96,8 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
       dat = data.frame(lon=site.dat$long, lat=site.dat$lat, CHAR)
 
   # Specify the columns that are coordinates, and then the coordinate ref. system. This converts the data frame to class 'SpatialPointsDataFrame', a class in the 'sp' library. 
-    coordinates(dat) = c('lon','lat')
-    proj4string(dat) = proj4.GCD
+    sp::coordinates(dat) = c('lon','lat')
+    sp::proj4string(dat) = proj4.GCD
     
   # NA locations
     na.mat = is.na(CHAR)
@@ -195,7 +195,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
 
     site.dots.layout = list("sp.points", dat[ !na.mat[,j],j], col=1, pch=16, cex=0.3)
 
-    sg.plots[[j]] = spplot(sg.rast[[j]], at=cuts, col.regions=cols, scales=list(draw=T),
+    sg.plots[[j]] = sp::spplot(sg.rast[[j]], at=cuts, col.regions=cols, scales=list(draw=T),
       main = as.list(paste0(title.text, bins[j], "-", bins[j+1], " BP")))
     
     # Should be better way, but can't figure out how to add multiple extra layers in separate steps. This works...

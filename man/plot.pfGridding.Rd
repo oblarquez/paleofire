@@ -3,10 +3,10 @@
 \alias{plot.pfGridding}
 \title{Plot a "pfGridding" object.}
 \usage{
-plot.pfGridding(x, continuous = TRUE, col_class = NULL, col_lim = NULL,
-  xlim = NULL, ylim = NULL, empty_space = 10, cpal = "YlGn",
-  anomalies = TRUE, file = NULL, points = FALSE, add = NULL,
-  add_color = "white", ...)
+\method{plot}{pfGridding}(x, continuous = TRUE, col_class = NULL,
+  col_lim = NULL, xlim = NULL, ylim = NULL, empty_space = 10,
+  cpal = "YlGn", anomalies = TRUE, file = NULL, points = FALSE,
+  add = NULL, add_color = "white", ...)
 }
 \arguments{
 \item{x}{An object returned by \code{\link{pfGridding}}.}

@@ -3,11 +3,11 @@
 \alias{plot.pfKruskal}
 \title{Plot a "pfKruskal" object.}
 \usage{
-plot.pfKruskal(x, trend = FALSE, outliers = FALSE, xlim = NULL,
+\method{plot}{pfKruskal}(x, trend = FALSE, outliers = FALSE, xlim = NULL,
   ylim = NULL, ...)
 }
 \arguments{
-\item{x}{An object returned by \code{\link{pfKruskal}}.}
+\item{x}{An object returned by \code{\link[paleofire]{pfKruskal}}.}
 
 \item{trend}{Logical, show trend using linear regression?}
 
@@ -56,6 +56,6 @@ plot(comparison)
 O. Blarquez
 }
 \seealso{
-\code{\link{pfKruskal}}
+\code{\link[paleofire]{pfKruskal}}
 }
 

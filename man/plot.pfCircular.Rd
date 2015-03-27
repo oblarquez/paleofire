@@ -3,8 +3,8 @@
 \alias{plot.pfCircular}
 \title{plot.pfCircular}
 \usage{
-plot.pfCircular(x, ylim = NULL, xlim = NULL, ylab = NULL, xlab = NULL,
-  main = NULL, text = FALSE, ...)
+\method{plot}{pfCircular}(x, ylim = NULL, xlim = NULL, ylab = NULL,
+  xlab = NULL, main = NULL, text = FALSE, ...)
 }
 \arguments{
 \item{x}{A "pfCircular" object.}

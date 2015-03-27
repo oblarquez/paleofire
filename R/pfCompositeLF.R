@@ -9,7 +9,7 @@
 #' Daniau et al. (2012).
 #' 
 #' 
-#' @param TR An object returned by \code{\link{pfTransform}}
+#' @param TR An object returned by \code{\link[paleofire]{pfTransform}}
 #' @param tarAge Numeric, the target ages for prebinning given in years (e.g.
 #' tarAge = seq(0, 10000, 20)). If unspecified the sequence is defined as
 #' tarAge=seq(from=min age, to=max Age, by=median resolution).
@@ -274,7 +274,8 @@ pfCompositeLF=function(TR,hw=250,
 #' 
 #' Plot pfCompositeLF object
 #' 
-#' 
+#' @S3method plot pfCompositeLF
+#' @method plot pfCompositeLF
 #' @param x A "pfCompositeLF" object.
 #' @param type Character, type of plot among "ci", "prctile", "density"
 #' @param add Character, add=NULL by default, add="sitenum" could be specified

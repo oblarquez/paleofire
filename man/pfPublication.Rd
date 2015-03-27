@@ -9,16 +9,9 @@ pfPublication(x, output = "data.frame")
 \item{x}{A "pfSiteSel" object}
 
 \item{output}{Defines the output as a "list" or a "data.frame" (default).}
-
-\item{x}{A "pfSiteSel" object}
-
-\item{output}{Defines the output as a "list" or a "data.frame" (default).}
 }
 \value{
 A list or data frame with citation informations related to charcoal sites.
-
-A list or data frame with citation informations related to charcoal
-sites.
 }
 \description{
 Get citations for charcoal sites
@@ -26,13 +19,8 @@ Get citations for charcoal sites
 \examples{
 x=pfSiteSel(id_site \%in\% c(1:4))
 pfPublication(x,output="list")
-Get citations for charcoal sites
-
-Get citations for charcoal sites
 }
 \author{
-O. Blarquez
-
 O. Blarquez
 }
 

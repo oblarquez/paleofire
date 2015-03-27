@@ -3,7 +3,7 @@
 \alias{plot.contiguous}
 \title{Plot "contiguous" object}
 \usage{
-plot.contiguous(x, ylim = NULL, xlim = NULL, ...)
+\method{plot}{contiguous}(x, ylim = NULL, xlim = NULL, ...)
 }
 \arguments{
 \item{x}{An object returned by contiguous}

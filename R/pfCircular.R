@@ -123,7 +123,8 @@ pfCircular=function(comp,b=NULL,conf=c(0.05,0.95),nboot=1000,AgeLim=NULL){
 #' 
 #' Plot circular block bootstrap percentiles.
 #' 
-#' 
+#' @method plot pfCircular
+#' @S3method plot pfCircular
 #' @param x A "pfCircular" object.
 #' @param ylim Numeric, x axis limits.
 #' @param xlim Numeric, y axis limits.

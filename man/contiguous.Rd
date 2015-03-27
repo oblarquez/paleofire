@@ -27,6 +27,6 @@ contiguous(x)
 O. Blarquez
 }
 \seealso{
-\code{\link{pfResolution}}
+\code{\link[paleofire]{pfResolution}}
 }
 

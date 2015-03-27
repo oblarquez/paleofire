@@ -10,7 +10,7 @@
 #' @return Summary table of sites with the added contiguous logical column
 #' (TRUE--FALSE)
 #' @author O. Blarquez
-#' @seealso \code{\link{pfResolution}}
+#' @seealso \code{\link[paleofire]{pfResolution}}
 #' @examples
 #' 
 #' x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
@@ -61,7 +61,8 @@ contiguous=function(x,threshold=1){
 #' Plot an object returned by contiguous, plot contiguous cores (or sites) in
 #' green (T) and non-contiguous cores in red (F).
 #' 
-#' 
+#' @method plot contiguous
+#'
 #' @param x An object returned by contiguous
 #' @param ylim Numeric, ylim for the graph
 #' @param xlim Numeric, xlim for the graph

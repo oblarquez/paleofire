@@ -3,8 +3,8 @@
 \alias{plot.pfCompositeLF}
 \title{plot.pfCompositeLF}
 \usage{
-plot.pfCompositeLF(x, type = "ci", add = "NULL", conf = c(0.05, 0.95),
-  palette = "jet", xlim = NULL, ylim = NULL, main = "Composite",
+\method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL", conf = c(0.05,
+  0.95), palette = "jet", xlim = NULL, ylim = NULL, main = "Composite",
   text = FALSE, what = "locfit", ...)
 }
 \arguments{

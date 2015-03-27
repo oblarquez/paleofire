@@ -9,24 +9,6 @@
 #' pfPublication(x,output="list")
 
 
-
-
-
-#' Get citations for charcoal sites
-#' 
-#' Get citations for charcoal sites
-#' 
-#' 
-#' @param x A "pfSiteSel" object
-#' @param output Defines the output as a "list" or a "data.frame" (default).
-#' @return A list or data frame with citation informations related to charcoal
-#' sites.
-#' @author O. Blarquez
-#' @examples
-#' 
-#' x=pfSiteSel(id_site %in% c(1:4))
-#' pfPublication(x,output="list")
-#' 
 pfPublication <- function(x,output="data.frame") {
   
   pub_key<-pub<-NULL

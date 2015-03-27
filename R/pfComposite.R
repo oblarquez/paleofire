@@ -162,7 +162,8 @@ pfComposite=function(TR,
 #' 
 #' Plot a pfComposite object
 #' 
-#' 
+#' @method plot pfComposite
+#' @S3method plot pfComposite
 #' @param x A "pfComposite" object.
 #' @param type Character, type of plot among "ci", "prctile", "density"
 #' @param conf Numeric, confidence levels.

@@ -7,8 +7,8 @@ pfKruskal(data, p.adj = "none", alpha = 0.05, bins = NULL,
   verbose = TRUE)
 }
 \arguments{
-\item{data}{An object returned by \code{\link{pfComposite}} or
-\code{\link{pfTransform}}.}
+\item{data}{An object returned by \code{\link[paleofire]{pfComposite}} or
+\code{\link[paleofire]{pfTransform}}.}
 
 \item{p.adj}{Method for adjusting p values (see
 \code{\link[stats]{p.adjust}}). Includes: "holm", "hochberg", "hommel",

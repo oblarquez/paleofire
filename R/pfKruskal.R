@@ -6,8 +6,8 @@
 #' periods.
 #' 
 #' 
-#' @param data An object returned by \code{\link{pfComposite}} or
-#' \code{\link{pfTransform}}.
+#' @param data An object returned by \code{\link[paleofire]{pfComposite}} or
+#' \code{\link[paleofire]{pfTransform}}.
 #' @param p.adj Method for adjusting p values (see
 #' \code{\link[stats]{p.adjust}}). Includes: "holm", "hochberg", "hommel",
 #' "bonferroni", "BH", "BY", "fdr" and "none" (default).
@@ -102,7 +102,8 @@ pfKruskal=function(data,p.adj="none",
 #' If not, equality could be rejected at the confidence level specified by
 #' \code{alpha}.
 #' 
-#' @param x An object returned by \code{\link{pfKruskal}}.
+#' @method plot pfKruskal
+#' @param x An object returned by \code{\link[paleofire]{pfKruskal}}.
 #' @param trend Logical, show trend using linear regression?
 #' @param outliers Logical, show outliers?
 #' @param xlim Numeric, x axis limits.
@@ -110,7 +111,7 @@ pfKruskal=function(data,p.adj="none",
 #' @param \dots ...
 #' @return Return a ggplot2 "gg" object.
 #' @author O. Blarquez
-#' @seealso \code{\link{pfKruskal}}
+#' @seealso \code{\link[paleofire]{pfKruskal}}
 #' @examples
 #' 
 #' ## Composite charcoal record for Western Boreal North America:

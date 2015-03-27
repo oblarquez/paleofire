@@ -108,7 +108,8 @@ pfSiteSel <- function(...) {
 #' 
 #' Return a summary table for an object of the class "pfSiteSel"
 #' 
-#' 
+#' @method summary pfSiteSel
+#' @S3method summary pfSiteSel
 #' @param object An object of the class "pfSiteSel".
 #' @param \dots \dots{}
 #' @return Data.frame, returns the following informations: "id_site", "lat",
@@ -148,7 +149,8 @@ summary.pfSiteSel=function(object,...){
 #' 
 #' Plot an object of the class "pfSiteSel"
 #' 
-#' 
+#' @method plot pfSiteSel
+#' @S3method plot pfSiteSel
 #' @param x An object of the class "pfSiteSel".
 #' @param add An object returned by pfAddData (optional).
 #' @param type Character, type of plot among "Map" or "Chronology".

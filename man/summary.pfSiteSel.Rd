@@ -3,7 +3,7 @@
 \alias{summary.pfSiteSel}
 \title{summary.pfSiteSel}
 \usage{
-summary.pfSiteSel(object, ...)
+\method{summary}{pfSiteSel}(object, ...)
 }
 \arguments{
 \item{object}{An object of the class "pfSiteSel".}

@@ -11,6 +11,8 @@
 \item{xlim}{Numeric x axis limits}
 
 \item{ylim}{Numeric, y axis limits}
+
+\item{...}{other arguments}
 }
 \description{
 Plot fire frequency calculated using the \code{\link[paleofire]{kdffreq}} function

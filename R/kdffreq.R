@@ -103,9 +103,11 @@ kdffreq=function(fevent,
 #' Plot fire frequency calculated using the \code{\link[paleofire]{kdffreq}} function 
 #' 
 #' @method plot kdffreq
+#' @S3method  plot kdffreq
 #' @param x Object returned by kdffreq
 #' @param xlim Numeric x axis limits
 #' @param ylim Numeric, y axis limits
+#' @param ... other arguments
 #' @seealso \code{\link[paleofire]{kdffreq}} 
 #'  @examples
 #'  
