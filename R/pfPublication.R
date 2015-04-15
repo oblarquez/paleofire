@@ -8,6 +8,7 @@
 #' x=pfSiteSel(id_site %in% c(1:4))
 #' pfPublication(x,output="list")
 
+
 pfPublication <- function(x,output="data.frame") {
   
   pub_key<-pub<-NULL

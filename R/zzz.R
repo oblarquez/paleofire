@@ -3,6 +3,29 @@
   packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
 } 
 
+
+
+
+
+#' Check GCD package install
+#' 
+#' Check if GCD package is installed and up to date to ensure always using the
+#' most up to date GCD version. devtools package is required: on Windows
+#' install Rtools.exe depending on your R version
+#' http://cran.r-project.org/bin/windows/Rtools/
+#' 
+#' Last GCD database version is donwloaded and installed using:
+#' 
+#' \code{library(devtools)}
+#' 
+#' \code{install_github("GCD",username="paleofire",ref="master")}
+#' 
+#' @author O. Blarquez
+#' @keywords ~kwd1 ~kwd2
+#' @examples
+#' 
+#' \dontrun{checkGCDversion()}
+#' 
 checkGCDversion <- function() {
   # Check to see if installed
   if (!"GCD" %in% utils::installed.packages()[, 1]) {

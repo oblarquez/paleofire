@@ -1,3 +1,37 @@
+#' Analyse composite records by a Kruskal-Wallis ANOVA
+#' 
+#' The function applies a Kruskal-Wallis ANOVA on binned data issued from a
+#' "pfComposite" object (of directly on "pfTransform" objects), in order to
+#' test the difference in biomass burning activity between different time
+#' periods.
+#' 
+#' 
+#' @param data An object returned by \code{\link[paleofire]{pfComposite}} or
+#' \code{\link[paleofire]{pfTransform}}.
+#' @param p.adj Method for adjusting p values (see
+#' \code{\link[stats]{p.adjust}}). Includes: "holm", "hochberg", "hommel",
+#' "bonferroni", "BH", "BY", "fdr" and "none" (default).
+#' @param alpha Numeric, confidence level.
+#' @param bins Numeric, bins to use if a "pfTransform" object is provided.
+#' @param verbose Logical, verbose or not...
+#' @return A "pfKruskal" object containing multiple comparison results.
+#' @author O. Blarquez
+#' @seealso \code{\link{plot.pfKruskal}},\code{\link[agricolae]{kruskal}}
+#' @examples
+#' 
+#' ## Composite charcoal record for Western Boreal North America:
+#' ID=pfSiteSel(id_region=="WNA0" & l12==1)
+#' plot(ID)
+#' ## Transform data
+#' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Composite
+#' comp=pfComposite(res3,bins=seq(from=-500,to=12500,by=1000))
+#' plot(comp)
+#' 
+#' ## Kruskal Wallis Anova
+#' comparison=pfKruskal(comp)
+#' 
 pfKruskal=function(data,p.adj="none",
                    alpha=0.05,bins=NULL,
                    verbose=TRUE){
@@ -54,6 +88,51 @@ pfKruskal=function(data,p.adj="none",
   return(out)
 }
 
+
+
+
+
+#' Plot a "pfKruskal" object.
+#' 
+#' Plot a "pfKruskal" object using boxplots and showing significant differences
+#' between the periods using letters.
+#' 
+#' If two periods share the same letter their rank (median) is not
+#' significantly different at the confidence level specified by \code{alpha}.
+#' If not, equality could be rejected at the confidence level specified by
+#' \code{alpha}.
+#' 
+#' @method plot pfKruskal
+#' @param x An object returned by \code{\link[paleofire]{pfKruskal}}.
+#' @param trend Logical, show trend using linear regression?
+#' @param outliers Logical, show outliers?
+#' @param xlim Numeric, x axis limits.
+#' @param ylim Numeric, y axis limits.
+#' @param \dots ...
+#' @return Return a ggplot2 "gg" object.
+#' @author O. Blarquez
+#' @seealso \code{\link[paleofire]{pfKruskal}}
+#' @examples
+#' 
+#' ## Composite charcoal record for Western Boreal North America:
+#' ID=pfSiteSel(id_region=="WNA0" & l12==1)
+#' plot(ID)
+#' ## Transform data
+#' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Composite
+#' comp=pfComposite(res3,bins=seq(from=-500,to=12500,by=1000))
+#' plot(comp)
+#' 
+#' ## Kruskal Wallis Anova
+#' comparison=pfKruskal(comp)
+#' 
+#' plot(comparison)
+#' 
+#' # p=plot(comparison)
+#' # require(ggplot2)
+#' # p+ggtitle("my title")
+#' 
 plot.pfKruskal=function(x,trend=FALSE,outliers=FALSE, xlim = NULL, ylim = NULL, ...){  
   
   y<-lpos<-lab<-NULL

@@ -2,10 +2,11 @@
 
 \alias{bootCI}
 \alias{haverdist}
-\alias{triCube}
+%\alias{triCube}
 \alias{dem}
 \alias{loessGCV}
 \alias{bestLoess}
+\alias{pfSimpleGrid}
 
 \title{Internal paleofire functions}
 \description{

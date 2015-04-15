@@ -17,10 +17,8 @@ A list or data frame with citation informations related to charcoal sites.
 Get citations for charcoal sites
 }
 \examples{
-\dontrun{
 x=pfSiteSel(id_site \%in\% c(1:4))
 pfPublication(x,output="list")
-}
 }
 \author{
 O. Blarquez

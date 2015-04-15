@@ -1,3 +1,50 @@
+#' Produce a composite serie from multiple charcoal records
+#' 
+#' Produce a composite serie from multiple charcoal records using bootstrap
+#' resampling, the sites charcoal values are binned and the mean in each bin is
+#' calculated prior the bootstrap procedure. This procedure is equivalent to
+#' Power et al. 2008.
+#' 
+#' 
+#' @param TR An object returned by \code{\link{pfTransform}}
+#' @param bins Numeric, the sequence for binning given in years (e.g.
+#' bins=seq(from=0, to=10000, by=200)). If unspecified the sequence is defined
+#' as bins=seq(from=min age, to=max age, by=median resolution).
+#' @param nboot Numeric, a number specifying the number of bootstrap
+#' replicates.
+#' @param binning Logical, set to TRUE (default) for binning, if transformed
+#' data are first interpolated this argument can be set to FALSE (no binning).
+#' @param conf Numeric, define confidence levels.
+#' @return Object of the class "pfComposite"
+#' @author O.Blarquez
+#' @references Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.
+#' Mayle, A. Ballouche, R. Bradshaw, C. Carcaillet, C. Cordova, S. Mooney, P.
+#' Moreno, I. Prentice, K. Thonicke, W. Tinner, C. Whitlock, Y. Zhang, Y. Zhao,
+#' A. Ali, R. Anderson, R. Beer, H. Behling, C. Briles, K. Brown, A. Brunelle,
+#' M. Bush, P. Camill, G. Chu, J. Clark, D. Colombaroli, S. Connor, A. L.
+#' Daniau, M. Daniels, J. Dodson, E. Doughty, M. Edwards, W. Finsinger, D.
+#' Foster, J. Frechette, M. J. Gaillard, D. Gavin, E. Gobet, S. Haberle, D.
+#' Hallett, P. Higuera, G. Hope, S. Horn, J. Inoue, P. Kaltenrieder, L.
+#' Kennedy, Z. Kong, C. Larsen, C. Long, J. Lynch, E. Lynch, M. McGlone, S.
+#' Meeks, S. Mensing, G. Meyer, T. Minckley, J. Mohr, D. Nelson, J. New, R.
+#' Newnham, R. Noti, W. Oswald, J. Pierce, P. Richard, C. Rowe, M. Sanchez
+#' Goni, B. Shuman, H. Takahara, J. Toney, C. Turney, D. Urrego-Sanchez, C.
+#' Umbanhowar, M. Vandergoes, B. Vanniere, E. Vescovi, M. Walsh, X. Wang, N.
+#' Williams, J. Wilmshurst, and J. Zhang. 2008. Changes in fire regimes since
+#' the Last Glacial Maximum: an assessment based on a global synthesis and
+#' analysis of charcoal data. Climate Dynamics 30:887-907.
+#' @examples
+#' 
+#' ## Composite charcoal record for North America:
+#' ID=pfSiteSel(id_region=="WNA0" & l12==1)
+#' plot(ID)
+#' ## Transform data
+#' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Composite
+#' comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))
+#' plot(comp)
+#' 
 pfComposite=function(TR,
                      bins=NULL,
                      nboot=1000,
@@ -107,6 +154,39 @@ pfComposite=function(TR,
 
 ######PLOT########
 
+
+
+
+
+#' plot.pfComposite
+#' 
+#' Plot a pfComposite object
+#' 
+#' @method plot pfComposite
+#' @S3method plot pfComposite
+#' @param x A "pfComposite" object.
+#' @param type Character, type of plot among "ci", "prctile", "density"
+#' @param conf Numeric, confidence levels.
+#' @param palette Character, color palette used with type=c("prctile",
+#' "density") among "jet" and "BW".
+#' @param add Character, add="NONE" by default, add="sitenum" could be
+#' specified to plot the sites number in eah bin along with the composite
+#' curve.
+#' @param main Character, title of the plot.
+#' @param text Logical, text options.
+#' @param \dots \dots{}
+#' @author O. Blarquez
+#' @examples
+#' 
+#' ## Composite charcoal record for North America:
+#' ID=pfSiteSel(id_region=="WNA0",l12=1)
+#' ## Transform data
+#' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Composite
+#' comp=pfComposite(res3,bins=seq(0,5000,200))
+#' plot(comp,type="density",smoothing=TRUE,spar=0.3)
+#' 
 plot.pfComposite=function(x,type="ci",conf=c(0.05,0.95),palette="jet",add="NONE",text=FALSE,main=NULL,...){
   # Value for plotting:
   w=(x$BinCentres[2]-x$BinCentres[1])/2

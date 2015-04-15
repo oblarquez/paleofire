@@ -1,3 +1,66 @@
+#' Transform charcoal data for unique to multiple series
+#' 
+#' Charcoal data transformation, background estimation and homogenization for
+#' unique to multiple series, accepts objects returned by
+#' \code{\link{pfSiteSel}}.
+#' 
+#' 
+#' @param ID An object returned by \code{\link{pfSiteSel}} or
+#' \code{\link{pfTransform}}
+#' @param add An object returned by \code{\link{pfAddData}}
+#' @param Interpolate Logical, idicates wether data should be interpolated or
+#' not, default=FALSE
+#' @param Age Numeric, If Interpolate=TRUE, Age is used to specified the ages
+#' where the interpolation took place, If Age=NULL (default) the interpolated
+#' ages are automatically specified using the median resolution of the
+#' record(s). If Age is specified as a vector (e.g. Age=(from=0,to=10000,
+#' by=10)) the interpolation took place at specified ages.
+#' @param method A character indicating the transformation method: "Z-Score",
+#' Z-Score, "LOESS", Locally weighted regression, "SmoothSpline", Smoothing
+#' spline, "Box-Cox", Box-Cox transformation, "MinMax", Minimax transformation,
+#' "RunMed", Running median, "RunMean", Running mean, "RunQuantile", Running
+#' quantile, "RunMin", Running min, "RunMax", Running max, "stl", Decompose a
+#' time series into seasonal, trend and irregular components using loess, based
+#' on \code{\link[stats]{stl}} function.
+#' @param BasePeriod Numeric, a parameter specifying the base period for
+#' calculating Z-score given in years BP (e.g. BasePeriod=c(0, 4000)), if empty
+#' or unspecified the base period corresponds to record length.
+#' @param span Numeric, the span parameter for the LOESS or Smoothing spline
+#' methods
+#' @param RunWidth Numeric, the width of the window for the"RunMed", "RunMean",
+#' "RunQuantile", "RunMin", and "RunMax" methods in years.
+#' @param RunQParam Numeric, the parameter specifying which quantile should be
+#' calculated for the method "RunQuantile" (default=0.5 i.e. median).
+#' @param stlYears Numeric, the bandwidth for stl decomposition, default=500
+#' years.
+#' @param alpha Numeric, alpha value to add before BoxCox calculation, see
+#' \code{\link{pfBoxCox}}.
+#' @param type Character, the type of Box-Cox transformation, see
+#' \code{\link{pfBoxCox}} for details.
+#' @param QuantType Character, by default QuantType="INFL" and influx are
+#' automatically calculated, otherwise use QuantType="NONE" (not recommended).
+#' @param MethodType Character, by default (MethodType=NULL) imply that when
+#' for a specific site two charcoal unit exist the function pick the one define
+#' by pref_unit. By passing different arguments to MethodType user can modify
+#' the analysis to pick non preferred units by referring to more general
+#' methods for instance MethodType = "POLS" will choose charcoal records from
+#' pollen slides, or MethodType = "SIEV" sieved macro charcoal series. Type
+#' (paleofiredata); levels(paleofiredata$METHOD) for available methods.
+#' @param verbose Logical, verbose or not...
+#' @return An object of the class "pfTransform".
+#' @author O. Blarquez
+#' @examples
+#' 
+#' ## Select the site Pas-de-Fond
+#' ID=pfSiteSel(site_name=="Pas-de-Fond")
+#' 
+#' # Transform data sequentially using pfTransform function
+#' tr=pfTransform(ID,method=c("MinMax","Box-Cox"))
+#' 
+#' ## Plot transformed data for the first site
+#' plot(tr$Age[,1],tr$TransData[,1],type="l")
+#' 
+#' 
 pfTransform=function(ID=NULL,
                      add=NULL,
                      Interpolate=FALSE,

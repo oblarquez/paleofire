@@ -1,6 +1,24 @@
+#' GCD sites interactive selection
+#' 
+#' Interactive selection of GCD sites by drawing a polygon on a map.
+#' 
+#' 
+#' @param addata An optional XY matrix of coordinates to specify a polygon to
+#' be drawn on the map.
+#' @return An object of the class "pfSiteSel".
+#' @author O. Blarquez
+#' @seealso \code{\link{pfSiteSel}}
+#' @examples
+#' 
+#' \dontrun{
+#' # Type: 
+#' ID=pfInteractive()
+#' # And follow text instructions}
+#' 
+#' 
 pfInteractive=function(addata=NULL){
   
-  install.packages("Imap");require(Imap)
+  # install.packages("Imap");require(Imap)
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   coast=NULL; rm(coast)

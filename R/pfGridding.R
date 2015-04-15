@@ -1,4 +1,99 @@
 ## 
+
+
+
+
+#' Produce gridded maps of transformed charcoal values.
+#' 
+#' The function uses weighted spatio-temporal interpolation to produce gridded
+#' maps of transformed charcoal values. Spatial grids are used to interpolate
+#' transformed charcoal values for a key period defined by \code{Age}. For each
+#' grid cell the function search charcoal sites located in a radius defined by
+#' \code{distance_buffer} from the grid centre and at an elevation within a
+#' range defined by \code{elevation_buffer} from the mean elevation of the
+#' cell. Then the function search for charcoal samples within a temporal range
+#' from the key date defined by \code{time_buffer}. Finally a tricube distance
+#' weighting function is applied to each sample by considering it spatial
+#' distance to the grid centre and it temporal distance to the key date. This
+#' approach that weight samples according to their spatio-temporal location
+#' also down-weight charcoal sites that are poorly sampled.
+#' 
+#' 
+#' @param data An object returned by \code{\link{pfTransform}}.
+#' @param cell_sizex Numeric, grid cell width (m).
+#' @param cell_sizey Numeric, grid cell height (m).
+#' @param age Numeric, key date (years BP).
+#' @param cell_size Numeric, grid cell size (bypass cell_sizex and cell_sizey
+#' and produce square cells).
+#' @param time_buffer Numeric, temporal distance (years) from the key date to
+#' search for charcoal samples.
+#' @param distance_buffer Numeric, spatial distance from the grid centres to
+#' search for charcoal samples (m).
+#' @param raster_extent Numeric, define custom extent for the analysis such as
+#' raster_extent = c(xmin, xmax, ymin, ymax)
+#' @param elevation_buffer Numeric, elevation range from the mean grid cell
+#' elevation to search for charcoal sites.
+#' @param proj4 String, proj.4 string representing the desired projection for
+#' plotted maps. Default is Robinson ("+proj=robin +lon_0=0 +x_0=0 +y_0=0
+#' +ellps=WGS84 +datum=WGS84 +units=m +no_defs"). See
+#' \url{http://www.spatialreference.org} to look up the string for your
+#' favorite projections.
+#' @param sea_mask Logical, mask cells falling in the sea.
+#' @param other_mask A sp object (SpatialPolygonsDataFrame) used to mask data
+#' i.e. for not interpollating pixels under the mask (classical usage: ice
+#' extent mask). Note that the SpatialPolygonsDataFrame projection must be used
+#' in the analysis and defined using \code{proj4} argument, otherwise the mask
+#' should be reprojected (e.g. using rgdal::spTransform).
+#' @param verbose Logical, verbose or not...
+#' @return A "pfGridding" object (list) that could be plotted using
+#' \code{\link{plot.pfGridding}}.
+#' @author O.Blarquez
+#' @seealso \code{\link{plot.pfGridding}}, \code{\link{pfTransform}},
+#' \code{\link{pfDotMap}}
+#' @examples
+#' 
+#' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+#' 
+#' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' p=pfGridding(TR,age=1000)
+#' summary(p)
+#' 
+#' \dontrun{
+#' require(raster)
+#' plot(p$raster)
+#' 
+#' ## Example of other_mask usage: we will use here Dyke 2003 ice extent map for North 
+#'  America
+#' require(maptools)
+#' ID=pfSiteSel(id_region=="ENA0", long>-100,lat>40)
+#' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Define projection (same as Dyke 2003)
+#' proj4="+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 
+#'  +lon_0=-95 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs"
+#' 
+#' ## Download the shapefile
+#' where=getwd() 
+#' download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.shp",
+#'                paste0(where,"/ice_9500_calBP_lcc.shp"))
+#' download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.dbf",
+#'                paste0(where,"/ice_9500_calBP_lcc.dbf"))
+#' download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.shx",
+#'                paste0(where,"/ice_9500_calBP_lcc.shx"))
+#' 
+#' ice_shp=readShapePoly(paste0(where,"/ice_9500_calBP_lcc.shp"), 
+#'                       proj4string=CRS(proj4))
+#' plot(ice_shp) 
+#' 
+#' p=pfGridding(TR,age=9500,cell_size=100000,distance_buffer=300000,
+#'              proj4=proj4,other_mask=ice_shp)
+#' plot(p,add=ice_shp)
+#' 
+#' # Citation: Dyke, A.S., Moore, A. And Robertson, L. 2003 :
+#' # Deglaciation of North America, Geological Survey of Canada Open File 1574.
+#' }
+#' 
 pfGridding=function(data,cell_sizex=NULL,
                     cell_sizey=NULL,
                     age=0,
@@ -185,6 +280,56 @@ pfGridding=function(data,cell_sizex=NULL,
   
 }
 
+
+
+
+
+#' Plot a "pfGridding" object.
+#' 
+#' Plot maps presenting gridded and transformed charcoal values obtained from
+#' the \code{\link{pfGridding}} function.
+#' 
+#' @method plot pfGridding
+#' @S3method plot pfGridding
+#' @param x An object returned by \code{\link{pfGridding}}.
+#' @param continuous Logical, plot continuous (TRUE) or discrete (FALSE) colors
+#' on the map.
+#' @param col_class Numeric, if continuous is false define here color classes
+#' (single values: col_class=5, or sequences col_class=seq(-15,15,5) are
+#' accepted.)
+#' @param col_lim Numeric, limits for plotting grid cells values, grid cells
+#' with values beyond col_lim are not plotted.
+#' @param xlim Numeric, map limits.
+#' @param ylim Numeric, map limits.
+#' @param empty_space Percentage, define empty space around the map.
+#' @param cpal String, color palette to use see
+#' \code{\link[RColorBrewer]{brewer.pal}}
+#' @param anomalies Logical, adapt output for plotting anomalies or not (color
+#' classes, etc..)
+#' @param file Path/Filename.tiff, the function can output a GeoTiff file if
+#' desired.
+#' @param points Logical, plot charcoal sites on the map?
+#' @param add An object of the class "SpatialPolygonsDataFrame" (sp) to be
+#' ploted on the map.
+#' @param add_color Color of the added SpatialPolygonsDataFrame.
+#' @param \dots \dots{}
+#' @return A ggplot2 "gg" object that could be further manipulated.
+#' @author O. Blarquez
+#' @seealso \code{\link{pfGridding}}
+#' @examples
+#' 
+#' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+#' 
+#' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' p=pfGridding(TR,age=1000)
+#' 
+#' plot(p,empty_space=100)
+#' 
+#' # require(ggplot2)
+#' # pp=plot(p,empty_space=100)
+#' # pp+ggtitle("my title..")
+#' 
 plot.pfGridding=function(x,continuous=TRUE,
                          col_class=NULL,
                          col_lim=NULL,
@@ -347,24 +492,31 @@ plot.pfGridding=function(x,continuous=TRUE,
 }
 
 ## -------------------------------------------------------------------------------------------
-#'   Tukey's Tricube weight function
-#'   
-#'   From the EGRET package http://usgs-r.github.io/EGRET/
-#'   Robert Hirsch and Laura De Cicco
-#'   
-#'      Computes the tricube weight function on a vector of distance values (d),
-#'      based on a half-window width of h,
-#'      and returns a vector of weights that range from zero to 1.
-#'
-#' @param d numeric vector of distances from the point of estimation to the given sample value
-#' @param h numeric value, the half-window width, measured in the same units as d
-#' @keywords statistics weighting
+
+
+
+
+#' Tukey's Tricube weight function
+#' 
+#' From the EGRET package http://usgs-r.github.io/EGRET/ Robert Hirsch and
+#' Laura De Cicco
+#' 
+#' Computes the tricube weight function on a vector of distance values (d),
+#' based on a half-window width of h, and returns a vector of weights that
+#' range from zero to 1.
+#' 
+#' @param d numeric vector of distances from the point of estimation to the
+#' given sample value
+#' @param h numeric value, the half-window width, measured in the same units as
+#' d
 #' @return w numeric vector of weights, all 0<=w<=1
-#' @export
+#' @keywords statistics weighting
 #' @examples
-#'  h<-10
+#' 
+#' h<-10
 #'  d<-c(-11,-10,-5,-1,-0.01,0,5,9.9,10,20)
 #'  triCube(d,h)
+#' 
 triCube<-function(d,h) {
   #  triCube is Tukey tricubed weight function
   #    first argument, d, is a vector of the distances between the observations and the estimation point
