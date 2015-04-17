@@ -1,0 +1,18 @@
+exportPattern("^[[:alpha:]]+")
+import(methods,raster,ggplot2,
+       GCD,rgdal,lattice)
+#importFrom(agricolae,kruskal)
+importFrom(locfit,locfit,lp)
+#importFrom(Imap,imap)
+#importFrom(Imap,select.pts)
+
+S3method(plot,pfCircular)
+S3method(plot,pfKruskal)
+S3method(plot,pfGridding)
+S3method(plot,CHAR)
+S3method(plot,pfSiteSel)
+S3method(plot,pfComposite)
+S3method(plot,pfCompositeLF)
+S3method(plot,contiguous)
+S3method(summary,pfSiteSel)
+S3method(plot,kdffreq)

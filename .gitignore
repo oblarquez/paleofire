@@ -1,0 +1,10 @@
+# History files
+.Rhistory
+# Example code in package build process
+*-Ex.R
+.Rproj.user
+.DS_Store
+Diagnostic.pdf
+.RData
+ggmapTemp.png
+australasia.kml
