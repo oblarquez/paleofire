@@ -159,6 +159,7 @@ summary.pfSiteSel=function(object,...){
 #' @param xlim Numeric, x axis limits.
 #' @param ylim Numeric, y axis limits.
 #' @param cex Numeric, size of points.
+#' @param plot_countries Logical, default FALSE (if TRUE plot countries borderlines and coastlines) 
 #' @param \dots \dots{}
 #' @author O. Blarquez
 #' @examples
@@ -168,15 +169,16 @@ summary.pfSiteSel=function(object,...){
 #' 
 #' 
 plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
-                        xlim=NULL, ylim=NULL, cex=1,...)
+                        xlim=NULL, ylim=NULL, cex=1, plot_countries=FALSE,...)
   
 {
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
-  coast=NULL; rm(coast)
+  coast=countries=NULL; rm(coast,countries)
   
   data(paleofiresites,envir = environment())
   data(coast,envir = environment())
+  data(countries,envir = environment())
   
   ## Chronology
   if(type=="Chronology"){
@@ -221,7 +223,11 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
     if(zoom=="World"|zoom=="world"){
       plot(paleofiresites$long,paleofiresites$lat,
            col="blue",xlab="Longitude",ylab="Latitude")
-      lines(coast$X,coast$Y)
+      
+     if (plot_countries==TRUE) {
+       lines(countries$x,countries$y)
+     } else lines(coast$X,coast$Y)
+      
       points(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long,
              paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat, 
              bg="red",col = "red",pch = 21,xlab="Longitude",ylab="Latitude")
@@ -244,7 +250,11 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
       
       plot(paleofiresites$long,paleofiresites$lat,col="blue",xlab="Longitude",ylab="Latitude",xlim=xlim,ylim=ylim)
       points(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long,paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat,bg="red",col = "red",pch = 21)
-      lines(coast$X,coast$Y)
+      
+      if (plot_countries==TRUE) {
+        lines(countries$x,countries$y)
+      } else lines(coast$X,coast$Y)
+      
       if(is.null(add)==FALSE)
         points(add$metadata$LONGITUDE,
                add$metadata$LATITUDE, 

@@ -18,17 +18,18 @@
 #' 
 pfInteractive=function(addata=NULL){
   
-  # install.packages("Imap");require(Imap)
+  # install.packages("Imap");
+  require(Imap)
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
-  coast=NULL; rm(coast)
+  countries=NULL; rm(countries)
   
   
   ## Load data  
   data(paleofiresites,envir = environment())
-  data(coast,envir = environment())
+  data(countries,envir = environment())
   ## Define vectors
-  yy=cbind(coast[,2],coast[,1])
+  yy=cbind(countries$x,countries$y)
   pp=cbind(paleofiresites$long,paleofiresites$lat)
   
   ## Use imap for interactive plot
@@ -78,7 +79,7 @@ three vertices (polygon must be convex ). Right click or click finish when ready
   class(output)="pfSiteSel"
   ## Remove data
   #rm(paleofiresites,envir = globalenv())
-  #rm(coast,envir = globalenv())
+  #rm(countries,envir = globalenv())
   ## Return output
   return(output)
   

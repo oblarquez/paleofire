@@ -312,6 +312,7 @@ pfGridding=function(data,cell_sizex=NULL,
 #' @param add An object of the class "SpatialPolygonsDataFrame" (sp) to be
 #' ploted on the map.
 #' @param add_color Color of the added SpatialPolygonsDataFrame.
+#' @param plot_countries Logical, default FALSE (if TRUE plot countries borderlines and coastlines) 
 #' @param \dots \dots{}
 #' @return A ggplot2 "gg" object that could be further manipulated.
 #' @author O. Blarquez
@@ -336,7 +337,7 @@ plot.pfGridding=function(x,continuous=TRUE,
                          xlim=NULL,ylim=NULL,empty_space=10,
                          cpal="YlGn",
                          anomalies=TRUE,
-                         file=NULL,points=FALSE,add=NULL,add_color="white",...){
+                         file=NULL,points=FALSE,add=NULL,add_color="white",plot_countries=FALSE,...){
   if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
     install.packages("RColorBrewer")
   }
@@ -373,14 +374,23 @@ plot.pfGridding=function(x,continuous=TRUE,
   x$df=cbind(x$df,class=cut(x$df$layer,breaks))
   #   data=na.omit(data)
   
-  coast=NULL
+  coast=NULL ## Load coast data and transform
   data(coast,envir = environment())
   coast=coast[coast$X<=180,]
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
   coast=data.frame(project(xy, x$proj4))
   colnames(coast)=c("x","y")
-  # plot(round(coast$x),round(coast$y),type="l")
+
+  
+  countries=NULL  ## Load countries data and transform
+  data(countries,envir = environment())
+  # plot((coast$X),(coast$Y),type="l")  
+  xy=cbind(countries$x,countries$y)
+  xy=xy[xy[,1]<=180,]
+  countries=data.frame(project(xy, x$proj4))
+  colnames(countries)=c("x","y")
+  
   
   ## LIMITS
   if(is.null(xlim)){
@@ -455,6 +465,9 @@ plot.pfGridding=function(x,continuous=TRUE,
       if(is.null(add)==FALSE){
         p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
       }
+      if (plot_countries==TRUE) {
+        p=p+geom_path(data=countries,aes(x=x,y=y),colour="white")
+      }
     } else {
     ## Plot interp data
     if(continuous==FALSE){
@@ -469,6 +482,9 @@ plot.pfGridding=function(x,continuous=TRUE,
       if(is.null(add)==FALSE){
         p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
       }
+      if (plot_countries==TRUE) {
+        p=p+geom_path(data=countries,aes(x=x,y=y),colour="white")
+      }
     } else {
       p=ggplot(x$df) +
         geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
@@ -479,6 +495,9 @@ plot.pfGridding=function(x,continuous=TRUE,
       if(points==TRUE) p=p+geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
       if(is.null(add)==FALSE){
         p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
+      }
+      if (plot_countries==TRUE) {
+        p=p+geom_path(data=countries,aes(x=x,y=y),colour="white")
       }
     }
   }
