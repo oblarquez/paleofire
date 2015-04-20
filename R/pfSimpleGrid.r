@@ -4,28 +4,23 @@
 #' data from the Global Charcoal Database.
 #' 
 #' Takes any pfTransform object as input, and allows any set of one or more
-#' time bins to be specified for plotting (one plot per bin).
+#' time bins to be specified for plotting (one plot per bin). Time bins are 
+#' specified as for pfCompositeLF (which is called by pfSimpleGrid. The extent, 
+#' resolution, and projection of the desired grid are also user-specified. 
 #' 
-#' Results will be plotted on a regular lon/lat grid. To determine which sites
-#' contribute to each grid cell value, the code searches within a specified
-#' great circle distance (i.e. on the surface of the globe) around each grid
-#' cell center. To avoid missing any sites, the distance is set equal to the
-#' greatest distance from a grid cell center to its most distant corner, which
-#' occurs at the equator where grid cells are largest. This conservative
-#' approach will result in many sites falling within multiple grid boxes. At
-#' all latitudes, the defined radii will overlap near the edges of the grid
-#' boxes. At higher latitudes, the lon/lat grid cells are physically much
-#' smaller, so overlap will be considerably greater. There are alternatives,
-#' like using a grid that is irregular in terms of lon/laton, or changing the
-#' area of grid cells depending on latitude. But all have their tradeoffs, and
-#' this one is simple.
+#' Records are first composited, and then aggregated with other sites falling 
+#' in the same grid cell according to the specified function 'fun' (defauts to 
+#' mean). This is a considerably simpler approach than the distance-based spatial
+#' binning used by pfDotMap, although it has its own tradeoffs (e.g. grid cells
+#' are unlikely to represent equal area). 
 #' 
-#' Current version produces plots of mean CHAR, number of sites per grid cell,
-#' and number of grid cells contributed to by each site (due to overlapping
-#' radii described above). The mean plot additionally shows points in two
-#' sizes, representing those mean values whose 95"\%" confidence intervals do
-#' (small dots) or do not (large dots) contain zero. Finally, a time series is
-#' plotted in each figure with the current time bin highlighted.
+#' A flexible bootstrapped significance test is implemented. Within each time 
+#' bin X grid cell combination, composite z-score values are randomly sampled 
+#' (with replacement) from sites within the grid cell. The function is applied 
+#' to the sampled values. Quantiles of all bootstrap function evaluations are 
+#' computed, and significance is reported if a user-specified test value is 
+#' outside of these bootstrap CI. Note that bootstrap CI calculated here reflect 
+#' only spatial variability, as no temporal resampling is performed. 
 #' 
 #' @param TR An object returned by \code{\link{pfTransform}}
 #' @param tarAge Numeric, the target ages for prebinning given in years (e.g.
@@ -36,61 +31,52 @@
 #' @param binhw Numeric, bin half width for the prebinning procedure (use the
 #' same value as tarAge intervals for overlapping bins or tarAge intervals/2
 #' for non-overlapping bins).
-#' @param fig.base.name Character sequence representing the base name for the
-#' figures. Can be preceded by a path as long as all directories in the path
-#' exist. One figure will be produced for each time bin, with years (and file
-#' suffix) appended to the base name automatically. A value of \code{NULL}
-#' (default) causes figures to be plotted to the current device in sequence.
-#' @param grd.res,grd.ext Desired grid resolution and extent in degrees. If
+#' @param fun Function to be used for aggregating across sites.
+#' @param n.boot Number of bootstrap replicates to use when creating confidence
+#' intervals around each grid-cell value. 
+#' @param prob.CI Vector of two quantiles to define the bootstrap CI for 
+#' significance testing 
+#' @param test.val Test value for bootstrap significance test.
+#' @param proj4 proj.4 string representing the desired projection for plotted
+#' maps. Default is unprojected. See \url{http://www.spatialreference.org} to
+#' look up the string for your favorite projections.
+#' @param res,ext Desired grid resolution and extent. If
 #' \code{grd.res} is a single number, the grid will be defined with equal
-#' lon/lat resolution; a two-element vector (lon,lat) can also be supplied for
-#' unequal resolution. \code{grd.ext} is specified as a vector of the form
-#' \code{c(min-lon,max-lon,min-lat,max-lat)}.
-#' @param grd.lonlat A data frame of coordinates for every grid cell center, to
-#' be used in cases where an irregular grid is desired. Columns must be named
-#' 'lon' and 'lat'. If specified, grd.res and grd.ext are ignored. Note that
-#' this option could have undesirable results for unusual grid definitions. In
-#' particular, the maximum radius for including sites in a grid cell is always
-#' calculated at the equator. For a regular lon/lat grid, this guarantees all
-#' sites will be included in at least one cell, because equatorial cells are
-#' largest at the equator. If an irregular grid is specified such that this is
-#' not true, the maximum radius calculated could lead to sites excluded from
-#' all cells. In this case a warning is printed but the function proceeds
-#' anyway.
+#' x/y resolution; a two-element vector (x,y) can also be supplied for
+#' unequal resolution. \code{grd.ext} is specified as a vector, matrix, or Extent
+#' object, as for the function raster::extent.
+#' @param fig.file.name Character sequence representing the file name for the
+#' output figures. Can be preceded by a path as long as all directories in the path
+#' exist. The file will be a PDF with one figure per time bin, each on a separate page.
+#' @param show.plots Logical indicating whether plots will be printed to the screen.
+#' @param title.text Character sequence for labeling figures. Time bin bounds will
+#' be added automatically. 
+#' @param cols, cuts Vectors of color specifications and values defining the plot 
+#' legend. Grid-cell values will be binned by \code{cuts} and assigned the colors in
+#' \code{cols}. If either are NULL, the function tries to guess at a good scheme. 
+#' \code{cuts} may also be a single value specifying the number of bins.
+#' @param zlim Two-element vector representing the bounds of the color scale. Ignored
+#' if \code{cuts} is fully specified, but otherwise used in defining the color bins.
 #' @param base.map Currently, either \code{'coasts'} or \code{'countries'} to
 #' choose which base map (from required library \code{'rworldmap'}) to be
 #' plotted as the base map for all plots. Could easily be modified to accept
 #' any SpatialPolygons object.
-#' @param proj4 proj.4 string representing the desired projection for plotted
-#' maps. Default is unprojected. See \url{http://www.spatialreference.org} to
-#' look up the string for your favorite projections.
-#' @param n.boot Number of bootstrap replicates to use when creating confidence
-#' intervals around each grid-cell mean. In each time bin X grid cell
-#' combination, replicates consist of composite z-score values for that bin,
-#' randomly sampled (with replacement) from sites within the grid cell (see
-#' 'Details' for precise description of sites included in each cell). I.e., no
-#' temporal bootstrapping is done here, so that bootstrap CI reflect only
-#' spatial variability.
-#' @param cx.minsize,cx.mult Parameters that crudely adjust plotted dot size.
-#' cx.minsize defines the minimum cex applied to any point in any map, cx.mult
-#' scales all points by an equivalent factor.
-#' @return Plots are produced on the current device or in pdf files defined by
-#' \code{fig.base.name}. In addition, a named list of useful objects is
+#' @param base.map.col, base.map.lwd Color and line width specifications for plotting
+#' the basemap.
+#' 
+#' @return Plots are produced on the current device and/or in pdf files according to
+#' input arguments. In addition, a named list of useful objects is
 #' returned:
 #' 
-#' \item{COMP}{ The binned composite generated for plotting.  } \item{bins}{
-#' The list of bin endpoints.  } \item{sp.grd}{ A
-#' \code{\link[sp]{SpatialPointsDataFrame-class}} object containing all the
-#' grid-level statistics produced and plotted (mean influx value, bootstrap
-#' confidence interval, and number of sites per grid cell).  } \item{sp.sites}{
-#' A \code{\link[sp]{SpatialPointsDataFrame-class}} object representing the
-#' number of grid cells influenced by each site.  } \item{plots}{ A list with
-#' one element for each bin. These elements are themselves named lists of
-#' trellis objects representing each of the plots produced ("mean",
-#' "sitesPerCell", "cellsPerSite", "timeSeries"). Note that these objects can
-#' be edited to some degree with the \code{\link[lattice]{update.trellis}}
-#' function, and plotted or used in layouts as any other trellis graphics can.
-#' }
+#' \item{COMP}{ The binned composite generated for plotting.  } 
+#' \item{tarAge}{ The list of target ages used for temporal binning.  }
+#' \item{sg.rast}{ A \code{\link[sp]{Raster-class}} object containing the gridded 
+#' output data } 
+#' \item{sg.plots}{ A list of trellis objects representing the composed plots. 
+#' Note that these objects can be edited to some degree with the 
+#' \code{\link[lattice]{update.trellis}} function, and plotted or used in layouts as 
+#' any other trellis graphics can. }
+#'
 #' @author R. Kelly
 #' @references Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.
 #' Mayle, A. Ballouche, R. Bradshaw, C. Carcaillet, C. Cordova, S. Mooney, P.
@@ -111,7 +97,6 @@
 #' @examples
 #' 
 #' \dontrun{
-#' ## Composite charcoal record for North America:
 #' ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
 #' plot(ID)
 #' 
@@ -121,11 +106,11 @@
 #' ## Plot maps for 1000-yr bins spanning 3-0 kBP
 #' # dev.new(width=10,height=10) # A big plot area helps. 
 #' gridmap = pfSimpleGrid( TR=res3, tarAge=seq(0,2000,1000), hw=500, ext=c(-170,-80,40,80))
-#' summary(dotmap)
+#' summary(gridmap)
 #' 
 #' # Plot the mean map from the first time bin
-#' # newmap = update(dotmap$plots[[1]]$mean, main="A relabeled map")
-#' # newmap
+#' newmap = update(gridmap$sg.plots[[1]], main="A relabeled map")
+#' newmap
 #' }
 #' 
 
@@ -325,7 +310,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
     site.dots.layout = list("sp.points", dat[ !na.mat[,j],j], col=1, pch=16, cex=0.3)
 
     sg.plots[[j]] = sp::spplot(sg.rast[[j]], at=cuts, col.regions=cols, scales=list(draw=T),
-      main = as.list(paste0(title.text, bins[j], "-", bins[j+1], " BP")))
+      main = as.list(paste0(title.text, tarAge[j]-binhw, "-", tarAge[j]+binhw, " BP")))
     
     # Should be better way, but can't figure out how to add multiple extra layers in separate steps. This works...
     if(n.boot>0) {
@@ -362,7 +347,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
 
 
   # ----- Return
-    output = list(COMP=COMP, bins=bins, sg.rast=sg.rast, sg.plots=sg.plots, site.dat=site.dat)
+    output = list(COMP=COMP, tarAge=tarAge, sg.rast=sg.rast, sg.plots=sg.plots, site.dat=site.dat)
     return(output)
   
 cat("\nAll done!\n\n")

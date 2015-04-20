@@ -1,17 +1,12 @@
-#  v08
-#  v06
-
-
-
-
-
 #' Produce maps of paleofire data
 #' 
 #' Produce map graphics representing spatial variability in charcoal data from
 #' the Global Charcoal Database.
 #' 
 #' Takes any pfTransform object as input, and allows any set of one or more
-#' time bins to be specified for plotting (one plot per bin).
+#' time bins to be specified for plotting (one plot per bin). Time bins are 
+#' specified as for pfCompositeLF (which is called by pfSimpleGrid. The extent, 
+#' resolution, and projection of the desired grid are also user-specified. 
 #' 
 #' Results will be plotted on a regular lon/lat grid. To determine which sites
 #' contribute to each grid cell value, the code searches within a specified
