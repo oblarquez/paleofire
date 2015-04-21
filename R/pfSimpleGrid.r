@@ -1,3 +1,119 @@
+#' Produce simple gridded maps of paleofire data
+#' 
+#' Produce gridded map graphics representing spatial variability in charcoal 
+#' data from the Global Charcoal Database.
+#' 
+#' Takes any pfTransform object as input, and allows any set of one or more
+#' time bins to be specified for plotting (one plot per bin). Time bins are 
+#' specified as for pfCompositeLF (which is called by pfSimpleGrid. The extent, 
+#' resolution, and projection of the desired grid are also user-specified. 
+#' 
+#' Records are first composited, and then aggregated with other sites falling 
+#' in the same grid cell according to the specified function 'fun' (defauts to 
+#' mean). This is a considerably simpler approach than the distance-based spatial
+#' binning used by pfDotMap, although it has its own tradeoffs (e.g. grid cells
+#' are unlikely to represent equal area). 
+#' 
+#' A flexible bootstrapped significance test is implemented. Within each time 
+#' bin X grid cell combination, composite z-score values are randomly sampled 
+#' (with replacement) from sites within the grid cell. The function is applied 
+#' to the sampled values. Quantiles of all bootstrap function evaluations are 
+#' computed, and significance is reported if a user-specified test value is 
+#' outside of these bootstrap CI. Note that bootstrap CI calculated here reflect 
+#' only spatial variability, as no temporal resampling is performed. 
+#' 
+#' @param TR An object returned by \code{\link{pfTransform}}
+#' @param tarAge Numeric, the target ages for prebinning given in years (e.g.
+#' tarAge = seq(0, 10000, 20)). If unspecified the sequence is defined as
+#' tarAge=seq(from=min age, to=max Age, by=median resolution).
+#' @param hw Numeric, the half window width for the locfit procedure (in
+#' years).
+#' @param binhw Numeric, bin half width for the prebinning procedure (use the
+#' same value as tarAge intervals for overlapping bins or tarAge intervals/2
+#' for non-overlapping bins).
+#' @param fun Function to be used for aggregating across sites.
+#' @param n.boot Number of bootstrap replicates to use when creating confidence
+#' intervals around each grid-cell value. 
+#' @param prob.CI Vector of two quantiles to define the bootstrap CI for 
+#' significance testing 
+#' @param test.val Test value for bootstrap significance test.
+#' @param proj4 proj.4 string representing the desired projection for plotted
+#' maps. Default is unprojected. See \url{http://www.spatialreference.org} to
+#' look up the string for your favorite projections.
+#' @param res,ext Desired grid resolution and extent. If
+#' \code{grd.res} is a single number, the grid will be defined with equal
+#' x/y resolution; a two-element vector (x,y) can also be supplied for
+#' unequal resolution. \code{grd.ext} is specified as a vector, matrix, or Extent
+#' object, as for the function raster::extent.
+#' @param fig.file.name Character sequence representing the file name for the
+#' output figures. Can be preceded by a path as long as all directories in the path
+#' exist. The file will be a PDF with one figure per time bin, each on a separate page.
+#' @param show.plots Logical indicating whether plots will be printed to the screen.
+#' @param title.text Character sequence for labeling figures. Time bin bounds will
+#' be added automatically. 
+#' @param cols, cuts Vectors of color specifications and values defining the plot 
+#' legend. Grid-cell values will be binned by \code{cuts} and assigned the colors in
+#' \code{cols}. If either are NULL, the function tries to guess at a good scheme. 
+#' \code{cuts} may also be a single value specifying the number of bins.
+#' @param zlim Two-element vector representing the bounds of the color scale. Ignored
+#' if \code{cuts} is fully specified, but otherwise used in defining the color bins.
+#' @param base.map Currently, either \code{'coasts'} or \code{'countries'} to
+#' choose which base map (from required library \code{'rworldmap'}) to be
+#' plotted as the base map for all plots. Could easily be modified to accept
+#' any SpatialPolygons object.
+#' @param base.map.col, base.map.lwd Color and line width specifications for plotting
+#' the basemap.
+#' 
+#' @return Plots are produced on the current device and/or in pdf files according to
+#' input arguments. In addition, a named list of useful objects is
+#' returned:
+#' 
+#' \item{COMP}{ The binned composite generated for plotting.  } 
+#' \item{tarAge}{ The list of target ages used for temporal binning.  }
+#' \item{sg.rast}{ A \code{\link[sp]{Raster-class}} object containing the gridded 
+#' output data } 
+#' \item{sg.plots}{ A list of trellis objects representing the composed plots. 
+#' Note that these objects can be edited to some degree with the 
+#' \code{\link[lattice]{update.trellis}} function, and plotted or used in layouts as 
+#' any other trellis graphics can. }
+#'
+#' @author R. Kelly
+#' @references Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.
+#' Mayle, A. Ballouche, R. Bradshaw, C. Carcaillet, C. Cordova, S. Mooney, P.
+#' Moreno, I. Prentice, K. Thonicke, W. Tinner, C. Whitlock, Y. Zhang, Y. Zhao,
+#' A. Ali, R. Anderson, R. Beer, H. Behling, C. Briles, K. Brown, A. Brunelle,
+#' M. Bush, P. Camill, G. Chu, J. Clark, D. Colombaroli, S. Connor, A. L.
+#' Daniau, M. Daniels, J. Dodson, E. Doughty, M. Edwards, W. Finsinger, D.
+#' Foster, J. Frechette, M. J. Gaillard, D. Gavin, E. Gobet, S. Haberle, D.
+#' Hallett, P. Higuera, G. Hope, S. Horn, J. Inoue, P. Kaltenrieder, L.
+#' Kennedy, Z. Kong, C. Larsen, C. Long, J. Lynch, E. Lynch, M. McGlone, S.
+#' Meeks, S. Mensing, G. Meyer, T. Minckley, J. Mohr, D. Nelson, J. New, R.
+#' Newnham, R. Noti, W. Oswald, J. Pierce, P. Richard, C. Rowe, M. Sanchez
+#' Goni, B. Shuman, H. Takahara, J. Toney, C. Turney, D. Urrego-Sanchez, C.
+#' Umbanhowar, M. Vandergoes, B. Vanniere, E. Vescovi, M. Walsh, X. Wang, N.
+#' Williams, J. Wilmshurst, and J. Zhang. 2008. Changes in fire regimes since
+#' the Last Glacial Maximum: an assessment based on a global synthesis and
+#' analysis of charcoal data. Climate Dynamics 30:887-907.
+#' @examples
+#' 
+#' \dontrun{
+#' ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
+#' plot(ID)
+#' 
+#' ## Transform data
+#' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
+#' 
+#' ## Plot maps for 1000-yr bins spanning 3-0 kBP
+#' # dev.new(width=10,height=10) # A big plot area helps. 
+#' gridmap = pfSimpleGrid( TR=res3, tarAge=seq(0,2000,1000), hw=500, ext=c(-170,-80,40,80))
+#' summary(gridmap)
+#' 
+#' # Plot the mean map from the first time bin
+#' newmap = update(gridmap$sg.plots[[1]], main="A relabeled map")
+#' newmap
+#' }
+#' 
+
 pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
                     n.boot=0, prob.CI=c(0.025,0.975), test.val=0, 
                     proj4="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
@@ -46,13 +162,10 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
 # ---------------- END TEST BLOCK
   
   # ----- Constants
-  # Number of bins
-    n.bin = length(bins) - 1
-  
   # proj4 string for the GCD data
     proj4.GCD = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
 
-  # ----- Base map
+  # ----- Load base map
   countriesCoarse<-coastsCoarse<-NULL
   rm(countriesCoarse);rm(coastsCoarse)
   
@@ -75,7 +188,8 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
     cat("Creating composite...")
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
     # (I've checked "by hand" and it is accurate and efficient.) 
-    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1000)
+    # No need for bootstraps--we're only going to use the actual composite for now. Will bootstrap by site later. 
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1)
     CHAR = t(COMP$BinnedData)
     n.bin = length(tarAge)
     cat("done!\n")
@@ -196,7 +310,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
     site.dots.layout = list("sp.points", dat[ !na.mat[,j],j], col=1, pch=16, cex=0.3)
 
     sg.plots[[j]] = sp::spplot(sg.rast[[j]], at=cuts, col.regions=cols, scales=list(draw=T),
-      main = as.list(paste0(title.text, bins[j], "-", bins[j+1], " BP")))
+      main = as.list(paste0(title.text, tarAge[j]-binhw, "-", tarAge[j]+binhw, " BP")))
     
     # Should be better way, but can't figure out how to add multiple extra layers in separate steps. This works...
     if(n.boot>0) {
@@ -233,7 +347,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
 
 
   # ----- Return
-    output = list(COMP=COMP, bins=bins, sg.rast=sg.rast, sg.plots=sg.plots, site.dat=site.dat)
+    output = list(COMP=COMP, tarAge=tarAge, sg.rast=sg.rast, sg.plots=sg.plots, site.dat=site.dat)
     return(output)
   
 cat("\nAll done!\n\n")
