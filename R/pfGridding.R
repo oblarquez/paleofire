@@ -1,8 +1,5 @@
 ## 
 
-
-
-
 #' Produce gridded maps of transformed charcoal values.
 #' 
 #' The function uses weighted spatio-temporal interpolation to produce gridded
@@ -290,7 +287,7 @@ pfGridding=function(data,cell_sizex=NULL,
 #' the \code{\link{pfGridding}} function.
 #' 
 #' @method plot pfGridding
-#' @S3method plot pfGridding
+#' @export
 #' @param x An object returned by \code{\link{pfGridding}}.
 #' @param continuous Logical, plot continuous (TRUE) or discrete (FALSE) colors
 #' on the map.
@@ -341,8 +338,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
     install.packages("RColorBrewer")
   }
-  require("RColorBrewer")
-  
+
   y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))

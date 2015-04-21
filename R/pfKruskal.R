@@ -39,7 +39,6 @@ pfKruskal=function(data,p.adj="none",
   if (!requireNamespace("agricolae", quietly = TRUE)) {
   install.packages("agricolae")
   }
-  require("agricolae")
   
   if(class(data)=="pfComposite"){
     data=cbind(x=rep(data$BinCentres,ncol(data$BinnedData)),y=c(data$BinnedData))
@@ -103,6 +102,7 @@ pfKruskal=function(data,p.adj="none",
 #' \code{alpha}.
 #' 
 #' @method plot pfKruskal
+#' @export
 #' @param x An object returned by \code{\link[paleofire]{pfKruskal}}.
 #' @param trend Logical, show trend using linear regression?
 #' @param outliers Logical, show outliers?

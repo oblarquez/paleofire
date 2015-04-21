@@ -140,8 +140,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
   if (!requireNamespace("rworldmap", quietly = TRUE)) {
     install.packages("rworldmap")
   }
-  require("rworldmap")
-  
+
   
   # ---------------- TEST BLOCK
   # Easier to test without running the code as a function. Comment everything above here (function definition) and 
@@ -173,8 +172,8 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
   countriesCoarse<-coastsCoarse<-NULL
   rm(countriesCoarse);rm(coastsCoarse)
   
-  data(countriesCoarse,envir = environment())  # A dataset in rworldmap used in the plots below
-  data(coastsCoarse,envir = environment())     # An alternative base map. Needs one fix:
+  data(countriesCoarse,envir = environment(),package="rworldmap")  # A dataset in rworldmap used in the plots below
+  data(coastsCoarse,envir = environment(),package="rworldmap")     # An alternative base map. Needs one fix:
   ind = which(coastsCoarse@lines[[94]]@Lines[[1]]@coords[,1] > 180)
   coastsCoarse@lines[[94]]@Lines[[1]]@coords[ind,1] = 180
   

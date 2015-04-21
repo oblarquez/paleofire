@@ -95,12 +95,10 @@ pfTransform=function(ID=NULL,
   if(method=="RunMean" || method=="RunMin" || method=="RunMed" || method=="RunMax" || 
        method=="RunQuantile") {
     install.packages("caTools")
-    require(caTools)
     install.packages("gtools")
-    require(gtools)
   }
   
-  if(identical(method, "Hurdle") ) {install.packages("pscl");require(pscl)}
+  if(identical(method, "Hurdle") ) {install.packages("pscl")}
   
   ## 0 Save parameters
   params=list(ID=ID,

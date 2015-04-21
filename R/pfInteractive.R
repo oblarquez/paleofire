@@ -19,11 +19,13 @@
 pfInteractive=function(addata=NULL){
   
   # install.packages("Imap");
-  require(Imap)
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   countries=NULL; rm(countries)
   
+  if (!requireNamespace("Imap", quietly = TRUE)) {
+    install.packages("Imap")
+  }
   
   ## Load data  
   data(paleofiresites,envir = environment())

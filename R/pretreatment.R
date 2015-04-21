@@ -218,7 +218,7 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 #' rates interpolated at equal time steps are presented by a black curve.
 #' 
 #' @method plot CHAR
-#' @S3method plot CHAR
+#' @export
 #' @param x An object of the class "CHAR".
 #' @param \dots \dots{}
 #' @author O. Blarquez

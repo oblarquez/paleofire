@@ -274,7 +274,7 @@ pfCompositeLF=function(TR,hw=250,
 #' 
 #' Plot pfCompositeLF object
 #' 
-#' @S3method plot pfCompositeLF
+#' @export
 #' @method plot pfCompositeLF
 #' @param x A "pfCompositeLF" object.
 #' @param type Character, type of plot among "ci", "prctile", "density"

@@ -55,13 +55,16 @@
 #' legend. Grid-cell values will be binned by \code{cuts} and assigned the colors in
 #' \code{cols}. If either are NULL, the function tries to guess at a good scheme. 
 #' \code{cuts} may also be a single value specifying the number of bins.
+#' @param cuts  Defines range and resolution of color scale
 #' @param zlim Two-element vector representing the bounds of the color scale. Ignored
 #' if \code{cuts} is fully specified, but otherwise used in defining the color bins.
 #' @param base.map Currently, either \code{'coasts'} or \code{'countries'} to
 #' choose which base map (from required library \code{'rworldmap'}) to be
 #' plotted as the base map for all plots. Could easily be modified to accept
 #' any SpatialPolygons object.
-#' @param base.map.col, base.map.lwd Color and line width specifications for plotting
+#' @param base.map.col,  Color specifications for plotting
+#' the basemap.
+#' @param  base.map.lwd Line width specifications for plotting
 #' the basemap.
 #' 
 #' @return Plots are produced on the current device and/or in pdf files according to
@@ -70,7 +73,7 @@
 #' 
 #' \item{COMP}{ The binned composite generated for plotting.  } 
 #' \item{tarAge}{ The list of target ages used for temporal binning.  }
-#' \item{sg.rast}{ A \code{\link[sp]{Raster-class}} object containing the gridded 
+#' \item{sg.rast}{ A \code{\link[raster]{Raster-class}} object containing the gridded 
 #' output data } 
 #' \item{sg.plots}{ A list of trellis objects representing the composed plots. 
 #' Note that these objects can be edited to some degree with the 
@@ -221,7 +224,7 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
   # ----- Define prediction grid
   grd = raster(extent(ext))     # Extent
     res(grd) = res              # Resolution
-    proj4string(grd) = proj4    # Projection
+    sp::proj4string(grd) = proj4    # Projection
 
 
   # ----- Calculate desired stat for each time bin
