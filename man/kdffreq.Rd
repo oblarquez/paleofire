@@ -25,9 +25,6 @@ bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 ff data.frame, with fire frequency, bandwidth and CIs
 }
 \description{
-O. Blarquez
-}
-\details{
 Computes paleo-fire frequency for a set of fire events using a gaussian
 kernel density estimation procedure based on a defined bandwidth.
 Pseudo-replicated values are used to correct for edge bias, equivalent to
@@ -38,6 +35,9 @@ set.seed(123)
  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
 
  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
+}
+\author{
+O. Blarquez
 }
 \seealso{
 \code{\link{plot.kdffreq}}

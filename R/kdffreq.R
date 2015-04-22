@@ -1,7 +1,5 @@
 #' Fire frequency using kernel density
 #' 
-#' O. Blarquez
-#' 
 #' Computes paleo-fire frequency for a set of fire events using a gaussian
 #' kernel density estimation procedure based on a defined bandwidth.
 #' Pseudo-replicated values are used to correct for edge bias, equivalent to
@@ -13,6 +11,7 @@
 #' @param bandwidth Numeric, bandwidth in years, or character for automatic
 #' bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 #' \code{\link[stats]{bandwidth}} for details
+#' @author O. Blarquez
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)
 #' @return ff data.frame, with fire frequency, bandwidth and CIs
