@@ -6,7 +6,7 @@
 \alias{dem}
 \alias{loessGCV}
 \alias{bestLoess}
-\alias{pfSimpleGrid}
+\alias{countries}
 
 \title{Internal paleofire functions}
 \description{

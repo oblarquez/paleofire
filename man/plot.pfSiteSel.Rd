@@ -4,7 +4,8 @@
 \title{plot.pfSiteSel}
 \usage{
 \method{plot}{pfSiteSel}(x, add = NULL, type = "Map", zoom = "Sites",
-  pch = "|", xlim = NULL, ylim = NULL, cex = 1, ...)
+  pch = "|", xlim = NULL, ylim = NULL, cex = 1,
+  plot_countries = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of the class "pfSiteSel".}
@@ -22,6 +23,8 @@
 \item{ylim}{Numeric, y axis limits.}
 
 \item{cex}{Numeric, size of points.}
+
+\item{plot_countries}{Logical, default FALSE (if TRUE plot countries borderlines and coastlines)}
 
 \item{\dots}{\dots{}}
 }

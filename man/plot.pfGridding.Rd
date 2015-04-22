@@ -6,7 +6,7 @@
 \method{plot}{pfGridding}(x, continuous = TRUE, col_class = NULL,
   col_lim = NULL, xlim = NULL, ylim = NULL, empty_space = 10,
   cpal = "YlGn", anomalies = TRUE, file = NULL, points = FALSE,
-  add = NULL, add_color = "white", ...)
+  add = NULL, add_color = "white", plot_countries = FALSE, ...)
 }
 \arguments{
 \item{x}{An object returned by \code{\link{pfGridding}}.}
@@ -42,6 +42,8 @@ desired.}
 ploted on the map.}
 
 \item{add_color}{Color of the added SpatialPolygonsDataFrame.}
+
+\item{plot_countries}{Logical, default FALSE (if TRUE plot countries borderlines and coastlines)}
 
 \item{\dots}{\dots{}}
 }
