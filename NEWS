@@ -7,6 +7,8 @@ New features:
 
 * contiguous for checking whether charcoal seris are sampled contiguoulsy or not
 
+* kdffreq function for calculating paleo fire frequencies using kernel density estimation 
+
 Fixes:
 
 * All doc moved to roxygen
