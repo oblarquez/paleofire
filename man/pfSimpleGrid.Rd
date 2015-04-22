@@ -151,4 +151,7 @@ Williams, J. Wilmshurst, and J. Zhang. 2008. Changes in fire regimes since
 the Last Glacial Maximum: an assessment based on a global synthesis and
 analysis of charcoal data. Climate Dynamics 30:887-907.
 }
+\seealso{
+\code{\link[paleofire]{pfGridding}}
+}
 

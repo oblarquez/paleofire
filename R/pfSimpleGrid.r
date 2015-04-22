@@ -66,6 +66,7 @@
 #' the basemap.
 #' @param  base.map.lwd Line width specifications for plotting
 #' the basemap.
+#' @seealso \code{\link[paleofire]{pfGridding}}
 #' 
 #' @return Plots are produced on the current device and/or in pdf files according to
 #' input arguments. In addition, a named list of useful objects is
@@ -172,8 +173,8 @@ pfSimpleGrid = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)), fun=mean,
   countriesCoarse<-coastsCoarse<-NULL
   rm(countriesCoarse);rm(coastsCoarse)
   
-  data(countriesCoarse,envir = environment())  # A dataset in rworldmap used in the plots below
-  data(coastsCoarse,envir = environment())     # An alternative base map. Needs one fix:
+  data(countriesCoarse,envir = environment(), package="rworldmap")  # A dataset in rworldmap used in the plots below
+  data(coastsCoarse,envir = environment(), package="rworldmap")     # An alternative base map. Needs one fix:
   ind = which(coastsCoarse@lines[[94]]@Lines[[1]]@coords[,1] > 180)
   coastsCoarse@lines[[94]]@Lines[[1]]@coords[ind,1] = 180
   

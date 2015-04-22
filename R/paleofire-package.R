@@ -91,7 +91,7 @@ NULL
 #' Internal paleofire functions and functions waiting for man.
 #' 
 #' 
-#' @aliases bootCI haverdist dem loessGCV bestLoess countries
+#' @aliases bootCI haverdist dem loessGCV bestLoess countries 
 #' @name paleofire-internal
 #' 
 NULL

@@ -1,3 +1,21 @@
+paleofire 1.1.6 22/04/2015
+-----------------------------------------
+
+New features:
+
+* pfSimpleGrid function for plotting simple gridded charcoal maps
+
+* contiguous for checking whether charcoal seris are sampled contiguoulsy or not
+
+Fixes:
+
+* All doc moved to roxygen
+
+* Potveg function moved from GCD package
+
+* Various bug fixes
+
+
 paleofire 1.1.5 25/11/2014
 -----------------------------------------
 

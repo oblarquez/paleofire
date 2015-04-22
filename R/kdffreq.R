@@ -1,9 +1,9 @@
 #' Fire frequency using kernel density
 #' 
 #' Computes paleo-fire frequency for a set of fire events using a gaussian
-#' kernel density estimation procedure based on a defined bandwidth.
-#' Pseudo-replicated values are used to correct for edge bias, equivalent to
-#' "minimum slope" correction in Mann(2004).
+#' kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
+#' details). Pseudo-replicated values are used to correct for edge bias, equivalent to
+#' "minimum slope" correction in Mann (2004).
 #' 
 #' @param fevent Numeric vector, set of dates
 #' @param up Numeric, upper age for fire frequnecy calculus
@@ -16,13 +16,18 @@
 #' @param alpha Numeric, confidence interval (default 0.01)
 #' @return ff data.frame, with fire frequency, bandwidth and CIs
 #' @seealso \code{\link{plot.kdffreq}}
+#' @references  Mann, M. E. (2004). On smoothing potentially non-stationary
+#' climate time series. Geophysical Research Letters, 31(7). \cr \cr 
+#' Mudelsee, M., Börngen, M., Tetzlaff, G., & Grünewald, U. (2004). Extreme floods 
+#' in central Europe over the past 500 years: Role of cyclone pathway “Zugstrasse Vb”.
+#'  Journal of Geophysical Research: Atmospheres (1984–2012), 109(D23).
 #' @examples
 #' 
 #' set.seed(123)
 #'  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
 #' 
 #'  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
-#' 
+
 kdffreq=function(fevent,
                  up=NULL,
                  lo=NULL,
