@@ -26,9 +26,9 @@ ff data.frame, with fire frequency, bandwidth and CIs
 }
 \description{
 Computes paleo-fire frequency for a set of fire events using a gaussian
-kernel density estimation procedure based on a defined bandwidth.
-Pseudo-replicated values are used to correct for edge bias, equivalent to
-"minimum slope" correction in Mann(2004).
+kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for
+details). Pseudo-replicated values are used to correct for edge bias, equivalent to
+"minimum slope" correction in Mann (2004).
 }
 \examples{
 set.seed(123)
@@ -38,6 +38,13 @@ set.seed(123)
 }
 \author{
 O. Blarquez
+}
+\references{
+Mann, M. E. (2004). On smoothing potentially non-stationary
+climate time series. Geophysical Research Letters, 31(7). \cr \cr
+Mudelsee, M., Börngen, M., Tetzlaff, G., & Grünewald, U. (2004). Extreme floods
+in central Europe over the past 500 years: Role of cyclone pathway “Zugstrasse Vb”.
+ Journal of Geophysical Research: Atmospheres (1984–2012), 109(D23).
 }
 \seealso{
 \code{\link{plot.kdffreq}}

@@ -15,7 +15,7 @@
 #' tarAge=seq(from=min age, to=max Age, by=median resolution).
 #' @param binhw Numeric, bin half width for the prebinning procedure (use the
 #' same value as tarAge intervals for overlapping bins or tarAge intervals/2
-#' for non-overlapping bins).
+#' for non-overlapping bins, defautl).
 #' @param nboot Numeric, a number specifying the number of bootstrap
 #' replicates.
 #' @param hw Numeric, the half window width for the locfit procedure (in

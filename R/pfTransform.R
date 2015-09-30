@@ -84,7 +84,7 @@ pfTransform=function(ID=NULL,
   IDChar=ID
   
   # Check methods
-  methods=c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle")
+  methods=c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle", 'NULL')
   warnmethod=method[(method %in% methods)==FALSE]
   if(length(warnmethod)!=0){stop(paste(warnmethod, "is not a valid method for pfTransform", sep=" "))}
   
@@ -354,6 +354,9 @@ pfTransform=function(ID=NULL,
           dim(x)=NULL
           stlResult=stl(x,"per")$time.series[,2]
           transI[,k]=approx(agesI,stlResult,Ages[,k])$y
+        }
+        if(methodj=='NULL'){
+          transI[,k]=tmp[,2]
         }
         if (methodj=="Z-Score") {
           mu=mean(tmp[tmp[,1]>=BasePeriod[1] & tmp[,1]<=BasePeriod[2],2])
