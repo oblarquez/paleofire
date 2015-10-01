@@ -146,8 +146,9 @@ pfGridding=function(data,cell_sizex=NULL,
   }
   ###
   
+  if(proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
+  dat2=data.frame(project(xy, proj4))} else dat2=data.frame(xy)
   
-  dat2=data.frame(project(xy, proj4))
   colnames(dat2)=c("x","y")
   if(is.null(raster_extent)) {
     e <- extent(c(round(range(dat2$x)*2)/2,round(range(dat2$y)*2)/2))
@@ -206,7 +207,10 @@ pfGridding=function(data,cell_sizex=NULL,
   ## Main loop time--distance weighting 
   dat1[,3]=c()
   for(i in 1:length(dat1[,1])){
-    d=pointDistance(dat1[i,1:2], dat2,longlat=FALSE)
+    if(proj4=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'){
+      d=pointDistance(dat1[i,1:2], dat2,longlat=TRUE)} else {
+    d=pointDistance(dat1[i,1:2], dat2,longlat=FALSE)}
+    
     d=cbind(dat2,data[,3],d,triCube(d,distance_buffer))
     
     ## Elevation range search
@@ -375,7 +379,11 @@ plot.pfGridding=function(x,continuous=TRUE,
   coast=coast[coast$X<=180,]
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
-  coast=data.frame(project(xy, x$proj4))
+  
+  if(proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
+    coast=data.frame(project(xy, x$proj4))} else coast=data.frame(xy)
+    
+  
   colnames(coast)=c("x","y")
 
   

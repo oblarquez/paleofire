@@ -1,6 +1,6 @@
 exportPattern("^[[:alpha:]]+")
-import(methods,raster,ggplot2,
-       GCD,rgdal,lattice)
+import(methods,ggplot2,
+       GCD,rgdal,lattice,raster)
 #importFrom(agricolae,kruskal)
 importFrom(locfit,locfit,lp)
 #importFrom(Imap,imap)
