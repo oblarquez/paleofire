@@ -77,6 +77,27 @@ pfTransform=function(ID=NULL,
                      MethodType=NULL,
                      verbose=TRUE
 ){
+  
+  
+  ## TEST
+#   ID=NULL;
+#   add=NULL;
+#   Interpolate=FALSE;
+#   Age=NULL;
+#   method="NULL";
+#   BasePeriod=c(-100,1e+09);
+#   span=0.3;
+#   RunWidth=500;
+#   RunQParam=0.5;
+#   stlYears=500;
+#   type="BoxCox1964";
+#   alpha=0.01;
+#   QuantType="INFL";
+#   MethodType=NULL;
+#   verbose=TRUE
+  ## TEST
+  
+  
   ## Avoid no visible binding for global variable
   paleofiresites=NULL; rm(paleofiresites)
   
@@ -356,7 +377,7 @@ pfTransform=function(ID=NULL,
           transI[,k]=approx(agesI,stlResult,Ages[,k])$y
         }
         if(methodj=='NULL'){
-          transI[,k]=tmp[,2]
+          transI[,k]=approx(tmp[,1],tmp[,2],Ages[,k])$y
         }
         if (methodj=="Z-Score") {
           mu=mean(tmp[tmp[,1]>=BasePeriod[1] & tmp[,1]<=BasePeriod[2],2])
