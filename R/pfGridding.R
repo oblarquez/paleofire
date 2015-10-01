@@ -380,7 +380,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
   
-  if(proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
+  if(x$proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
     coast=data.frame(project(xy, x$proj4))} else coast=data.frame(xy)
     
   
