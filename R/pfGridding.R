@@ -125,7 +125,7 @@ pfGridding=function(data,cell_sizex=NULL,
   # source("/Users/Olivier/Documents/BorealTreeCover/final/triCube.R")
   ## Load countries with lakes from http://www.naturalearthdata.com/downloads/10m-cultural-vectors/
   # load(file="/Users/Olivier/Documents/BorealTreeCover/final/world_map.rda")
-  
+  longlat="+proj=longlat|+proj = longlat|+proj =longlat|+proj= longlat|+proj=longlat"
   
   if(is.null(proj4))
     proj4<-"+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
@@ -146,8 +146,8 @@ pfGridding=function(data,cell_sizex=NULL,
   }
   ###
   
-  if(proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
-  dat2=data.frame(project(xy, proj4))} else dat2=data.frame(xy)
+  if(grepl(longlat,proj4)==FALSE){
+    dat2=data.frame(project(xy, proj4))} else dat2=data.frame(xy)
   
   colnames(dat2)=c("x","y")
   if(is.null(raster_extent)) {
@@ -207,9 +207,9 @@ pfGridding=function(data,cell_sizex=NULL,
   ## Main loop time--distance weighting 
   dat1[,3]=c()
   for(i in 1:length(dat1[,1])){
-    if(proj4=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'){
+    if(grepl(longlat,proj4)){
       d=pointDistance(dat1[i,1:2], dat2,longlat=TRUE)} else {
-    d=pointDistance(dat1[i,1:2], dat2,longlat=FALSE)}
+        d=pointDistance(dat1[i,1:2], dat2,longlat=FALSE)}
     
     d=cbind(dat2,data[,3],d,triCube(d,distance_buffer))
     
@@ -342,7 +342,7 @@ plot.pfGridding=function(x,continuous=TRUE,
   if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
     install.packages("RColorBrewer")
   }
-
+  
   y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))
@@ -379,13 +379,13 @@ plot.pfGridding=function(x,continuous=TRUE,
   coast=coast[coast$X<=180,]
   # plot((coast$X),(coast$Y),type="l")  
   xy=cbind(coast[,2],coast[,1])
-  
-  if(x$proj4!="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
+  longlat="+proj=longlat|+proj = longlat|+proj =longlat|+proj= longlat|+proj=longlat"
+  if(grepl(longlat,x$proj4)==FALSE){
     coast=data.frame(project(xy, x$proj4))} else coast=data.frame(xy)
-    
+  
   
   colnames(coast)=c("x","y")
-
+  
   
   countries=NULL  ## Load countries data and transform
   data(countries,envir = environment())
@@ -461,18 +461,18 @@ plot.pfGridding=function(x,continuous=TRUE,
   
   ## Plot only points
   if(points=="Only"){
-      p=ggplot(x$df) +
-        geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
-        coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
-        theme_bw(base_size = 16)+
-        geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
-      if(is.null(add)==FALSE){
-        p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
-      }
-      if (plot_countries==TRUE) {
-        p=p+geom_path(data=countries,aes(x=x,y=y),colour="white")
-      }
-    } else {
+    p=ggplot(x$df) +
+      geom_polygon(data=coast,aes(x=x,y=y),colour="grey80",fill="grey80")+
+      coord_cartesian(xlim=xlim,ylim=ylim)+xlab("Longitude")+ylab("Latitude")+
+      theme_bw(base_size = 16)+
+      geom_point(data=x$points,aes(x=x,y=y),colour="grey40")
+    if(is.null(add)==FALSE){
+      p=p+geom_polygon(data=add.df,aes(x=long,y=lat,group=group),fill=add_color,colour="grey80")
+    }
+    if (plot_countries==TRUE) {
+      p=p+geom_path(data=countries,aes(x=x,y=y),colour="white")
+    }
+  } else {
     ## Plot interp data
     if(continuous==FALSE){
       p=ggplot(x$df) 
