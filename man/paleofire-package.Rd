@@ -13,7 +13,7 @@ compositing.
 }
 \details{
 \tabular{ll}{ Package: \tab paleofire\cr Type: \tab Package\cr Version: \tab
-1.1.6\cr Date: \tab 2015-04-22\cr License: \tab GPL (>=2)\cr }
+1.1.7\cr Date: \tab 2015-11-05\cr License: \tab GPL (>=2)\cr }
 }
 \section{Author(s)}{
  Global Paleofire Working Group <paleofire at univ-fcomte.fr>

@@ -1,3 +1,15 @@
+paleofire 1.1.7 05/11/2015
+-----------------------------------------
+
+Minor fixes:
+
+* Projections (longlat usage now permitted in pfGridding)
+
+* No transformation available in pfTransform
+
+* Various fixes
+
+
 paleofire 1.1.6 22/04/2015
 -----------------------------------------
 

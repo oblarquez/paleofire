@@ -10,7 +10,7 @@ citEntry(entry="Article",
     pages = "255 - 261",
     year = "2014",
     issn = "0098-3004",
-    doi = "http://dx.doi.org/10.1016/j.cageo.2014.07.020",
+    doi = "10.1016/j.cageo.2014.07.020",
     url = "http://www.sciencedirect.com/science/article/pii/S0098300414001861",
 textVersion =
 	paste("Blarquez O., Vannière B., Marlon J. R., Daniau A.-L. Power M. J. Brewer S. and Bartlein P. J. 2014.", 
