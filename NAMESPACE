@@ -5,6 +5,16 @@ import(methods,ggplot2,
 importFrom(locfit,locfit,lp)
 #importFrom(Imap,imap)
 #importFrom(Imap,select.pts)
+importFrom("grDevices", "colorRampPalette", "dev.off", "grey", "pdf",
+            "rgb", "topo.colors")
+importFrom("graphics", "axis", "layout", "par", "plot", "plot.new",
+            "points", "polygon", "title")
+importFrom("stats", "approx", "cor", "loess", "median", "na.omit",
+            "optimize", "resid", "runmed", "sd", "smooth.spline", "stl",
+            "ts")
+importFrom("utils", "data", "install.packages", "installed.packages",
+            "old.packages", "packageVersion", "read.csv",
+            "setTxtProgressBar", "txtProgressBar")
 
 S3method(plot,pfCircular)
 S3method(plot,pfKruskal)
@@ -17,3 +27,7 @@ S3method(plot,contiguous)
 S3method(summary,pfSiteSel)
 S3method(plot,kdffreq)
 S3method(plot,potveg)
+
+
+ 
+ 
