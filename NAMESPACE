@@ -6,15 +6,15 @@ importFrom(locfit,locfit,lp)
 #importFrom(Imap,imap)
 #importFrom(Imap,select.pts)
 importFrom("grDevices", "colorRampPalette", "dev.off", "grey", "pdf",
-            "rgb", "topo.colors")
+           "rgb", "topo.colors")
 importFrom("graphics", "axis", "layout", "par", "plot", "plot.new",
-            "points", "polygon", "title")
+           "points", "polygon", "title")
 importFrom("stats", "approx", "cor", "loess", "median", "na.omit",
-            "optimize", "resid", "runmed", "sd", "smooth.spline", "stl",
-            "ts")
+           "optimize", "resid", "runmed", "sd", "smooth.spline", "stl",
+           "ts")
 importFrom("utils", "data", "install.packages", "installed.packages",
-            "old.packages", "packageVersion", "read.csv",
-            "setTxtProgressBar", "txtProgressBar")
+           "old.packages", "packageVersion", "read.csv",
+           "setTxtProgressBar", "txtProgressBar")
 
 S3method(plot,pfCircular)
 S3method(plot,pfKruskal)
