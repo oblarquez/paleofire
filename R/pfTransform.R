@@ -134,22 +134,6 @@ pfTransform=function(ID=NULL,
               type=type,
               alpha=alpha)
   
-  influx=function(x){
-    ## Calculate Sed Acc
-    d1=c()
-    t1=c()
-    for(k in 2:(length(x[,1])-1)){
-      d1[k]=x[k+1,2]-x[k-1,2]
-      t1[k]=x[k+1,3]-x[k-1,3] 
-    }
-    sedacc=(d1*100)/t1
-    sedacc[1]=sedacc[2]
-    sedacc=c(sedacc,sedacc[length(sedacc)])
-    ## Calculate Influx
-    infl=(x[,4]*sedacc)
-    return(infl)
-  }
-  
   ## 1 Load charcoal paleofiredata
   if(verbose==TRUE){
     cat("Loading and preparing data...")
@@ -457,3 +441,22 @@ pfTransform=function(ID=NULL,
   
   ###
 }
+
+
+influx=function(x){
+  ## Calculate Sed Acc
+  d1=c()
+  t1=c()
+  for(k in 2:(length(x[,1])-1)){
+    d1[k]=x[k+1,2]-x[k-1,2]
+    t1[k]=x[k+1,3]-x[k-1,3] 
+  }
+  sedacc=(d1*100)/t1
+  sedacc[1]=sedacc[2]
+  sedacc=c(sedacc,sedacc[length(sedacc)])
+  ## Calculate Influx
+  infl=(x[,4]*sedacc)
+  return(infl)
+}
+
+

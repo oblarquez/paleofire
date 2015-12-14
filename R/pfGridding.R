@@ -346,7 +346,8 @@ plot.pfGridding=function(x,continuous=TRUE,
   y=long=lat=group=res1=res2=NULL ##  no visible binding for global variable 'y' ?
   
   x$df=as.data.frame(rasterToPoints(x$raster))
-  
+  x$df[,3][is.infinite(x$df[,3])] = NA #define Inf as NA 
+
   # Define classes for colors
   if(is.null(col_class)){
     if(anomalies==TRUE){

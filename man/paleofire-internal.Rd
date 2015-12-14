@@ -5,6 +5,7 @@
 \alias{bootCI}
 \alias{countries}
 \alias{dem}
+\alias{influx}
 \alias{haverdist}
 \alias{loessGCV}
 \alias{paleofire-internal}
