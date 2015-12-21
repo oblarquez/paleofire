@@ -24,7 +24,7 @@ metadata=c("http://blarquez.com/public/data/metadata.csv")
 
 mydata1=pfAddData(files=files,type="CharAnalysis")
 mydata2=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
-mydada=rbind(mydata1,mydata2)
+mydata=rbind(mydata1,mydata2)
 
 TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
                BasePeriod=c(200,2000))
