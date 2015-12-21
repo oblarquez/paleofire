@@ -9,7 +9,7 @@ Description: Tools to extract and analyse charcoal sedimentary data stored in
     the Global Charcoal Database. Main functionalities includes data extraction
     and sites selection, transformation and interpolation of the charcoal
     records as well as compositing.
-URL: http://gpwg.org
+URL: http://gpwg.paleofire.org
 License: GPL (>= 2)
 Imports:
     locfit,
