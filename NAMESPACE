@@ -1,13 +1,12 @@
 exportPattern("^[[:alpha:]]+")
-import(methods,ggplot2,
-       GCD,rgdal,lattice,raster)
+
 #importFrom(agricolae,kruskal)
 importFrom(locfit,locfit,lp)
 #importFrom(Imap,imap)
 #importFrom(Imap,select.pts)
 importFrom("grDevices", "colorRampPalette", "dev.off", "grey", "pdf",
            "rgb", "topo.colors")
-importFrom("graphics", "axis", "layout", "par", "plot", "plot.new",
+importFrom("graphics", "axis", "layout", "par","plot" ,"plot.new",
            "points", "polygon", "title")
 importFrom("stats", "approx", "cor", "loess", "median", "na.omit",
            "optimize", "resid", "runmed", "sd", "smooth.spline", "stl",
@@ -15,6 +14,8 @@ importFrom("stats", "approx", "cor", "loess", "median", "na.omit",
 importFrom("utils", "data", "install.packages", "installed.packages",
            "old.packages", "packageVersion", "read.csv",
            "setTxtProgressBar", "txtProgressBar")
+import(methods,ggplot2,
+       GCD,rgdal,lattice,raster)
 
 S3method(plot,pfCircular)
 S3method(plot,pfKruskal)

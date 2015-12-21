@@ -1,12 +1,12 @@
 #' Add user defined charcoal data series to paleofire
 #' 
 #' This function is used to create a "pfAddData" object, from user defined csv
-#' files containing charcoal data, to be passed to pfTransform. Usually csv
-#' files should contain three columns with Depth, Age, Charcoal quantity in
-#' this same order. A metadata csv file should also be specified with sites
+#' files containing charcoal data, to be passed to pfTransform. csv
+#' files must contain three columns with Depth, Age, Charcoal quantity in
+#' this same order (for type="NONE" argument). A metadata csv file could also be specified with sites
 #' location information (three columns with: SITE_NAME, LATITUDE, LONGITUDE).
 #' CharAnalysis data files could also be used, in this case the file must
-#' include the following informations: DepthTop, DepthBottom, AgeTop,
+#' include the following columns: DepthTop, DepthBottom, AgeTop,
 #' AgeBottom, Volume and Charcoal value in this exact order. Then the files are
 #' passed to the pretreatment function in order to calculate Charcoal
 #' Accumulation Rates (see pretreatment for details).
@@ -85,7 +85,8 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
   
   ## NULL option
   if(is.null(metadata))
-    meta=data.frame(SITE_NAME=rep(NA,length(files)),
+    meta=data.frame(ID_SITE=c(1:length(files))+10000,
+                    SITE_NAME=rep(NA,length(files)),
                     LATITUDE=rep(NA,length(files)),
                     LONGITUDE=rep(NA,length(files)))
   
@@ -98,13 +99,70 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
     meta=cbind(unique(all_data[,1]),meta)
     colnames(meta)[1]="ID_SITE"
   }
-
+  
   ## Output
   output=structure(list(data=all_data,
                         metadata=meta))
+  class(output)="pfAddData"
   return(output)
 }
 
+#' rbind.pfAddData
+#' 
+#' rbind two or more pfAddData objects, this enable to add charcoal series stored using multiple types,
+#' see type argument of \code{\link[paleofire]{pfAddData}} for details. 
+#' 
+#' @method rbind pfAddData
+#' @export
+#' @param ... two or more objects returned by pfAddData
+#' @return An object of the class "pfAddData" (list) 
+#' @author O. Blarquez
+#' @seealso \code{\link[paleofire]{pfAddData}}
+#' @examples
+#' 
+#'files=c("http://blarquez.com/public/data//Ben.csv",
+#'        "http://blarquez.com/public/data/Small.csv")
+#'metadata=c("http://blarquez.com/public/data/metadata.csv")
+#'
+#'mydata1=pfAddData(files=files,type="CharAnalysis")
+#'mydata2=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
+#'mydada=rbind(mydata1,mydata2)
+#'
+# Transform and compositing:
+#'TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
+#'                BasePeriod=c(200,2000))
+#'COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
+#'plot(COMP2)
 
+#' 
+rbind.pfAddData=function(...){
+
+  args=eval(substitute(alist(...)))
+  
+  n=c()
+  for (i in 1:length(args)){
+    tmp=get(paste0(args[[i]]))$data
+    n[i]=length(unique(tmp[,1]))
+  }
+  
+  dataI1=get(paste0(args[[1]]))$data
+  metaI1=get(paste0(args[[1]]))$metadata
+  
+  for (i in 2:length(args)){
+    tmp=get(paste0(args[[i]]))$data
+    tmp[,1]=tmp[,1]+sum(n[1:i-1])
+    assign(paste("dataI",i,sep=""),tmp)
+    tmp=get(paste0(args[[i]]))$metadata
+    tmp[,1]=tmp[,1]+sum(n[1:i-1])
+    assign(paste("metaI",i,sep=""),tmp)
+  }
+  
+  all_data=do.call(rbind,lapply(1:length(args),function(i) rbind(get(paste("dataI",i,sep="")))))
+  meta=do.call(rbind,lapply(1:length(args),function(i) rbind(get(paste("metaI",i,sep="")))))
+  output=structure(list(data=all_data,
+                        metadata=meta))
+  class(output)="pfAddData"
+  return(output)
+}
 
 

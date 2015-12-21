@@ -1,4 +1,5 @@
 options(R_DEFAULT_PACKAGES=NULL)
-options(repos = c(CRAN="http://cran.r-project.org"))
 
-
+local({r <- getOption("repos")
+r["CRAN"] <- "https://cran.rstudio.com"
+options(repos=r)})
