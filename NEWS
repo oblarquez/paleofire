@@ -1,3 +1,17 @@
+paleofire 1.1.8 21/12/2015
+-----------------------------------------
+
+New feature:
+
+* Can now rbind multiple pfAddData objects
+
+Minor fixes:
+
+* NAMESPACE
+
+* Various fixes for 3.2.3
+
+
 paleofire 1.1.7 05/11/2015
 -----------------------------------------
 

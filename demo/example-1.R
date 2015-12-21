@@ -2,10 +2,8 @@
 # ID=pfInteractive()
 
 library(devtools)
-install_github("paleofire", repo="GCD",ref="master")
-install_github("paleofire", repo="paleofire",ref="master")
+install_github("paleofire/paleofire")
 
-library(GCD)
 library(paleofire)
 
 ## Site selection using criterions
