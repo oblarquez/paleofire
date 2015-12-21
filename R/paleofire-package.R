@@ -7,14 +7,14 @@
 #' compositing.
 #' 
 #' \tabular{ll}{ Package: \tab paleofire\cr Type: \tab Package\cr Version: \tab
-#' 1.1.6\cr Date: \tab 2015-04-22\cr License: \tab GPL (>=2)\cr }
+#' 1.1.8\cr Date: \tab 2015-12-21\cr License: \tab GPL (>=2)\cr }
 #' 
 #' @name paleofire-package
 #' @aliases paleofire-package paleofire
 #' @docType package
 #' @section Author(s): Global Paleofire Working Group <paleofire at univ-fcomte.fr>
 #' @section Maintainer: Olivier Blarquez <blarquez at gmail.com>
-#' @seealso \url{http://gpwg.org}
+#' @seealso \url{http://gpwg.paleofire.org}
 #' @references Blarquez, O., Vannière, B., Marlon, J. R., Daniau, A. L., Power,
 #' M. J., Brewer, S., & Bartlein, P. J. (2014). paleofire: an R package to
 #' analyse sedimentary charcoal records from the Global Charcoal Database to
@@ -91,7 +91,7 @@ NULL
 #' Internal paleofire functions and functions waiting for man.
 #' 
 #' 
-#' @aliases bootCI haverdist dem loessGCV bestLoess countries 
+#' @aliases bootCI haverdist dem loessGCV bestLoess countries influx
 #' @name paleofire-internal
 #' 
 NULL

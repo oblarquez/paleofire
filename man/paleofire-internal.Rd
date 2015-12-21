@@ -6,6 +6,7 @@
 \alias{countries}
 \alias{dem}
 \alias{haverdist}
+\alias{influx}
 \alias{loessGCV}
 \alias{paleofire-internal}
 \title{Internal paleofire functions}

@@ -14,7 +14,7 @@ compositing.
 }
 \details{
 \tabular{ll}{ Package: \tab paleofire\cr Type: \tab Package\cr Version: \tab
-1.1.6\cr Date: \tab 2015-04-22\cr License: \tab GPL (>=2)\cr }
+1.1.8\cr Date: \tab 2015-12-21\cr License: \tab GPL (>=2)\cr }
 }
 \section{Author(s)}{
  Global Paleofire Working Group <paleofire at univ-fcomte.fr>
@@ -93,7 +93,7 @@ analyse sedimentary charcoal records from the Global Charcoal Database to
 reconstruct past biomass burning. Computers & Geosciences, 72, 255-261.
 }
 \seealso{
-\url{http://gpwg.org}
+\url{http://gpwg.paleofire.org}
 }
 \keyword{charcoal,}
 \keyword{fire,}
