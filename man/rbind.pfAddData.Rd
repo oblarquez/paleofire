@@ -17,7 +17,7 @@ rbind two or more pfAddData objects, this enable to add charcoal series stored u
 see type argument of \code{\link[paleofire]{pfAddData}} for details.
 }
 \examples{
-
+\dontrun{
 files=c("http://blarquez.com/public/data//Ben.csv",
        "http://blarquez.com/public/data/Small.csv")
 metadata=c("http://blarquez.com/public/data/metadata.csv")
@@ -30,6 +30,8 @@ TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
                BasePeriod=c(200,2000))
 COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
 plot(COMP2)
+}
+
 
 }
 \author{

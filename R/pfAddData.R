@@ -119,7 +119,7 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
 #' @author O. Blarquez
 #' @seealso \code{\link[paleofire]{pfAddData}}
 #' @examples
-#' 
+#' \dontrun{
 #'files=c("http://blarquez.com/public/data//Ben.csv",
 #'        "http://blarquez.com/public/data/Small.csv")
 #'metadata=c("http://blarquez.com/public/data/metadata.csv")
@@ -133,7 +133,8 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
 #'                BasePeriod=c(200,2000))
 #'COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
 #'plot(COMP2)
-
+#' }
+#' 
 #' 
 rbind.pfAddData=function(...){
 
