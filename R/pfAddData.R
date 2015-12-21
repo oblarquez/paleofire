@@ -126,7 +126,7 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
 #'
 #'mydata1=pfAddData(files=files,type="CharAnalysis")
 #'mydata2=pfAddData(files=files,metadata=metadata,type="CharAnalysis")
-#'mydada=rbind(mydata1,mydata2)
+#'mydata=rbind(mydata1,mydata2)
 #'
 # Transform and compositing:
 #'TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
