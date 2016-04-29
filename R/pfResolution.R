@@ -26,6 +26,8 @@ pfResolution=function(ID,AgeLim=NULL){
   paleofiredata=NULL; rm(paleofiredata)
   
   data(paleofiredata, envir = environment())
+  data(paleofiresites, envir = environment())
+  
   IDs=ID # Save for output
   
   ID=ID$id_site
@@ -42,9 +44,10 @@ pfResolution=function(ID,AgeLim=NULL){
   sdres=c()
   
   for (i in 1:length(ID)){
-    meanres[i]=mean(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i],]$EST_AGE))
-    medianres[i]=median(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i],]$EST_AGE))
-    sdres[i]=sd(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i],]$EST_AGE))
+    pref=paleofiresites[paleofiresites$id_site==ID[i],]$pref_units
+    meanres[i]=mean(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i] & paleofiredata$UNIT %in% pref,]$EST_AGE))
+    medianres[i]=median(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i] & paleofiredata$UNIT %in% pref,]$EST_AGE))
+    sdres[i]=sd(diff(paleofiredata[paleofiredata$ID_SITE %in% ID[i] & paleofiredata$UNIT %in% pref,]$EST_AGE))
   }
   
   res=data.frame(ID_SITE=as.numeric(IDs$id_site),
