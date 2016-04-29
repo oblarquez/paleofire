@@ -136,6 +136,12 @@ summary.pfSiteSel=function(object,...){
   table=subset(table, select=c("id_site", "lat", "long",
                                "elev", "min_est_age", "max_est_age", 
                                "num_dating",  "date_int", "num_samp", "l12", "rf99"))
+  methods=c()
+  for(i in 1:length(object$id_site)){
+    pref=paleofiresites[paleofiresites$id_site==object$id_site[i],]$pref_units
+    methods[i]=as.character(unique(paleofiredata[paleofiredata$ID_SITE %in% object$id_site[i] & paleofiredata$UNIT %in% pref,]$METHOD))
+  }
+  table=cbind(table,methods)
   #print(table)
   return(table)
 }
@@ -224,9 +230,9 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
       plot(paleofiresites$long,paleofiresites$lat,
            col="blue",xlab="Longitude",ylab="Latitude")
       
-     if (plot_countries==TRUE) {
-       lines(countries$x,countries$y)
-     } else lines(coast$X,coast$Y)
+      if (plot_countries==TRUE) {
+        lines(countries$x,countries$y)
+      } else lines(coast$X,coast$Y)
       
       points(paleofiresites[paleofiresites$id_site %in% x$id_site,]$long,
              paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat, 
