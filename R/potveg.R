@@ -109,11 +109,11 @@ potveg=function(ID,classif="rf99",buffer=NULL){
     where=which(g>1)
     
     if(length(where)>0)
-    for(i in 1:length(where)){
-      temp=raster::extract(r,data[where[i]])
-      if(is.na(temp)) temp=0
-      loc[[where[i]]]=temp
-    }
+      for(i in 1:length(where)){
+        temp=raster::extract(r,data[where[i]])
+        if(is.na(temp)) temp=0
+        loc[[where[i]]]=temp
+      }
     
     ## Ok now
     
@@ -195,7 +195,7 @@ potveg=function(ID,classif="rf99",buffer=NULL){
 #' 
 #' 
 #' @export plot.potveg
-plot.potveg=function(x,size=4,palette=NULL,alpha=0.5,text=FALSE,...){
+plot.potveg=function(x,size=4,palette=NULL,alpha=0.5,text=FALSE,points=TRUE,...){
   
   ## no visible binding for global variable check problem: 
   y<-name<-veg_id<-NULL
@@ -204,18 +204,19 @@ plot.potveg=function(x,size=4,palette=NULL,alpha=0.5,text=FALSE,...){
     pal=c("#8dd3c7","#ffffb3","#bebada","#fb8072",
           "#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd",
           "#ccebc5","#ffed6f") else pal=palette
- 
-
-  pal=colorRampPalette(pal)(length(unique(x$map$name))-1) 
-  pal=c("#FFFFFF",pal) 
-  
-  p=ggplot(x$map)+geom_raster(data=x$map,aes(x,y,fill=name) )+
-    scale_fill_manual(name="Potential vegetation",values=pal)+
-    xlab("Longitude")+ylab("Latitude")+
-    theme_bw(base_size=18)
-  if(text==TRUE){p=p+geom_text(data=x$site_data,aes(x,y,label=veg_id),alpha=alpha,size=size)
-  } else p=p+ geom_point(data=x$site_data,aes(x,y),alpha=alpha,size=size)
-  p
-  return(p)
-  
+          
+          
+          pal=colorRampPalette(pal)(length(unique(x$map$name))-1) 
+          pal=c("#FFFFFF",pal) 
+          
+          p=ggplot(x$map)+geom_raster(data=x$map,aes(x,y,fill=name) )+
+            scale_fill_manual(name="Potential vegetation",values=pal)+
+            xlab("Longitude")+ylab("Latitude")+
+            theme_bw(base_size=18)
+          if(points==TRUE){
+            if(text==TRUE){p=p+geom_text(data=x$site_data,aes(x,y,label=veg_id),alpha=alpha,size=size)
+            } else p=p+ geom_point(data=x$site_data,aes(x,y),alpha=alpha,size=size)
+          }
+          p
+          return(p)
 }
