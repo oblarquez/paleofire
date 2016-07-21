@@ -33,7 +33,8 @@ kdffreq=function(fevent,
                  lo=NULL,
                  bandwidth=NULL,
                  nbboot=NULL,
-                 alpha=NULL)
+                 alpha=NULL,
+                 pseudo=TRUE)
 {    
   if(is.null(up)) up=min(fevent)
   if(is.null(lo)) lo=max(fevent)
@@ -71,6 +72,7 @@ kdffreq=function(fevent,
   
   ## Kernel density estimation
   fevent_pseudo=sort(c(pseudo_up,fevent,pseudo_lo))
+  if(pseudo==FALSE) fevent_pseudo=fevent
   n=length(fevent_pseudo); #number of events
   t=seq(min(fevent_pseudo), max(fevent_pseudo), 10); 
   
@@ -122,13 +124,13 @@ kdffreq=function(fevent,
 #'  plot(ff)
 
 
-plot.kdffreq=function(x,ylim=NULL,xlim=NULL,...){
+plot.kdffreq=function(x,ylim=NULL,xlim=NULL,main=NULL,...){
   
   if(is.null(ylim)) ylim=c(min(x$lo),max(x$up))
   if(is.null(xlim)) xlim=c(min(x$age),max(x$age))
   
   plot(x$age,x$ff,type="l",xlab = "Age", ylab = "FF (#.yr-1)",
-       xlim=xlim,ylim=ylim)
+       xlim=xlim,ylim=ylim,main=main)
   lines(x$age,x$up)
   lines(x$age,x$lo)
   
