@@ -4,7 +4,7 @@
 \alias{plot.kdffreq}
 \title{plot.kdffreq}
 \usage{
-\method{plot}{kdffreq}(x, ylim = NULL, xlim = NULL, ...)
+\method{plot}{kdffreq}(x, ylim = NULL, xlim = NULL, main = NULL, ...)
 }
 \arguments{
 \item{x}{Object returned by kdffreq}

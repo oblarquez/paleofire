@@ -11,6 +11,7 @@
 #' @param bandwidth Numeric, bandwidth in years, or character for automatic
 #' bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 #' \code{\link[stats]{bandwidth}} for details
+#' @param pseudo Logical, apply (TRUE) or not (FALSE) Mann (2004) correction, default=TRUE
 #' @author O. Blarquez
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)

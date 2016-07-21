@@ -5,7 +5,7 @@
 \title{Fire frequency using kernel density}
 \usage{
 kdffreq(fevent, up = NULL, lo = NULL, bandwidth = NULL, nbboot = NULL,
-  alpha = NULL)
+  alpha = NULL, pseudo = TRUE)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
@@ -21,6 +21,8 @@ bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 \item{nbboot}{Numeric, number of bootstrap replicates}
 
 \item{alpha}{Numeric, confidence interval (default 0.01)}
+
+\item{pseudo}{Logical, apply (TRUE) or not (FALSE) Mann (2004) correction, default=TRUE}
 }
 \value{
 ff data.frame, with fire frequency, bandwidth and CIs

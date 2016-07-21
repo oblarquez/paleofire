@@ -5,7 +5,7 @@
 \title{plot.potveg}
 \usage{
 \method{plot}{potveg}(x, size = 4, palette = NULL, alpha = 0.5,
-  text = FALSE, ...)
+  text = FALSE, points = TRUE, ...)
 }
 \arguments{
 \item{x}{A "potveg object."}
