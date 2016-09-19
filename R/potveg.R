@@ -175,6 +175,7 @@ potveg=function(ID,classif="rf99",buffer=NULL){
 #' @param alpha Transparency of charcoal sites dots
 #' @param text Logical: plot sites as numbers referring to potential vegetation
 #' index (text=TRUE) or as points (text=FALSE, default).
+#' @param points Logical: plot sites (TRUE, default)
 #' @param \dots ...
 #' @return A ggplot2 ("gg") object that can be further modified (see example)
 #' @author O. Blarquez

@@ -114,6 +114,7 @@ kdffreq=function(fevent,
 #' @param x Object returned by kdffreq
 #' @param xlim Numeric x axis limits
 #' @param ylim Numeric, y axis limits
+#' @param main char, title of plot
 #' @param ... other arguments
 #' @seealso \code{\link[paleofire]{kdffreq}} 
 #'  @examples

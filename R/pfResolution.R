@@ -24,6 +24,7 @@ pfResolution=function(ID,AgeLim=NULL){
   # Temporal resolution of records
   
   paleofiredata=NULL; rm(paleofiredata)
+  paleofiresites=NULL; rm(paleofiresites)
   
   data(paleofiredata, envir = environment())
   data(paleofiresites, envir = environment())

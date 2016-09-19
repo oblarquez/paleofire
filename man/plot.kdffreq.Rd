@@ -13,6 +13,8 @@
 
 \item{xlim}{Numeric x axis limits}
 
+\item{main}{char, title of plot}
+
 \item{...}{other arguments}
 }
 \description{
