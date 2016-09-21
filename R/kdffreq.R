@@ -1,17 +1,18 @@
 #' Fire frequency using kernel density
 #' 
-#' Computes paleo-fire frequency for a set of fire events using a gaussian
-#' kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
+#' Computes paleo-fire frequency for a set of fire events (or frequency from other events types, see examples) 
+#' using a gaussian kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
 #' details). Pseudo-replicated values are used to correct for edge bias, equivalent to
 #' "minimum slope" correction in Mann (2004).
 #' 
 #' @param fevent Numeric vector, set of dates
-#' @param up Numeric, upper age for fire frequnecy calculus
-#' @param lo Numeric, lower age for fire frequnecy calculus
+#' @param up Numeric, upper age for fire frequency calculus
+#' @param lo Numeric, lower age for fire frequency calculus
+#' @param interval Numeric, interval between two points for fire frequency calculus (default 10 years)
 #' @param bandwidth Numeric, bandwidth in years, or character for automatic
 #' bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 #' \code{\link[stats]{bandwidth}} for details
-#' @param pseudo Logical, apply (TRUE) or not (FALSE) Mann (2004) correction, default=TRUE
+#' @param pseudo Logical, apply (TRUE) or not (FALSE) Mann (2004) correction (default=FALSE)
 #' @author O. Blarquez
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)
@@ -24,18 +25,28 @@
 #'  Journal of Geophysical Research: Atmospheres (1984–2012), 109(D23).
 #' @examples
 #' 
-#' set.seed(123)
+#'  set.seed(123)
 #'  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
-#' 
 #'  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
+#'  
+#'  \dontrun{
+#'  # Estimate the frequency of armed conflicts from 1946 to 2014
+#'  # Data from the The Uppsala Conflict Data Program (UCDP) available at: https://www.prio.org
+#'
+#'  dat=read.csv('http://ucdp.uu.se/downloads/ucdpprio/ucdp-prio-acd-4-2016.csv')
+#'  res=kdffreq(dat$Year,bandwidth = "bw.ucv", nbboot=1000, up = 1946, lo = 2014, interval=1, pseudo=T)
+#'  plot(res, ylab="# armed conflict/year")
+#'  }
+
 
 kdffreq=function(fevent,
                  up=NULL,
                  lo=NULL,
+                 interval=10,
                  bandwidth=NULL,
                  nbboot=NULL,
                  alpha=NULL,
-                 pseudo=TRUE)
+                 pseudo=FALSE)
 {    
   if(is.null(up)) up=min(fevent)
   if(is.null(lo)) lo=max(fevent)
@@ -75,7 +86,7 @@ kdffreq=function(fevent,
   fevent_pseudo=sort(c(pseudo_up,fevent,pseudo_lo))
   if(pseudo==FALSE) fevent_pseudo=fevent
   n=length(fevent_pseudo); #number of events
-  t=seq(min(fevent_pseudo), max(fevent_pseudo), 10); 
+  t=seq(min(fevent_pseudo), max(fevent_pseudo), interval); 
   
   # points where kernel estimates the
   # density
@@ -115,6 +126,8 @@ kdffreq=function(fevent,
 #' @param xlim Numeric x axis limits
 #' @param ylim Numeric, y axis limits
 #' @param main char, title of plot
+#' @param xlab char, x axis legend
+#' @param ylab char, y axis legend
 #' @param ... other arguments
 #' @seealso \code{\link[paleofire]{kdffreq}} 
 #'  @examples
@@ -126,13 +139,13 @@ kdffreq=function(fevent,
 #'  plot(ff)
 
 
-plot.kdffreq=function(x,ylim=NULL,xlim=NULL,main=NULL,...){
+plot.kdffreq=function(x,ylim=NULL,xlim=NULL,main=NULL,xlab="Age",ylab="FF (#.yr-1)",...){
   
   if(is.null(ylim)) ylim=c(min(x$lo),max(x$up))
   if(is.null(xlim)) xlim=c(min(x$age),max(x$age))
   
-  plot(x$age,x$ff,type="l",xlab = "Age", ylab = "FF (#.yr-1)",
-       xlim=xlim,ylim=ylim,main=main)
+  plot(x$age, x$ff, type="l", xlab = xlab, ylab = ylab,
+       xlim=xlim, ylim=ylim, main=main)
   lines(x$age,x$up)
   lines(x$age,x$lo)
   

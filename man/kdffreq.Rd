@@ -4,15 +4,17 @@
 \alias{kdffreq}
 \title{Fire frequency using kernel density}
 \usage{
-kdffreq(fevent, up = NULL, lo = NULL, bandwidth = NULL, nbboot = NULL,
-  alpha = NULL, pseudo = TRUE)
+kdffreq(fevent, up = NULL, lo = NULL, interval = 10, bandwidth = NULL,
+  nbboot = NULL, alpha = NULL, pseudo = FALSE)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
 
-\item{up}{Numeric, upper age for fire frequnecy calculus}
+\item{up}{Numeric, upper age for fire frequency calculus}
 
-\item{lo}{Numeric, lower age for fire frequnecy calculus}
+\item{lo}{Numeric, lower age for fire frequency calculus}
+
+\item{interval}{Numeric, interval between two points for fire frequency calculus (default 10 years)}
 
 \item{bandwidth}{Numeric, bandwidth in years, or character for automatic
 bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
@@ -22,23 +24,31 @@ bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 
 \item{alpha}{Numeric, confidence interval (default 0.01)}
 
-\item{pseudo}{Logical, apply (TRUE) or not (FALSE) Mann (2004) correction, default=TRUE}
+\item{pseudo}{Logical, apply (TRUE) or not (FALSE) Mann (2004) correction (default=FALSE)}
 }
 \value{
 ff data.frame, with fire frequency, bandwidth and CIs
 }
 \description{
-Computes paleo-fire frequency for a set of fire events using a gaussian
-kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
+Computes paleo-fire frequency for a set of fire events (or frequency from other events types, see examples) 
+using a gaussian kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
 details). Pseudo-replicated values are used to correct for edge bias, equivalent to
 "minimum slope" correction in Mann (2004).
 }
 \examples{
 
-set.seed(123)
+ set.seed(123)
  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
-
  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
+ 
+ \dontrun{
+ # Estimate the frequency of armed conflicts from 1946 to 2014
+ # Data from the The Uppsala Conflict Data Program (UCDP) available at: https://www.prio.org
+
+ dat=read.csv('http://ucdp.uu.se/downloads/ucdpprio/ucdp-prio-acd-4-2016.csv')
+ res=kdffreq(dat$Year,bandwidth = "bw.ucv", nbboot=1000, up = 1946, lo = 2014, interval=1, pseudo=T)
+ plot(res, ylab="# armed conflict/year")
+ }
 }
 \author{
 O. Blarquez
