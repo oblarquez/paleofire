@@ -5,7 +5,7 @@
 \title{Add user defined charcoal data series to paleofire}
 \usage{
 pfAddData(files, metadata = NULL, type = "NULL", Int = TRUE,
-  first = NULL, last = NULL, yrInterp = NULL)
+  first = NULL, last = NULL, yrInterp = NULL, sep = ",", dec = ".")
 }
 \arguments{
 \item{files}{Character, names and path to csv files.}
@@ -25,6 +25,10 @@ minimum and maximum ages of the record respectively.}
 \item{yrInterp}{Numeric, temporal resolution of the interpolated
 accumulation rates, if NULL, yrInterp is automatically specified as the
 median resolution of the record.}
+
+\item{sep}{char, column separator for csv, "," by default}
+
+\item{dec}{char, decimal "." by default}
 }
 \value{
 \item{out}{A list with merged data files that can be passed to
@@ -65,10 +69,10 @@ TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
 COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
 plot(COMP2)
 
-# Three columns example:
+# Three columns example (with semicolon csv files):
 files=c("http://blarquez.com/public/data/Ben_area.csv",
        "http://blarquez.com/public/data/Small_area.csv")
-mydata=pfAddData(files=files)
+mydata=pfAddData(files=files, sep=";")
 # Transform and compositing:
 TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
                BasePeriod=c(200,2000))
