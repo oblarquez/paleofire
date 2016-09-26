@@ -52,6 +52,16 @@
 #'                 BasePeriod=c(200,2000))
 #' COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
 #' plot(COMP2)
+#' 
+#' # Three columns example:
+#'files=c("http://blarquez.com/public/data/Ben_area.csv",
+#'        "http://blarquez.com/public/data/Small_area.csv")
+#'mydata=pfAddData(files=files)
+#' # Transform and compositing:
+#' TR1=pfTransform(add=mydata, method=c("MinMax","Box-Cox","Z-Score"),
+#'                BasePeriod=c(200,2000))
+#' COMP2=pfCompositeLF(TR1, tarAge=seq(-50,8000,20), hw=500, nboot=100)
+#' plot(COMP2)
 #' }
 #' 
 pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
