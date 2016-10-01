@@ -416,7 +416,6 @@ contrib <- function(x){
   UseMethod("contrib",x)
 }
 
-
 #' contrib.pfCompositeLF
 #' 
 #' Calculates the number of prebinned samples contributing to the composite curve. 
@@ -441,7 +440,6 @@ contrib <- function(x){
 #' plot(COMP1$BinCentres,a)
 #' 
 #' 
-#'
 contrib.pfCompositeLF=function(x,...){
   m=x$BinnedData
   m[!is.na(m)]=1
