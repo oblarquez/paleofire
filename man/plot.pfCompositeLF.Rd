@@ -48,7 +48,7 @@ TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
 
 COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
 
-plot(COMP1)
+plot(COMP1, type="density")
 
 ## Note: comparing confidence intervals based on 100 replicates is not recommended
 # (100 is used to decrease analysis time)

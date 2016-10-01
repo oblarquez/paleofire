@@ -3,6 +3,7 @@
 \name{paleofire-internal}
 \alias{bestLoess}
 \alias{bootCI}
+\alias{contrib}
 \alias{countries}
 \alias{dem}
 \alias{haverdist}

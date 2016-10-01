@@ -115,7 +115,7 @@ pfCompositeLF=function(TR,hw=250,
     binhw=(tarAge[2]-tarAge[1])/2
   
   ## Prebinning procedure
-
+  
   if(verbose==TRUE){
     percent=seq(10,100,by=10)
     values=round(percent*n/100)
@@ -191,8 +191,8 @@ pfCompositeLF=function(TR,hw=250,
     y=as.vector(dat$y)
     locboot <- locfit(y ~ lp(x, deg = 1, h = hw), maxk = 2000, family = "qrgauss")
     if(is.na( locboot$dp[7])==FALSE){
-    predboot <- predict(locboot, newdata = centres, se.fit = TRUE)
-    mboot[, i] <- predboot$fit}
+      predboot <- predict(locboot, newdata = centres, se.fit = TRUE)
+      mboot[, i] <- predboot$fit}
     
     # Verbose
     if(i %in% values & verbose==TRUE)
@@ -261,14 +261,6 @@ pfCompositeLF=function(TR,hw=250,
     cat("\n")
 }
 
-######SUMMARY########
-
-
-######PLOT########
-
-
-
-
 
 #' plot.pfCompositeLF
 #' 
@@ -302,7 +294,7 @@ pfCompositeLF=function(TR,hw=250,
 #' 
 #' COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
 #' 
-#' plot(COMP1)
+#' plot(COMP1, type="density")
 #' 
 #' ## Note: comparing confidence intervals based on 100 replicates is not recommended
 #' # (100 is used to decrease analysis time)
@@ -418,5 +410,43 @@ plot.pfCompositeLF=function(x,type="ci",add="NULL",conf=c(0.05,0.95),palette="je
          labels = FALSE, tcl = -0.2) 
   }
   
+}
+
+contrib <- function(x){
+  UseMethod("contrib",x)
+}
+
+
+#' contrib.pfCompositeLF
+#' 
+#' Calculates the number of prebinned samples contributing to the composite curve. 
+#' The number is calculated by counting the number on non null charcoal 
+#' values at each tarAge from the prebinned charcoal series.
+#' 
+#' @export
+#' @method contrib pfCompositeLF
+#' @param x A "pfCompositeLF" object.
+#' @param \dots \dots{}
+#' @author O. Blarquez
+#' @examples
+#' 
+#' ID=pfSiteSel(id_region=="WNA0",l12==1,long>=-160,long<=-140)
+#' 
+#' TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
+#'                BasePeriod=c(200,2000),QuantType="INFL")
+#' 
+#' COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
+#' 
+#' a=contrib(COMP1)
+#' plot(COMP1$BinCentres,a)
+#' 
+#' 
+#'
+contrib.pfCompositeLF=function(x,...){
+  m=x$BinnedData
+  m[!is.na(m)]=1
+  res=list()
+  res=rowSums(m,na.rm=TRUE)  
+  return(res)
 }
 
