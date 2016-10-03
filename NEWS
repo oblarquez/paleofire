@@ -3,6 +3,10 @@ paleofire 1.1.9 19/09/2016
 
 * Improved kdffreq function
 
+* pfAddData options for csv and examples
+
+* contrib method for pfCompositeLF objects
+
 * Bug fixes
 
 
