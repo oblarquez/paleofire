@@ -29,7 +29,6 @@ a=contrib(COMP1)
 plot(COMP1$BinCentres,a)
 
 
-
 }
 \author{
 O. Blarquez

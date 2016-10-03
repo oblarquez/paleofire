@@ -68,7 +68,6 @@ approach that weight samples according to their spatio-temporal location
 also down-weight charcoal sites that are poorly sampled.
 }
 \examples{
-
 ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
 
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))

@@ -48,7 +48,6 @@
 #' @seealso \code{\link{plot.pfGridding}}, \code{\link{pfTransform}},
 #' \code{\link{pfDotMap}}
 #' @examples
-#' 
 #' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
 #' 
 #' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -319,7 +318,7 @@ pfGridding=function(data,cell_sizex=NULL,
 #' @author O. Blarquez
 #' @seealso \code{\link{pfGridding}}
 #' @examples
-#' 
+#' \dontrun{
 #' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
 #' 
 #' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -331,7 +330,7 @@ pfGridding=function(data,cell_sizex=NULL,
 #' # require(ggplot2)
 #' # pp=plot(p,empty_space=100)
 #' # pp+ggtitle("my title..")
-#' 
+#' }
 plot.pfGridding=function(x,continuous=TRUE,
                          col_class=NULL,
                          col_lim=NULL,

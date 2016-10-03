@@ -16,9 +16,9 @@ Once `devtools` is installed type the following lines at R prompt to install `pa
 
 ```R
 library(devtools)
-install_github(repo="paleofire", username="paleofire", ref="master")
+install_github(repo="oblarquez/paleofire")
 # The GCD package is required along paleofire:
-install_github(repo="GCD", username="paleofire", ref="master")
+install_github(repo="oblarquez/GCD")
 library(paleofire)
 ```
 
@@ -28,7 +28,7 @@ To test everything is working you can plot a map of all charcoal records include
 plot(pfSiteSel())
 ```
 
-For details and examples about `paleofire` please refer to the included [manual](http://cran.r-project.org/web/packages/paleofire/paleofire.pdf) or [vignette](http://cran.r-project.org/web/packages/paleofire/vignettes/paleofire-paper.pdf).
+For details and examples about `paleofire` please refer to the included [manual](  https://CRAN.R-project.org/package=paleofire/paleofire.pdf) or [vignette](https://CRAN.R-project.org/package=paleofire/vignettes/paleofire-paper.pdf).
 
 Citation:
 =============

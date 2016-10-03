@@ -1,6 +1,6 @@
 .onAttach <- function(lib, pkg) {
   #checkGCDversion()
-  packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"),appendLF = TRUE)
+  packageStartupMessage("This is paleofire v",utils::packageDescription("paleofire",field="Version"), " | GCD v", utils::packageDescription("GCD",field="Version") ,appendLF = TRUE)
 } 
 
 

@@ -20,7 +20,7 @@ tarAge=seq(from=min age, to=max Age, by=median resolution).}
 
 \item{binhw}{Numeric, bin half width for the prebinning procedure (use the
 same value as tarAge intervals for overlapping bins or tarAge intervals/2
-for non-overlapping bins, defautl).}
+for non-overlapping bins, default).}
 
 \item{nboot}{Numeric, a number specifying the number of bootstrap
 replicates.}

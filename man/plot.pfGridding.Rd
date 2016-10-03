@@ -56,7 +56,7 @@ Plot maps presenting gridded and transformed charcoal values obtained from
 the \code{\link{pfGridding}} function.
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
 
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -68,7 +68,7 @@ plot(p,empty_space=100)
 # require(ggplot2)
 # pp=plot(p,empty_space=100)
 # pp+ggtitle("my title..")
-
+}
 }
 \author{
 O. Blarquez
