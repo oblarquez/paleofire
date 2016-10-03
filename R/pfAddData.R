@@ -94,7 +94,6 @@ pfAddData=function(files,metadata=NULL,type="NULL",Int=TRUE,first=NULL,last=NULL
   colnames(all_data)=c("ID_SITE","DEPTH","EST_AGE","QUANTITY")
   
   ## Metadata part
-  
   ## NULL option
   if(is.null(metadata))
     meta=data.frame(ID_SITE=c(1:length(files))+10000,
