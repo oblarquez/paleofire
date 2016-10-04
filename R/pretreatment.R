@@ -9,8 +9,8 @@
 #' be particule counts, surfaces, volumes, etc.
 #' @param params A matrix with the following colums: CmTop, CmBot, AgeTop,
 #' AgeBot, Volume, in the same order.
-#' @param Int Logical specifying whether the function interpolates particle
-#' zero counts, default TRUE
+#' @param Int Logical specifying whether the function interpolates missing values, 
+#' default TRUE (missing values specified could be specified as -999 or NA)
 #' @param first,last Date of the first, last sample for accumulation rate
 #' calculation, if NULL first, last are automatically specified as the the
 #' minimum and maximum ages of the record respectively
@@ -63,7 +63,7 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
   ## Interpolate or not zero counts
   if (Int==TRUE){
     ## SCREEEN RECORD FOR MISSING VALUES:
-    missingValuesIndex = which(count<0)
+    missingValuesIndex = c(which(count<0) , which(is.na(count)))
     nMissingValues = length(missingValuesIndex)
     if (nMissingValues > 0){  # if some levels were not sampled...
       startIn = missingValuesIndex[which(c(99, diff(missingValuesIndex)) > 1)] # Index start of gaps
