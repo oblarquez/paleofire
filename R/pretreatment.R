@@ -63,7 +63,7 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
   ## Interpolate or not zero counts
   if (Int==TRUE){
     ## SCREEEN RECORD FOR MISSING VALUES:
-    missingValuesIndex = which(count<=0)
+    missingValuesIndex = which(count<0)
     nMissingValues = length(missingValuesIndex)
     if (nMissingValues > 0){  # if some levels were not sampled...
       startIn = missingValuesIndex[which(c(99, diff(missingValuesIndex)) > 1)] # Index start of gaps
