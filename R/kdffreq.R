@@ -16,7 +16,14 @@
 #' @author O. Blarquez
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)
+#' @param boot Character, "full" or "partial" see @@details 
+#' @param bootper Numeric, percentage of fire events randomly added or removed in the "partial" replication procedure (default 0.1)
 #' @return ff data.frame, with fire frequency, bandwidth and CIs
+#' @details By using boot="partial" option (beta!) fire dates are randomly removed or added within a defined percentage (by default between 1 and 10\%
+#' of total number of events) in order to make new series that are then used to calculate ensemble members fire frequencies. This procedure differs slightly from 
+#' the full bootstrapp where fire dates are randomly picked with replacement. Theoretically classic bootstrap could result in a sample 
+#' where a single fire event date is replicated n times which makes no sense for fires. By randomly removing or adding fire dates the confidence
+#' intervals are narrower and likely better reflect the long term fire regime variablility. 
 #' @seealso \code{\link{plot.kdffreq}}
 #' @references  Mann, M. E. (2004). On smoothing potentially non-stationary
 #' climate time series. Geophysical Research Letters, 31(7). \cr \cr 
@@ -44,6 +51,8 @@ kdffreq=function(fevent,
                  lo=NULL,
                  interval=10,
                  bandwidth=NULL,
+                 boot="full",
+                 bootper=0.1,
                  nbboot=NULL,
                  alpha=NULL,
                  pseudo=FALSE)
@@ -80,7 +89,7 @@ kdffreq=function(fevent,
   ## Bandwidth selection using "bandwidth" function (see stats and density)
   
   if (is.character(bandwidth))
-  bandwidth=eval(parse(text=paste0(bandwidth,"(fevent)")))
+    bandwidth=eval(parse(text=paste0(bandwidth,"(fevent)")))
   
   ## Kernel density estimation
   fevent_pseudo=sort(c(pseudo_up,fevent,pseudo_lo))
@@ -97,17 +106,36 @@ kdffreq=function(fevent,
   ## Bootstrap
   fmat=matrix(nrow=length(t),ncol=nbboot)
   
+  v=1:round(n*bootper)
+  
   for(i in 1:nbboot){
-  fmat[,i]=c(density(fevent_pseudo[unique(sample(1:n,replace=TRUE))],
-                    bw=bandwidth,kernel="gaussian",from=min(fevent_pseudo),
-                   to=max(fevent_pseudo), n=length(t))$y*n)
-  #lines(t, fmat[,i],col="grey67")
+    if(boot=="partial"){
+      w=sample(v,1)
+      x=sample(1:n,replace=F)
+      sign=sample(c(0,1),1)
+      if(sign==1){
+        fmat[,i]=c(density(c(fevent_pseudo,
+                             fevent_pseudo[sample(x,w,replace=FALSE)]),
+                           bw=bandwidth,kernel="gaussian",from=min(fevent_pseudo),
+                           to=max(fevent_pseudo), n=length(t))$y*(n+w))
+      } else {
+        fmat[,i]=c(density(fevent_pseudo[sample(x,n-w,replace=FALSE)],
+                           bw=bandwidth,kernel="gaussian",from=min(fevent_pseudo),
+                           to=max(fevent_pseudo), n=length(t))$y*(n-w))
+      }
+    }
+    if(boot=="full"){
+      fmat[,i]=c(density(fevent_pseudo[unique(sample(1:n,replace=TRUE))],
+                         bw=bandwidth,kernel="gaussian",from=min(fevent_pseudo),
+                         to=max(fevent_pseudo), n=length(t))$y*n)
+    }
+    #lines(t, fmat[,i],col="grey67")
   }
   
   CI=apply(fmat, 1, quantile, probs=c(alpha/2,1-(alpha/2)) )
   # lines(t,CI[1,])
   # lines(t,CI[2,])
-
+  
   
   ff= data.frame(cbind(ffreq1$x,ffreq1$y*n,t(CI)))
   names(ff)=c("age","ff","lo","up")

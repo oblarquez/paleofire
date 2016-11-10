@@ -5,7 +5,8 @@
 \title{Fire frequency using kernel density}
 \usage{
 kdffreq(fevent, up = NULL, lo = NULL, interval = 10, bandwidth = NULL,
-  nbboot = NULL, alpha = NULL, pseudo = FALSE)
+  boot = "full", bootper = 0.1, nbboot = NULL, alpha = NULL,
+  pseudo = FALSE)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
@@ -19,6 +20,10 @@ kdffreq(fevent, up = NULL, lo = NULL, interval = 10, bandwidth = NULL,
 \item{bandwidth}{Numeric, bandwidth in years, or character for automatic
 bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 \code{\link[stats]{bandwidth}} for details}
+
+\item{boot}{Character, "full" or "partial" see @details}
+
+\item{bootper}{Numeric, percentage of fire events randomly added or removed in the "partial" replication procedure (default 0.1)}
 
 \item{nbboot}{Numeric, number of bootstrap replicates}
 
@@ -34,6 +39,13 @@ Computes paleo-fire frequency for a set of fire events (or frequency from other 
 using a gaussian kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
 details). Pseudo-replicated values are used to correct for edge bias, equivalent to
 "minimum slope" correction in Mann (2004).
+}
+\details{
+By using boot="partial" option (beta!) fire dates are randomly removed or added within a defined percentage (by default between 1 and 10\%
+of total number of events) in order to make new series that are then used to calculate ensemble members fire frequencies. This procedure differs slightly from 
+the full bootstrapp where fire dates are randomly picked with replacement. Theoretically classic bootstrap could result in a sample 
+where a single fire event date is replicated n times which makes no sense for fires. By randomly removing or adding fire dates the confidence
+intervals are narrower and likely better reflect the long term fire regime variablility.
 }
 \examples{
 

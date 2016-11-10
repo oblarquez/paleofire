@@ -14,8 +14,8 @@ AgeBot, Volume, in the same order.}
 \item{serie}{A proxy record to be transformed in accumulation rates, could
 be particule counts, surfaces, volumes, etc.}
 
-\item{Int}{Logical specifying whether the function interpolates particle
-zero counts, default TRUE}
+\item{Int}{Logical specifying whether the function interpolates missing values, 
+default TRUE (missing values specified could be specified as -999 or NA)}
 
 \item{first, last}{Date of the first, last sample for accumulation rate
 calculation, if NULL first, last are automatically specified as the the
