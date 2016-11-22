@@ -65,7 +65,7 @@
 
 \title{\texttt{paleofire}: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning}
 \tnotetext[t1]{paleofire package version 1.1.3}
-\tnotetext[t2]{Citing this vignette: Blarquez, O., Vannière, B., Marlon, J. R., Daniau, A. L., Power,M. J., Brewer, S., & Bartlein, P. J. (2014). paleofire: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning. Computers & Geosciences, 72, 255-261.}
+\tnotetext[t1]{Citing this vignette: Blarquez, O., Vannière, B., Marlon, J. R., Daniau, A. L., Power,M. J., Brewer, S., \& Bartlein, P. J. (2014). paleofire: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning. Computers \& Geosciences, 72, 255-261.}
 
 \author[1,2]{Blarquez, Olivier\corref{cor1}}
 \ead{blarquez@gmail.com}
@@ -241,3 +241,73 @@ This approach (\texttt{pfComposite}) is equivalent to \citet{Power2008} but \tex
 \begin{Sinput}
 > COMP2 <- pfCompositeLF(TR2, tarAge=seq(-50,12000,20), 
 +                        binhw=10, hw=500, nboot=100)
+\end{Sinput}
+\end{Schunk}
+
+The \texttt{tarAge} argument is used to define the center of each bin in the prebinning procedure (\texttt{binhw} being the prebinning bin half width) and the ages where the LOWESS estimation takes place.  
+
+\subsection{Confidence intervals}
+
+\textit{Option A}\\
+The confidence intervals for the \texttt{pfComposite} function are calculated by bootstrap resampling of the binned charcoal series and calculatiion of the mean for each bin n times, using the argument \texttt{nboot} to choose n value (by default nboot=1000). For the \texttt{pfCompositeLF} function confidence intervals are calculated by bootstrap resampling the prebinned series (as opposed to individual samples) and then applying the LOWESS curve fitting. This operation is repeated n times and is defined using the argument \texttt{nboot}. The confidences intervals are estimated based on the distribution of the bootstrap replicates.
+
+Objects of the class \texttt{pfComposite} and \texttt{pfCompositeLF} can be plotted using the generic \texttt{plot} function. Confidence intervals are specified using the \texttt{conf} argument. The \texttt{add="sitenum"} plot function argument can be used to display the number of charcoal sites contributing to each composite value at each time step (Figure 2). 
+
+
+\begin{Schunk}
+\begin{Sinput}
+> par(mfrow=c(2,1))
+> plot(COMP1,conf=c(0.025,0.975),main="(a)")
+> plot(COMP2,conf=c(0.05,0.95),main="(b)")
+\end{Sinput}
+\end{Schunk}
+\begin{figure}[!ht]
+\centering
+\includegraphics{paleofire-paper-fig2}
+\caption{Composite charcoal series for North Eastern American sites. (a) Composite values and associated confidence intervals using the pfComposite function. (b) Composite values and associated confidence intervals using the pfCompositeLF function (b). Dashed lines correspond to the 97.5th, 2.5th and 95th, 0.5th percentiles respectively.}
+\end{figure}
+
+% --------------------------------------------
+
+\textit{Option B}\\
+Bootstrapped confidence intervals are usually calculated by resampling the charcoal series with replacement in order to test the sensitivity of the composite record to individual series (or sites, option A). However, because the values in charcoal series are autocorrelated, testing the significance of their temporal variations is not straightforward. Block bootstrap has been proposed to test the significance of changes in stationary time series \citep{Kunsch1989}. Here we implemented a new procedure in the \texttt{paleofire} package of "moving" or "circular" block bootstrap, which consists of splitting each charcoal series into $n-b+1$ overlapping blocks of data, where $n$ is sample size and $b$ the block size. These blocks are randomly selected (with replacement) to reconstruct new individual charcoal series that are in turn used to estimate the confidence intervals around the charcoal series composite mean. This procedure may dampen the long-term trends in data, particularly if individual sites record opposing trends. If the observed trend does not exceed the confidence intervals, then there the composite values at that time are not greater than by chance if records are not at all synchronized. However, a composite curve not exceeding the confidence intervals does not exclude the occurrence of important trends in the composite series. This procedure is rather used for testing the significance of local minima or maxima in the composite time series. \\
+The optimal block size for a given series is given by: $b=2\times(-1/log(\rho))$, where $\rho$ is the lag one autocorrelation coefficient of that series \citep{Adams2003}. 
+
+The circular block bootstrap method is commonly used in Superposed Epoch Analysis, a compositing technique that aims to find the response of a variable to one or multiple particular events, for instance insect outbreaks \citep[e.g.]{Nola2006} or fires \citep[e.g.]{Swetnam1993} using dendrochronological series or paleoecological proxy series \citep{Blarquez2010a}. The \texttt{R} implementation follows the Matlab SEA function available at \url{http://blarquez.com} that was inspired by \citet{Adams2003} methodology. The \texttt{pfCircular} function is called using the following command and returns an object of class \texttt{pfCircular} that can be plotted using the generic plot function:
+
+
+\begin{Schunk}
+\begin{Sinput}
+> circboot <- pfCircular(COMP1, b=NULL, nboot=100,
++                         conf=c(0.005,0.025,0.975,0.995))
+> plot(circboot)
+\end{Sinput}
+\end{Schunk}
+
+\begin{figure}
+\centering
+\includegraphics{paleofire-paper-fig3}
+
+\caption{Composite mean of charcoal series for Eastern North American sites (black line) and associated confidence intervals estimated using a circular block bootstrap procedure (dashed lines). Dashed lines correspond to the 99.5th, 97.5th, 2.5th and 0.5th bootstrapped percentiles, respectively.}
+\end{figure}
+The \texttt{b=NULL} argument indicates that the block size is automatically calculated for each series using the formulation above.
+
+\section{Results interpretations}
+
+On figure 2, we see that before c. 10,500 cal BP, the two approaches (simple binning and LOWESS fitting) give different results. Because the \texttt{pfCompositeLF} used a local regression approach with a bandwidth of 1000 years, composite edges (-50-1050 and 11000-12000 cal BP periods) may suffer from bias (edge effect), however this bias should be minimal here and reducing his effect does not change the results significantly (results not shown of for an application of the minimum-slope correction approach of  \citet{Mann2004,Mann2008}, which is implemented in the pfCompositeLF function, see the help for usage details). Additionally the number of sites contributing to the overall composite curve before 10,500 cal BP is low ($<$ 30 sites) and thus the curve should be interpreted with caution. The period from 10,500 to 8000 cal BP and from c. 200 cal BP to present, displays large positive anomalies in composite values for both approaches. On Figure 3 we see that the positive charcoal composite anomalies during the period 9000-10 000 cal BP and negative ones during the periods 6000-7000 and 10,500-12,000 are significantly different from a 12,000 year linear trend and exceed the 95th confidence interval range given by the circular block bootstrap procedure (Fig 3). However, large classical (site resampling based) confidence intervals during the 10,500-12,000 cal BP period indicate that the response is not homogeneous among the charcoal series (Fig 2a-b). The negative composite values at 6000-7000 cal BP are associated with confidence intervals that are narrower compared to previous periods indicating that the within-sites response is relatively homogeneous and thus likely related to forcing factors occurring at a broad spatial scale (e.g. climate). 
+
+\section{Conclusion}
+
+We have presented the \texttt{paleofire} package that allows the paleofire community to easily interrogate data contained within the Global Charcoal Database and to perform the analytical steps required to produce a regional charcoal synthesis using a few simple commands. The \texttt{paleofire} package introduces some new analyses such as the circular block-bootstrap procedure and various new charcoal data-transformation techniques and background-estimation procedures. The package also provides an integrated research framework linking the GCD to the open-source \texttt{R} statistical language. The implemented features are likely to be extended by future releases and new implementations that will increase \texttt{paleofire} capabilities, such as spatio-temporal clustering, which is currently in development. The stable release of \texttt{paleofire} is available from the CRAN website but users may choose to test development releases from Git (\url{https://github.com/paleofire/paleofire}). We hope \texttt{paleofire} will be of broad interest to fire scientists and ecosystem managers, and we encourage its use to perform original research and welcome any development requests and feedback.     
+
+\section{Acknowledgements}
+
+
+We wish to thank all data contributors to the GCD, PAGES workshop funding, the UMR Chrono-Environnement, the University of Franche-Comté and the Région of Franche-Comté for supporting the Global Paleofire Working Group workshop in Frasne (October 2013). OB was supported by a postdoctoral grant from the Fonds Québécois de la Recherche sur la Nature et les Technologies and the FONCER program. JM was supported by NSF grant EF-1241870.
+
+
+\section{References}
+\bibliography{paleofire-paper}
+
+
+\end{document}
