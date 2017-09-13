@@ -62,6 +62,9 @@ pfKruskal=function(data,p.adj="none",
   comparison=agricolae::kruskal(data$y, data$x,alpha = alpha, p.adj=p.adj, group=TRUE, main = NULL)
   
   ## Data prep
+  comparison$groups = data.frame(trt=rownames(comparison$groups),means=comparison$groups$`data$y`,
+                                 M=comparison$groups$groups)
+    
   signifL=as.data.frame(comparison$group)
   signifL$M=as.character(signifL$M)
   
@@ -139,8 +142,8 @@ plot.pfKruskal=function(x,trend=FALSE,outliers=FALSE, xlim = NULL, ylim = NULL, 
   x$data=na.omit(x$data)
   ### GGplot2 boxplot
   p=ggplot(data=x$data,aes(x=x,y=y))
-  if(outliers==TRUE) p=p+geom_boxplot(fill="grey90",outlier.size = 1,show_guide = FALSE)
-  if(outliers==FALSE) p=p+geom_boxplot(fill="grey90",outlier.size = 0,show_guide = FALSE)
+  if(outliers==TRUE) p=p+geom_boxplot(fill="grey90",outlier.size = 1,show.legend = FALSE)
+  if(outliers==FALSE) p=p+geom_boxplot(fill="grey90",outlier.size = 0,show.legend = FALSE)
   p=p+theme_bw(base_size=18)+xlab("Age (cal BP)") + ylab("Composite")+
     geom_text(aes(x=x, y=lpos+0.1, label = lab), data = x$letters,vjust=0,size=5)+
     coord_cartesian(xlim = xlim, ylim = ylim)

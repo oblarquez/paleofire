@@ -220,6 +220,10 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 #' @method plot CHAR
 #' @export
 #' @param x An object of the class "CHAR".
+#' @param xlim xlim...
+#' @param ylim ylim...
+#' @param xlab x axis label.
+#' @param ylab y axis label.
 #' @param \dots \dots{}
 #' @author O. Blarquez
 #' @examples
@@ -236,7 +240,7 @@ pretreatment=function(params,serie,Int=TRUE,first=NULL,last=NULL,yrInterp=NULL){
 #' plot(CHAR)
 #' 
 #' 
-plot.CHAR=function(x,...){
+plot.CHAR=function(x, xlim=NULL, ylim=NULL,xlab=NULL,ylab=NULL,...){
   
   ## PLOT
   # Values for plotting
@@ -244,10 +248,13 @@ plot.CHAR=function(x,...){
   accInit<-rep(x$acc,each=2)
   ageInt=c(matrix(c(x$ybpI,x$ybpI+x$yrInterp), 2, byrow = TRUE)) 
   accInt<-rep(x$accI,each=2)
+  if(is.null(ylim)) ylim=c(min(na.omit(accInit)),max(na.omit(accInit)))
+  if(is.null(xlim)) xlim=c(max(age),min(age))
   
   # plot
-  plot(age,accInit,type="l",col="grey",ylim=c(min(na.omit(accInit)),max(na.omit(accInit))))
-  polygon(c(age,age[length(age)]), c(accInit,-100), col='grey') 
+  plot(age,accInit,type="l",col="grey",ylim=ylim,xlim=xlim,yaxs="i",
+       xlab=xlab,ylab=ylab)
+  polygon(c(age,age[length(age)]), c(accInit,-1e6), col='grey') 
   lines(age,accInit,type="l",col="grey")
   lines(ageInt,accInt,type="l")
 }

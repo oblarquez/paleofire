@@ -155,9 +155,7 @@ pfTransform=function(ID=NULL,
       if(is.null(MethodType)){
         # Drop Non pref Units  
         for(i in ID){
-          paleofiredata[paleofiredata[,1] %in% i &
-                          !(paleofiredata[,5] %in% paleofiresites$pref_units[paleofiresites[,1]==i]),
-                        7]=NA
+          paleofiredata[paleofiredata$ID_SITE %in% i & !(paleofiredata$UNIT %in% paleofiresites$pref_units[paleofiresites$id_site ==i]),  7]=NA
         }
         paleofiredata=paleofiredata[!is.na(paleofiredata$TYPE),]
         ## Convert data to influx------

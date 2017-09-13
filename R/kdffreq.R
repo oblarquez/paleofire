@@ -174,8 +174,17 @@ plot.kdffreq=function(x,ylim=NULL,xlim=NULL,main=NULL,xlab="Age",ylab="FF (#.yr-
   
   plot(x$age, x$ff, type="l", xlab = xlab, ylab = ylab,
        xlim=xlim, ylim=ylim, main=main)
-  lines(x$age,x$up)
-  lines(x$age,x$lo)
   
+  # lines(x$age,x$up)
+  # lines(x$age,x$lo)
+  # if(smooth==TRUE){
+  # rr=smooth.spline(x$age,x$up,spar=0.4)
+  # x$up=predict(rr,x$age)$y
+  # rr=smooth.spline(x$age,x$lo,spar=0.4)
+  # x$lo=predict(rr,x$age)$y
+  # }
+
+    polygon(c(x$age,rev(x$age)),c(x$up,rev(x$lo)),col = "grey85", border = FALSE)
+  lines(x$age, x$ff)
   
-}
+  }
