@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Paleofire by oblarquez</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Paleofire</h1>
+        <p>paleofire package</p>
+
+        <p class="view"><a href="https://github.com/oblarquez/paleofire">View the Project on GitHub <small>oblarquez/paleofire</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/oblarquez/paleofire/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/oblarquez/paleofire/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/oblarquez/paleofire">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="paleofire" class="anchor" href="#paleofire" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>paleofire</h1>
+
+<p>paleofire: an R package to analyse sedimentary charcoal records from the Global Charcoal Database to reconstruct past biomass burning</p>
+
+<p>The <code>paleofire</code> package provides tools to extract and analyse charcoal sedimentary data stored in the Global Charcoal Database (see <a href="http://gpwg.paleofire.org">http://gpwg.paleofire.org</a> for details). Main functionalities includes data extraction and sites selection, transformation and homogenization of the charcoal records as well as regional to global compositing.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation:</h1>
+
+<p>To install <code>paleofire</code> from CRAN simply type <code>install.packages("paleofire")</code> at the R prompt.  </p>
+
+<p>To install <code>paleofire</code> from GitHub the <code>devtools</code> package is required: on Windows platform the Rtools.exe program is required in order to install the <code>devtools</code> package. Rtools.exe can be downloaded for a specific R version on <a href="http://cran.r-project.org/bin/windows/Rtools/">http://cran.r-project.org/bin/windows/Rtools/</a></p>
+
+<p>Once <code>devtools</code> is installed type the following lines at R prompt to install <code>paleofire</code>:</p>
+
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">devtools</span>)
+install_github(<span class="pl-v">repo</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>oblarquez/paleofire<span class="pl-pds">"</span></span>)
+<span class="pl-c"># The GCD package is required along paleofire:</span>
+install_github(<span class="pl-v">repo</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>oblarquez/GCD<span class="pl-pds">"</span></span>)
+library(<span class="pl-smi">paleofire</span>)</pre></div>
+
+<p>To test everything is working you can plot a map of all charcoal records included in the Global Charcoal Database:</p>
+
+<div class="highlight highlight-source-r"><pre>plot(pfSiteSel())</pre></div>
+
+<p>For details and examples about <code>paleofire</code> please refer to the included <a href="https://CRAN.R-project.org/package=paleofire/paleofire.pdf">manual</a> or <a href="https://CRAN.R-project.org/package=paleofire/vignettes/paleofire-paper.pdf">vignette</a>.</p>
+
+<h1>
+<a id="citation" class="anchor" href="#citation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Citation:</h1>
+
+<p>To cite <code>paleofire</code> in publications use:</p>
+
+<p>Blarquez O., Vannière B., Marlon J. R., Daniau A.-L. Power M. J. Brewer S.
+  and Bartlein P. J. 2014. paleofire: An R package to analyse sedimentary
+  charcoal records from the Global Charcoal Database to reconstruct past
+  biomass burning. Computers and Geosciences, 72, 255-261</p>
+
+<div class="highlight highlight-source-r"><pre>citation (<span class="pl-v">package</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>paleofire<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>Maintainer: Olivier Blarquez <a href="mailto:blarquez@gmail.com">blarquez@gmail.com</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/oblarquez">oblarquez</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
