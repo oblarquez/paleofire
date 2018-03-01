@@ -13,7 +13,7 @@
 }
 \value{
 Data.frame, returns the following informations: "id_site", "lat",
-"long" "elev", "min_est_age", "max_est_age", "num_dating", "date_int",
+"long" "elevation", "min_est_age", "max_est_age", "num_dating", "date_int",
 "num_samp", "l12", "rf99".
 }
 \description{
@@ -28,4 +28,3 @@ summary(ID)
 \author{
 O. Blarquez
 }
-

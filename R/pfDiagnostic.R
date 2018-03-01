@@ -48,7 +48,7 @@
 #' @examples
 #' 
 #' # Select boreal sites from Levavasseur 2012 PNV in Western North America
-#' ID=pfSiteSel(id_region=="WNA0", l12==1, long>=-160 & long<=-140)
+#' ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 #' 
 #' # Print a diagnostic pdf for Box-Cox, Smoothed and Z-score tranformed data 
 #' # (base period = 200-2000 BP)

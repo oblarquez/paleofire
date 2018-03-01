@@ -36,9 +36,6 @@ plot(B,type="l")
 
 
 }
-\author{
-P. Bartlein
-}
 \references{
 Venables, W. N., Ripley, B. D., & Venables, W. N. (1994). Modern
 applied statistics with S-PLUS (Vol. 250). New York: Springer-verlag. \cr
@@ -50,4 +47,6 @@ Statistics, 29, 190-197.
 \seealso{
 \code{\link{pfTransform}}
 }
-
+\author{
+P. Bartlein
+}

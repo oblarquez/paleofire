@@ -41,4 +41,3 @@ plot(circ)
 \author{
 O. Blarquez
 }
-

@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{pfSiteSel}(x, add = NULL, type = "Map", zoom = "Sites",
   pch = "|", xlim = NULL, ylim = NULL, cex = 1,
-  plot_countries = FALSE, ...)
+  plot_countries = FALSE, main = NULL, ...)
 }
 \arguments{
 \item{x}{An object of the class "pfSiteSel".}
@@ -27,6 +27,8 @@
 
 \item{plot_countries}{Logical, default FALSE (if TRUE plot countries borderlines and coastlines)}
 
+\item{main}{Title.}
+
 \item{\dots}{\dots{}}
 }
 \description{
@@ -34,7 +36,7 @@ Plot an object of the class "pfSiteSel"
 }
 \examples{
 
-ID=pfSiteSel(id_region=="ENA0", long>-100)
+ID=pfSiteSel(continent=="North America", long>-100)
 plot(ID,zoom="world")
 
 
@@ -42,4 +44,3 @@ plot(ID,zoom="world")
 \author{
 O. Blarquez
 }
-

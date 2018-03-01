@@ -16,3 +16,4 @@ BuildType: Package
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageBuildBinaryArgs: --disable-long-double
 PackageCheckArgs: --as-cran  --force-multiarch
+PackageRoxygenize: rd,collate,namespace

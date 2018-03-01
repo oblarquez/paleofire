@@ -32,8 +32,8 @@ Plot a pfComposite object
 }
 \examples{
 
-## Composite charcoal record for North America:
-ID=pfSiteSel(id_region=="WNA0",l12=1)
+# Composite charcoal record for boreal Canada:
+ID=pfSiteSel(country=="Canada" & l12==1)
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
@@ -45,4 +45,3 @@ plot(comp,type="density",smoothing=TRUE,spar=0.3)
 \author{
 O. Blarquez
 }
-

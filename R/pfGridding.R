@@ -48,21 +48,21 @@
 #' @seealso \code{\link{plot.pfGridding}}, \code{\link{pfTransform}},
 #' \code{\link{pfDotMap}}
 #' @examples
-#' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+#' \dontrun{
+#' ID=pfSiteSel(continent="North America", l12==1, long>-85)
 #' 
 #' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 #' 
 #' p=pfGridding(TR,age=1000)
 #' summary(p)
 #' 
-#' \dontrun{
 #' require(raster)
 #' plot(p$raster)
 #' 
 #' ## Example of other_mask usage: we will use here Dyke 2003 ice extent map for North 
 #'  America
 #' require(maptools)
-#' ID=pfSiteSel(id_region=="ENA0", long>-100,lat>40)
+#' ID=pfSiteSel(continent=="North America", long>-100,lat>40)
 #' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 #' 
 #' ## Define projection (same as Dyke 2003)
@@ -319,7 +319,7 @@ pfGridding=function(data,cell_sizex=NULL,
 #' @seealso \code{\link{pfGridding}}
 #' @examples
 #' \dontrun{
-#' ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+#' ID=pfSiteSel(continent="North America", l12==1, long>-85)
 #' 
 #' TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 #' 

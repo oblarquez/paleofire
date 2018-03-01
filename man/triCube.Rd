@@ -34,4 +34,3 @@ h<-10
 }
 \keyword{statistics}
 \keyword{weighting}
-

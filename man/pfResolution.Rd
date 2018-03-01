@@ -31,4 +31,3 @@ head(Res)
 \author{
 O. Blarquez
 }
-

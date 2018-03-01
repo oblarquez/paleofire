@@ -25,10 +25,9 @@ ID=pfInteractive()
 
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{pfSiteSel}}
 }
-
+\author{
+O. Blarquez
+}

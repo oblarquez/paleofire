@@ -46,10 +46,9 @@ potential vegetation maps. Uses ggplot2 syntax.
 
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{potveg}}
 }
-
+\author{
+O. Blarquez
+}

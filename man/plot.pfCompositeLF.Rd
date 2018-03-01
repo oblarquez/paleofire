@@ -41,7 +41,7 @@ Plot pfCompositeLF object
 }
 \examples{
 
-ID=pfSiteSel(id_region=="WNA0",l12==1,long>=-160,long<=-140)
+ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
                BasePeriod=c(200,2000),QuantType="INFL")
@@ -58,4 +58,3 @@ plot(COMP1, type="density")
 \author{
 O. Blarquez
 }
-

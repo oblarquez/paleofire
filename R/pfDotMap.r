@@ -114,7 +114,7 @@
 #' 
 #' \dontrun{
 #' ## Composite charcoal record for North America:
-#' ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
+#' ID=pfSiteSel(continent=="North America", long<(-100),l12==1 & long<(-130))
 #' plot(ID)
 #' 
 #' ## Transform data

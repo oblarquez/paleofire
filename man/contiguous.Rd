@@ -26,10 +26,9 @@ x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
 contiguous(x)
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link[paleofire]{pfResolution}}
 }
-
+\author{
+O. Blarquez
+}

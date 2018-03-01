@@ -43,4 +43,3 @@ plot(CHAR)
 \author{
 O. Blarquez
 }
-

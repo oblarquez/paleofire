@@ -48,7 +48,7 @@ Daniau et al. (2012).
 }
 \examples{
 
-ID=pfSiteSel(id_region=="WNA0", l12==1, long>=-160 & long<=-140)
+ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 plot(ID, xlim=c(-180, -130), ylim=c(40,80))
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
                BasePeriod=c(200,2000),QuantType="INFL")
@@ -61,9 +61,6 @@ plot(COMP1)
 # (100 is used to decrease analysis time)
 
 
-}
-\author{
-O.Blarquez
 }
 \references{
 Daniau, A. L., P. J. Bartlein, S. P. Harrison, I. C. Prentice,
@@ -84,4 +81,6 @@ estimation. Journal of the Royal Statistical Society, Series B 58(3):
 551-563. \cr \cr Mann, M. E. (2004). On smoothing potentially non-stationary
 climate time series. Geophysical Research Letters, 31(7).
 }
-
+\author{
+O.Blarquez
+}

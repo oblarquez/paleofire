@@ -19,8 +19,8 @@ MiniMax transformation of a charcoal serie
 
 ## Retrieve a site
 ID=pfSiteSel(site_name=="Pas-de-Fond")
-## Or a group of sites (Western North America)
-ID=pfSiteSel(id_region==c("WNA0"))
+## Or a group of sites
+ID=pfSiteSel(continent=="Africa")
 
 ## Extract data
 A=pfExtract(ID)
@@ -36,10 +36,9 @@ plot(A[A[,1]==ID$id_site[1],3],B,type="l",main=ID$site_name[1],
      xlab="Age",ylab="Minimax")
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{pfTransform}}
 }
-
+\author{
+O. Blarquez
+}

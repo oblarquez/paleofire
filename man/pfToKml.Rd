@@ -29,4 +29,3 @@ pfToKml(x,file="site222.kml")
 \author{
 O. Blarquez
 }
-

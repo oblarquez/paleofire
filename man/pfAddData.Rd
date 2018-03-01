@@ -81,10 +81,9 @@ plot(COMP2)
 }
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{pretreatment}}
 }
-
+\author{
+O. Blarquez
+}

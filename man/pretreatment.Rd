@@ -57,4 +57,3 @@ plot(CHAR)
 \author{
 O. Blarquez translated from P. Higuera CharPretreatment.m function
 }
-

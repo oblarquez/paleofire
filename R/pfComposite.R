@@ -35,8 +35,8 @@
 #' analysis of charcoal data. Climate Dynamics 30:887-907.
 #' @examples
 #' 
-#' ## Composite charcoal record for North America:
-#' ID=pfSiteSel(id_region=="WNA0" & l12==1)
+#' ## Composite charcoal record for boreal Canada:
+#' ID=pfSiteSel(country=="Canada" & l12==1)
 #' plot(ID)
 #' ## Transform data
 #' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -178,8 +178,8 @@ pfComposite=function(TR,
 #' @author O. Blarquez
 #' @examples
 #' 
-#' ## Composite charcoal record for North America:
-#' ID=pfSiteSel(id_region=="WNA0",l12=1)
+#' # Composite charcoal record for boreal Canada:
+#' ID=pfSiteSel(country=="Canada" & l12==1)
 #' ## Transform data
 #' res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 #' 

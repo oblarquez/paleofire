@@ -116,7 +116,7 @@ only spatial variability, as no temporal resampling is performed.
 \examples{
 
 \dontrun{
-ID=pfSiteSel(id_region==c("WNA0"), l12==1 & long<(-130))
+ID=pfSiteSel(continent=="North America", l12==1 & long<(-130))
 plot(ID)
 
 ## Transform data
@@ -132,9 +132,6 @@ newmap = update(gridmap$sg.plots[[1]], main="A relabeled map")
 newmap
 }
 
-}
-\author{
-R. Kelly
 }
 \references{
 Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.
@@ -157,4 +154,6 @@ analysis of charcoal data. Climate Dynamics 30:887-907.
 \seealso{
 \code{\link[paleofire]{pfGridding}}
 }
-
+\author{
+R. Kelly
+}

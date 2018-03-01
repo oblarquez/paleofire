@@ -80,21 +80,21 @@ pfTransform=function(ID=NULL,
   
   
   ## TEST
-#   ID=NULL;
-#   add=NULL;
-#   Interpolate=FALSE;
-#   Age=NULL;
-#   method="NULL";
-#   BasePeriod=c(-100,1e+09);
-#   span=0.3;
-#   RunWidth=500;
-#   RunQParam=0.5;
-#   stlYears=500;
-#   type="BoxCox1964";
-#   alpha=0.01;
-#   QuantType="INFL";
-#   MethodType=NULL;
-#   verbose=TRUE
+  # ID=NULL;
+  # add=NULL;
+  # Interpolate=FALSE;
+  # Age=NULL;
+  # method="NULL";
+  # BasePeriod=c(-100,1e+09);
+  # span=0.3;
+  # RunWidth=500;
+  # RunQParam=0.5;
+  # stlYears=500;
+  # type="BoxCox1964";
+  # alpha=0.01;
+  # QuantType="INFL";
+  # MethodType=NULL;
+  # verbose=TRUE
   ## TEST
   
   
@@ -162,7 +162,8 @@ pfTransform=function(ID=NULL,
         if(QuantType=="INFL"){
           for(i in ID)  
             if( !(unique(paleofiredata[paleofiredata[,1]==i,7]) %in% "INFL") & 
-                is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE){
+                is.na(sum(paleofiredata[paleofiredata[,1]==i,2]))==FALSE &
+                sum(paleofiredata[paleofiredata[,1]==i,2])>0 ){ # Mod 28 02 2018 avoid influx calculus when depth not in database (occur for v 4.0.0)
               infl=influx(paleofiredata[paleofiredata[,1]==i,])
               paleofiredata[paleofiredata[,1]==i,4]=c(infl)
             }

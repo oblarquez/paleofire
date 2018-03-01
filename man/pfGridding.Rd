@@ -68,21 +68,21 @@ approach that weight samples according to their spatio-temporal location
 also down-weight charcoal sites that are poorly sampled.
 }
 \examples{
-ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+\dontrun{
+ID=pfSiteSel(continent="North America", l12==1, long>-85)
 
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 p=pfGridding(TR,age=1000)
 summary(p)
 
-\dontrun{
 require(raster)
 plot(p$raster)
 
 ## Example of other_mask usage: we will use here Dyke 2003 ice extent map for North 
  America
 require(maptools)
-ID=pfSiteSel(id_region=="ENA0", long>-100,lat>40)
+ID=pfSiteSel(continent=="North America", long>-100,lat>40)
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 ## Define projection (same as Dyke 2003)
@@ -111,11 +111,10 @@ plot(p,add=ice_shp)
 }
 
 }
-\author{
-O.Blarquez
-}
 \seealso{
 \code{\link{plot.pfGridding}}, \code{\link{pfTransform}},
 \code{\link{pfDotMap}}
 }
-
+\author{
+O.Blarquez
+}

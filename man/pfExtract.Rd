@@ -22,7 +22,7 @@ Extract charcoal data from an object returned by \code{\link{pfSiteSel}}
 ## Retrieve a site
 ID=pfSiteSel(site_name=="Pas-de-Fond")
 ## Or a group of sites (Western North America)
-ID=pfSiteSel(id_region==c("WNA0"))
+ID=pfSiteSel(continent=="North America", long<(-100))
 
 ## Extract data
 A=pfExtract(ID)
@@ -35,4 +35,3 @@ plot(A[A[,1]==ID$id_site[1],3],A[A[,1]==ID$id_site[1],4],type="l",main=ID$site_n
 \author{
 O. Blarquez
 }
-

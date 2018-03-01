@@ -24,4 +24,3 @@ pfPublication(x,output="list")
 \author{
 O. Blarquez
 }
-

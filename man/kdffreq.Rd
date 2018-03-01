@@ -62,9 +62,6 @@ intervals are narrower and likely better reflect the long term fire regime varia
  plot(res, ylab="# armed conflict/year")
  }
 }
-\author{
-O. Blarquez
-}
 \references{
 Mann, M. E. (2004). On smoothing potentially non-stationary
 climate time series. Geophysical Research Letters, 31(7). \cr \cr 
@@ -75,4 +72,6 @@ in central Europe over the past 500 years: Role of cyclone pathway “Zugstrasse
 \seealso{
 \code{\link{plot.kdffreq}}
 }
-
+\author{
+O. Blarquez
+}

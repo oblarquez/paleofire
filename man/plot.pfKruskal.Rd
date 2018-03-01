@@ -36,7 +36,7 @@ If not, equality could be rejected at the confidence level specified by
 \examples{
 
 ## Composite charcoal record for Western Boreal North America:
-ID=pfSiteSel(id_region=="WNA0" & l12==1)
+ID=pfSiteSel(continent=="North America", long<(-100) & l12==1)
 plot(ID)
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -55,10 +55,9 @@ plot(comparison)
 # p+ggtitle("my title")
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link[paleofire]{pfKruskal}}
 }
-
+\author{
+O. Blarquez
+}

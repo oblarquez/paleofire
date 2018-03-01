@@ -36,9 +36,6 @@ head(obj$site_data)
 }
 
 }
-\author{
-O. Blarquez
-}
 \references{
 Ramankutty, N., and J.A. Foley (1999). Estimating historical
 changes in global land cover: croplands from 1700 to 1992, Global
@@ -49,6 +46,8 @@ potential vegetation distribution. Environmental Research Letters 7:044019.
 \seealso{
 \code{\link{plot.potveg}}
 }
+\author{
+O. Blarquez
+}
 \keyword{~kwd1}
 \keyword{~kwd2}
-

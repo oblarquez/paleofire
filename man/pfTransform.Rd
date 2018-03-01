@@ -91,4 +91,3 @@ plot(tr$Age[,1],tr$TransData[,1],type="l")
 \author{
 O. Blarquez
 }
-

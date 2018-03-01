@@ -50,7 +50,7 @@
 #' climate time series. Geophysical Research Letters, 31(7).
 #' @examples
 #' 
-#' ID=pfSiteSel(id_region=="WNA0", l12==1, long>=-160 & long<=-140)
+#' ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 #' plot(ID, xlim=c(-180, -130), ylim=c(40,80))
 #' TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
 #'                BasePeriod=c(200,2000),QuantType="INFL")
@@ -287,7 +287,7 @@ pfCompositeLF=function(TR,hw=250,
 #' @author O. Blarquez
 #' @examples
 #' 
-#' ID=pfSiteSel(id_region=="WNA0",l12==1,long>=-160,long<=-140)
+#' ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 #' 
 #' TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
 #'                BasePeriod=c(200,2000),QuantType="INFL")
@@ -429,7 +429,7 @@ contrib <- function(x){
 #' @author O. Blarquez
 #' @examples
 #' 
-#' ID=pfSiteSel(id_region=="WNA0",l12==1,long>=-160,long<=-140)
+#' ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 #' 
 #' TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
 #'                BasePeriod=c(200,2000),QuantType="INFL")

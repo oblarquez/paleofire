@@ -26,12 +26,13 @@
 #' ## Select all sites
 #' ID=pfSiteSel()
 #' 
-#' ## Site in the Biome #8
-#' ID=pfSiteSel(biome==8)
+#' ## Savana sites in Ramankutty and Foley (1999)
+#' ID=pfSiteSel(rf99==9)
 #' plot(ID,zoom="world")
 #' 
-#' ## Site in the biome #8 or in the biome #6
-#' ID=pfSiteSel(biome==8 | biome==6)
+#' ## Tropical forest and tundra such as Levavasseur et al. (2012)
+#' ID=pfSiteSel(l12==6 | l12==7)
+#' plot(ID,zoom="world")
 #' 
 #' ## Sites in North America by geographic location
 #' ID=pfSiteSel(lat>25, lat<75, long<(-45), long>-150) 
@@ -42,28 +43,24 @@
 #' plot(ID,zoom="world")
 #' 
 #' ## By region criterion
-#' ID=pfSiteSel(id_region==c("ENA0","WNA0"))
+#' ID=pfSiteSel(continent=="North America")
 #' plot(ID,zoom="world")
-#' 
-#' ## WRONG, use the %in% operator when concatenating two characters
-#' # ID=pfSiteSel(id_region %in% c("ENA0","WNA0"))
-#' # plot(ID,zoom="world")
 #' 
 #' ## Pas-de-Fond site
 #' pfSiteSel(site_name=="Pas-de-Fond")
 #' 
 #' ## All sites in  eastern North America that are not Pas-de-Fond
-#' pfSiteSel(site_name!="Pas-de-Fond", id_region=="ENA0")
+#' pfSiteSel(site_name!="Pas-de-Fond", continent=="North America", long>-100)
 #' 
 #' ## Sites with on average one dating point every 250 to 300 yrs
 #' pfSiteSel(date_int>=250 & date_int<=300)
 #' 
 #' ## Sites between 0, 100 m elevation in Asia
-#' ID=pfSiteSel(elev>0 & elev<100, id_region=="ASIA")
+#' ID=pfSiteSel(elevation>0 & elevation<100, continent=="Asia")
 #' 
 #' ## All sites that are not marine nor fluvial
-#' ID=pfSiteSel(id_land_desc!="MARI" , id_site_type!="FLUV" & id_site_type!="LFLU")
-#' plot(ID)
+#' # ID=pfSiteSel(id_land_desc!="MARI" , id_site_type!="FLUV" & id_site_type!="LFLU") # v.4.0.1 to come
+#' # plot(ID)
 #' 
 #' 
 pfSiteSel <- function(...) {
@@ -113,7 +110,7 @@ pfSiteSel <- function(...) {
 #' @param object An object of the class "pfSiteSel".
 #' @param \dots \dots{}
 #' @return Data.frame, returns the following informations: "id_site", "lat",
-#' "long" "elev", "min_est_age", "max_est_age", "num_dating", "date_int",
+#' "long" "elevation", "min_est_age", "max_est_age", "num_dating", "date_int",
 #' "num_samp", "l12", "rf99".
 #' @author O. Blarquez
 #' @examples
@@ -134,7 +131,7 @@ summary.pfSiteSel=function(object,...){
   table=paleofiresites[paleofiresites$id_site %in% object$id_site,]
   rownames(table)=table$site_name
   table=subset(table, select=c("id_site", "lat", "long",
-                               "elev", "min_est_age", "max_est_age", 
+                               "elevation", "min_est_age", "max_est_age", 
                                "num_dating",  "date_int", "num_samp", "l12", "rf99"))
   methods=c()
   for(i in 1:length(object$id_site)){
@@ -166,16 +163,17 @@ summary.pfSiteSel=function(object,...){
 #' @param ylim Numeric, y axis limits.
 #' @param cex Numeric, size of points.
 #' @param plot_countries Logical, default FALSE (if TRUE plot countries borderlines and coastlines) 
+#' @param main Title.
 #' @param \dots \dots{}
 #' @author O. Blarquez
 #' @examples
 #' 
-#' ID=pfSiteSel(id_region=="ENA0", long>-100)
+#' ID=pfSiteSel(continent=="North America", long>-100)
 #' plot(ID,zoom="world")
 #' 
 #' 
 plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
-                        xlim=NULL, ylim=NULL, cex=1, plot_countries=FALSE,...)
+                        xlim=NULL, ylim=NULL, cex=1, plot_countries=FALSE, main=NULL, ...)
   
 {
   ## Avoid no visible binding for global variable
@@ -228,7 +226,7 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
     
     if(zoom=="World"|zoom=="world"){
       plot(paleofiresites$long,paleofiresites$lat,
-           col="blue",xlab="Longitude",ylab="Latitude")
+           col="blue",xlab="Longitude",ylab="Latitude",main=main)
       
       if (plot_countries==TRUE) {
         lines(countries$x,countries$y)

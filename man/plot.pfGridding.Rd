@@ -57,7 +57,7 @@ the \code{\link{pfGridding}} function.
 }
 \examples{
 \dontrun{
-ID=pfSiteSel(id_region=="ENA0", l12==1, long>-85)
+ID=pfSiteSel(continent="North America", l12==1, long>-85)
 
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
@@ -70,10 +70,9 @@ plot(p,empty_space=100)
 # pp+ggtitle("my title..")
 }
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{pfGridding}}
 }
-
+\author{
+O. Blarquez
+}

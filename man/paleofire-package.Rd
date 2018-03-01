@@ -2,8 +2,8 @@
 % Please edit documentation in R/paleofire-package.R
 \docType{package}
 \name{paleofire-package}
-\alias{paleofire}
 \alias{paleofire-package}
+\alias{paleofire}
 \title{paleofire: A package for the Global Charcoal Database}
 \description{
 The paleofire package provides tools to extract and analyse charcoal
@@ -23,6 +23,7 @@ compositing.
 \section{Maintainer}{
  Olivier Blarquez <blarquez at gmail.com>
 }
+
 \examples{
 
 \dontrun{
@@ -100,4 +101,3 @@ reconstruct past biomass burning. Computers & Geosciences, 72, 255-261.
 \keyword{global,}
 \keyword{paleo}
 \keyword{sediments,}
-

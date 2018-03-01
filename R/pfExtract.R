@@ -15,7 +15,7 @@
 #' ## Retrieve a site
 #' ID=pfSiteSel(site_name=="Pas-de-Fond")
 #' ## Or a group of sites (Western North America)
-#' ID=pfSiteSel(id_region==c("WNA0"))
+#' ID=pfSiteSel(continent=="North America", long<(-100))
 #' 
 #' ## Extract data
 #' A=pfExtract(ID)

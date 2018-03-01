@@ -45,9 +45,6 @@ circ=pfCircular(COMP,conf=c(0.005,0.025,0.975,0.995),nboot=100)
 plot(circ)
 
 }
-\author{
-O. Blarquez
-}
 \references{
 Kunsch, H. R. 1989. The jackknife and the bootstrap for general
 stationary observation s. The Annals of Statistics 17:1217-1241.
@@ -55,4 +52,6 @@ stationary observation s. The Annals of Statistics 17:1217-1241.
 Adams, J. B., M. E. Mann, and C. M. Ammann. 2003. Proxy evidence for an El
 Nino-like response to volcanic forcing. Nature 426:274-278.
 }
-
+\author{
+O. Blarquez
+}

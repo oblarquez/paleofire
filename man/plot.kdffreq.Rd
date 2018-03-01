@@ -35,4 +35,3 @@ Plot fire frequency calculated using the \code{\link[paleofire]{kdffreq}} functi
  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
  plot(ff)
 }
-

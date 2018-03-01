@@ -29,10 +29,9 @@ cont=contiguous(x)
 plot(cont)
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link{contiguous}}
 }
-
+\author{
+O. Blarquez
+}

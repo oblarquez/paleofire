@@ -33,8 +33,8 @@ Power et al. 2008.
 }
 \examples{
 
-## Composite charcoal record for North America:
-ID=pfSiteSel(id_region=="WNA0" & l12==1)
+## Composite charcoal record for boreal Canada:
+ID=pfSiteSel(country=="Canada" & l12==1)
 plot(ID)
 ## Transform data
 res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
@@ -43,9 +43,6 @@ res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000
 comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))
 plot(comp)
 
-}
-\author{
-O.Blarquez
 }
 \references{
 Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.
@@ -65,4 +62,6 @@ Williams, J. Wilmshurst, and J. Zhang. 2008. Changes in fire regimes since
 the Last Glacial Maximum: an assessment based on a global synthesis and
 analysis of charcoal data. Climate Dynamics 30:887-907.
 }
-
+\author{
+O.Blarquez
+}

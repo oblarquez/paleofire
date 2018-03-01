@@ -34,10 +34,9 @@ plot(COMP2)
 
 
 }
-\author{
-O. Blarquez
-}
 \seealso{
 \code{\link[paleofire]{pfAddData}}
 }
-
+\author{
+O. Blarquez
+}
