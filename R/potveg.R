@@ -182,18 +182,17 @@ potveg=function(ID,classif="rf99",buffer=NULL){
 #' @seealso \code{\link{potveg}}
 #' @examples
 #' 
-#' 
-#' # #not run
-#' # require(paleofire)
-#' # ID=pfSiteSel(c(1:10))
-#' # obj=potveg(ID,classif="l12")
-#' # plot(obj)
-#' # 
-#' # #Return a ggplot object 
-#' # require(ggplot2)
-#' # p=plot(obj,text=TRUE,alpha=1)
-#' # p+ggtitle("My title")
-#' 
+#' \dontrun{
+#' require(paleofire)
+#' ID=pfSiteSel(c(1:10))
+#' obj=potveg(ID,classif="l12")
+#' plot(obj)
+#'
+#' #Return a ggplot object
+#' require(ggplot2)
+#' p=plot(obj,text=TRUE,alpha=1)
+#' p+ggtitle("My title")
+#'} 
 #' 
 #' @export plot.potveg
 plot.potveg=function(x,size=4,palette=NULL,alpha=0.5,text=FALSE,points=TRUE,...){

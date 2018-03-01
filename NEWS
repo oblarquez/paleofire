@@ -1,3 +1,13 @@
+paleofire 1.2.1 01/02/2018
+-----------------------------------------
+
+* Support GCD package v4.0.0
+
+* id_region codes in pfSiteSel are deprecated use "continent" instead 
+
+
+
+
 paleofire 1.2.0 28/09/2017
 -----------------------------------------
 
