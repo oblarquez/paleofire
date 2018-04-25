@@ -67,7 +67,7 @@ plot(TR$Age,TR$TransData,type="l")
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
 ## Diagnostic pdf file with transformed series:
-# pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000), 
+# pfDiagnostic(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000),
 # FileName = "Diagnostic.pdf")
 
 ## Compositing: basic binning procedure

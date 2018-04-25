@@ -79,18 +79,18 @@ summary(p)
 require(raster)
 plot(p$raster)
 
-## Example of other_mask usage: we will use here Dyke 2003 ice extent map for North 
+## Example of other_mask usage: we will use here Dyke 2003 ice extent map for North
  America
 require(maptools)
 ID=pfSiteSel(continent=="North America", long>-100,lat>40)
 TR=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000))
 
 ## Define projection (same as Dyke 2003)
-proj4="+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49 
+proj4="+proj=lcc +lat_1=49 +lat_2=77 +lat_0=49
  +lon_0=-95 +x_0=0 +y_0=0 +ellps=clrk66 +datum=NAD27 +units=m +no_defs"
 
 ## Download the shapefile
-where=getwd() 
+where=getwd()
 download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.shp",
                paste0(where,"/ice_9500_calBP_lcc.shp"))
 download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.dbf",
@@ -98,9 +98,9 @@ download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.dbf",
 download.file("http://blarquez.com/public/data/ice_9500_calBP_lcc.shx",
                paste0(where,"/ice_9500_calBP_lcc.shx"))
 
-ice_shp=readShapePoly(paste0(where,"/ice_9500_calBP_lcc.shp"), 
+ice_shp=readShapePoly(paste0(where,"/ice_9500_calBP_lcc.shp"),
                       proj4string=CRS(proj4))
-plot(ice_shp) 
+plot(ice_shp)
 
 p=pfGridding(TR,age=9500,cell_size=100000,distance_buffer=300000,
              proj4=proj4,other_mask=ice_shp)

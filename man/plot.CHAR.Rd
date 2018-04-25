@@ -31,7 +31,7 @@ rates interpolated at equal time steps are presented by a black curve.
 ## Load raw charcoal data in mm^2
 A=read.csv("http://blarquez.com/public/code/loupchar.csv")
 C_=A[,6] # charcoal areas
-P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume 
+P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume
 
 
 ## Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)

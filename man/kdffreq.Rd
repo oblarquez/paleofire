@@ -35,15 +35,15 @@ bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 ff data.frame, with fire frequency, bandwidth and CIs
 }
 \description{
-Computes paleo-fire frequency for a set of fire events (or frequency from other events types, see examples) 
-using a gaussian kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for 
+Computes paleo-fire frequency for a set of fire events (or frequency from other events types, see examples)
+using a gaussian kernel density estimation procedure based on a defined bandwidth (see Mudelsee 2004 for
 details). Pseudo-replicated values are used to correct for edge bias, equivalent to
 "minimum slope" correction in Mann (2004).
 }
 \details{
 By using boot="partial" option (beta!) fire dates are randomly removed or added within a defined percentage (by default between 1 and 10\%
-of total number of events) in order to make new series that are then used to calculate ensemble members fire frequencies. This procedure differs slightly from 
-the full bootstrapp where fire dates are randomly picked with replacement. Theoretically classic bootstrap could result in a sample 
+of total number of events) in order to make new series that are then used to calculate ensemble members fire frequencies. This procedure differs slightly from
+the full bootstrapp where fire dates are randomly picked with replacement. Theoretically classic bootstrap could result in a sample
 where a single fire event date is replicated n times which makes no sense for fires. By randomly removing or adding fire dates the confidence
 intervals are narrower and likely better reflect the long term fire regime variablility.
 }
@@ -52,7 +52,7 @@ intervals are narrower and likely better reflect the long term fire regime varia
  set.seed(123)
  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
- 
+
  \dontrun{
  # Estimate the frequency of armed conflicts from 1946 to 2014
  # Data from the The Uppsala Conflict Data Program (UCDP) available at: https://www.prio.org
@@ -64,8 +64,8 @@ intervals are narrower and likely better reflect the long term fire regime varia
 }
 \references{
 Mann, M. E. (2004). On smoothing potentially non-stationary
-climate time series. Geophysical Research Letters, 31(7). \cr \cr 
-Mudelsee, M., Börngen, M., Tetzlaff, G., & Grünewald, U. (2004). Extreme floods 
+climate time series. Geophysical Research Letters, 31(7). \cr \cr
+Mudelsee, M., Börngen, M., Tetzlaff, G., & Grünewald, U. (2004). Extreme floods
 in central Europe over the past 500 years: Role of cyclone pathway “Zugstrasse Vb”.
  Journal of Geophysical Research: Atmospheres (1984–2012), 109(D23).
 }

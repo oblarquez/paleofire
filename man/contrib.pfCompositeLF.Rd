@@ -12,8 +12,8 @@
 \item{\dots}{\dots{}}
 }
 \description{
-Calculates the number of prebinned samples contributing to the composite curve. 
-The number is calculated by counting the number on non null charcoal 
+Calculates the number of prebinned samples contributing to the composite curve.
+The number is calculated by counting the number on non null charcoal
 values at each tarAge from the prebinned charcoal series.
 }
 \examples{

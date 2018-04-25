@@ -14,7 +14,7 @@ AgeBot, Volume, in the same order.}
 \item{serie}{A proxy record to be transformed in accumulation rates, could
 be particule counts, surfaces, volumes, etc.}
 
-\item{Int}{Logical specifying whether the function interpolates missing values, 
+\item{Int}{Logical specifying whether the function interpolates missing values,
 default TRUE (missing values specified could be specified as -999 or NA)}
 
 \item{first, last}{Date of the first, last sample for accumulation rate
@@ -39,14 +39,14 @@ https://sites.google.com/site/charanalysis
 
 \dontrun{
 # In this example we will use the charcoal record of the Lac du Loup from Blarquez et al. (2010).
-# Blarquez, O., C. Carcaillet, B. Mourier, L. Bremond, and O. Radakovitch. 2010. Trees in the 
-# subalpine belt since 11 700 cal. BP: origin, expansion and alteration of the modern forest. 
+# Blarquez, O., C. Carcaillet, B. Mourier, L. Bremond, and O. Radakovitch. 2010. Trees in the
+# subalpine belt since 11 700 cal. BP: origin, expansion and alteration of the modern forest.
 # The Holocene 20:139-146.
 
 # Load raw charcoal data in mm^2
 A=read.csv("http://blarquez.com/public/code/loupchar.csv")
 C_=A[,6] # charcoal areas
-P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume 
+P_=A[,1:5] # CmTop, CmBot, AgeTop, AgeBot, Volume
 
 # Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)
 CHAR=pretreatment(params=P_,serie=C_,Int=TRUE)

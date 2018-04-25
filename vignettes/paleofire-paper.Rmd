@@ -158,7 +158,7 @@ geochronological (^14^C or ^210^Pb dating, tephra layer, etc.) control
 point each 2500 year.
 
 ```{r}
-ID <- pfSiteSel(lat>30 & lat<90, long>-100 & long<(-50), date_int<=2500) 
+ID <- pfSiteSel(lat>30 & lat<90, long>-100 & long<(-50), date_int<=2500, num_version<400) 
 length(ID$id_site)
 ```
 

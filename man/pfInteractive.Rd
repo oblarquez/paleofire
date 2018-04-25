@@ -19,7 +19,7 @@ Interactive selection of GCD sites by drawing a polygon on a map.
 \examples{
 
 \dontrun{
-# Type: 
+# Type:
 ID=pfInteractive()
 # And follow text instructions}
 

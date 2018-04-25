@@ -42,7 +42,7 @@ plot(obj)
 require(ggplot2)
 p=plot(obj,text=TRUE,alpha=1)
 p+ggtitle("My title")
-} 
+}
 
 }
 \seealso{

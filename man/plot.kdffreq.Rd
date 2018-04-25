@@ -26,9 +26,9 @@
 Plot fire frequency calculated using the \code{\link[paleofire]{kdffreq}} function
 }
 \seealso{
-\code{\link[paleofire]{kdffreq}} 
+\code{\link[paleofire]{kdffreq}}
  @examples
- 
+
  set.seed(123)
  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
 
