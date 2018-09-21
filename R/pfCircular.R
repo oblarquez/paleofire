@@ -113,7 +113,8 @@ pfCircular <- function(comp, b=NULL, conf=c(0.05, 0.95), nboot=1000, AgeLim=NULL
     conf = conf,
     yr = yr,
     BootCi = Ci,
-    BootMean = BootMean
+    BootMean = BootMean,
+    b=b
   ))
   class(output) <- "pfCircular"
   return(output)

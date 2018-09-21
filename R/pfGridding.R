@@ -484,8 +484,12 @@ plot.pfGridding <- function(x, continuous=TRUE,
   if (is.null(add) == FALSE) {
     theclass <- lapply(add@data, class)
     theclass <- which(theclass == "factor")
-    add@data$id <- add@data[, as.numeric(theclass[1])]
-    add.points <- fortify(add, region = "id")
+    if(length(theclass)>0){
+      add@data$id <- add@data[, as.numeric(theclass[1])]
+    } else {
+      add@data$id <- as.factor( seq(1,nrow(add@data)))
+    }
+    add.points <- ggplot2::fortify(add, region = "id")
     add.df <- plyr::join(add.points, add@data, by = "id")
   }
 
@@ -519,10 +523,10 @@ plot.pfGridding <- function(x, continuous=TRUE,
         scale_fill_manual(values = pale, name = "") +
         coord_cartesian(xlim = xlim, ylim = ylim) + xlab("Longitude") + ylab("Latitude") +
         theme_bw(base_size = 16)
-      if (points == TRUE) p <- p + geom_point(data = x$points, aes(x = x, y = y), colour = "grey40")
       if (is.null(add) == FALSE) {
         p <- p + geom_polygon(data = add.df, aes(x = long, y = lat, group = group), fill = add_color, colour = "grey80")
       }
+      if (points == TRUE) p <- p + geom_point(data = x$points, aes(x = x, y = y), colour = "grey40")
       if (plot_countries == TRUE) {
         p <- p + geom_path(data = countries, aes(x = x, y = y), colour = "white")
       }
@@ -533,10 +537,10 @@ plot.pfGridding <- function(x, continuous=TRUE,
         scale_fill_gradient2(high = pal[9], low = pal[1], mid = "white", limits = col_lim) +
         coord_cartesian(xlim = xlim, ylim = ylim) + xlab("Longitude") + ylab("Latitude") +
         theme_bw(base_size = 16)
-      if (points == TRUE) p <- p + geom_point(data = x$points, aes(x = x, y = y), colour = "grey40")
       if (is.null(add) == FALSE) {
         p <- p + geom_polygon(data = add.df, aes(x = long, y = lat, group = group), fill = add_color, colour = "grey80")
       }
+      if (points == TRUE) p <- p + geom_point(data = x$points, aes(x = x, y = y), colour = "grey40")
       if (plot_countries == TRUE) {
         p <- p + geom_path(data = countries, aes(x = x, y = y), colour = "white")
       }
