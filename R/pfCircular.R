@@ -72,8 +72,10 @@ pfCircular <- function(comp, b=NULL, conf=c(0.05, 0.95), nboot=1000, AgeLim=NULL
 
   ## Declare values for the boot process
   y_m <- matrix(ncol = nboot, nrow = nrow(Temp))
-  cat("# of Bootstrap:")
-
+  #cat("# of Bootstrap:")
+  
+  pb   <- txtProgressBar(1, nboot, style=3)
+  
   for (k in 1:nboot) {
     y_n <- matrix(nrow = nrow(Temp), ncol = ncol(Temp))
     for (i in 1:length(Temp[1, ])) {
@@ -89,8 +91,11 @@ pfCircular <- function(comp, b=NULL, conf=c(0.05, 0.95), nboot=1000, AgeLim=NULL
       y_n[, i] <- yy[1:length(Temp[, 1])]
     }
     y_m[, k] <- rowMeans(y_n, na.rm = TRUE)
-
-    if (k %in% seq(0, nboot, 10)) cat("", k)
+    
+    Sys.sleep(0.00002)
+    if(k %in% seq(0, nboot, 10)){
+         setTxtProgressBar(pb, k)
+    }
   }
 
   ## Compile conf intervals
