@@ -283,6 +283,7 @@ series within each binning interval and then calculate the mean for all
 series. This can be achieved using arbitrary 500-year bin widths:
 
 ```{r}
+set.seed(123)
 COMP1 <- pfComposite(TR2, binning=TRUE, 
                      bins=seq(from=0,to=11000, by=500))
 ```
@@ -387,7 +388,7 @@ command and returns an object of class `pfCircular` that can be plotted
 using the generic plot function:
 
 ```{r}
-circboot <- pfCircular(COMP1, b=NULL, nboot=100,
+circboot <- pfCircular(COMP1, b=NULL, nboot=1000,
                         conf=c(0.005,0.025,0.975,0.995))
 plot(circboot)
 ```
