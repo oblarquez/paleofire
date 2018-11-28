@@ -12,10 +12,10 @@
 #' @author O. Blarquez
 #' @seealso \code{\link[paleofire]{pfResolution}}
 #' @examples
-#'
+#' \dontrun{
 #' x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
 #' contiguous(x)
-#'
+#' }
 contiguous <- function(x, threshold=1) {
 
   # x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
@@ -76,11 +76,11 @@ contiguous <- function(x, threshold=1) {
 #' @author O. Blarquez
 #' @seealso \code{\link{contiguous}}
 #' @examples
-#'
+#' \dontrun{
 #' x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
 #' cont=contiguous(x)
 #' plot(cont)
-#'
+#' }
 plot.contiguous <- function(x, ylim=NULL, xlim=NULL, ...) {
 
   # sumsit

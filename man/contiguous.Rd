@@ -21,10 +21,10 @@ The function checks wether cores have been sampled contiguously or with a
 depth resolution <1cm.
 }
 \examples{
-
+\dontrun{
 x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
 contiguous(x)
-
+}
 }
 \seealso{
 \code{\link[paleofire]{pfResolution}}

@@ -23,11 +23,11 @@ Plot an object returned by contiguous, plot contiguous cores (or sites) in
 green (T) and non-contiguous cores in red (F).
 }
 \examples{
-
+\dontrun{
 x=pfSiteSel(lat>12,lat<60,long<(-50),long>-140)
 cont=contiguous(x)
 plot(cont)
-
+}
 }
 \seealso{
 \code{\link{contiguous}}
