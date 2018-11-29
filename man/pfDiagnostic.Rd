@@ -69,7 +69,7 @@ Print diagnostic pdf for individual transformed series, successive
 transformations could be specified (see example)
 }
 \examples{
-
+\dontrun{
 # Select boreal sites from Levavasseur 2012 PNV in Western North America
 ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 
@@ -78,7 +78,7 @@ ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 pfDiagnostic(ID,method=c("Box-Cox", "SmoothSpline","Z-Score"),
              span=0.3,BasePeriod=c(200,4000))
 
-
+}
 }
 \author{
 O. Blarquez

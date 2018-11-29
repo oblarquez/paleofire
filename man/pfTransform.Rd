@@ -76,7 +76,7 @@ unique to multiple series, accepts objects returned by
 \code{\link{pfSiteSel}}.
 }
 \examples{
-
+\dontrun{
 ## Select the site Pas-de-Fond
 ID=pfSiteSel(site_name=="Pas-de-Fond")
 
@@ -85,7 +85,7 @@ tr=pfTransform(ID,method=c("MinMax","Box-Cox"))
 
 ## Plot transformed data for the first site
 plot(tr$Age[,1],tr$TransData[,1],type="l")
-
+}
 
 }
 \author{

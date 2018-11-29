@@ -17,7 +17,7 @@ The number is calculated by counting the number on non null charcoal
 values at each tarAge from the prebinned charcoal series.
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
@@ -27,7 +27,7 @@ COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
 
 a=contrib(COMP1)
 plot(COMP1$BinCentres,a)
-
+}
 
 }
 \author{

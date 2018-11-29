@@ -31,7 +31,7 @@ curve.}
 Plot a pfComposite object
 }
 \examples{
-
+\dontrun{
 # Composite charcoal record for boreal Canada:
 ID=pfSiteSel(country=="Canada" & l12==1)
 ## Transform data
@@ -40,7 +40,7 @@ res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000
 ## Composite
 comp=pfComposite(res3,bins=seq(0,5000,200))
 plot(comp,type="density",smoothing=TRUE,spar=0.3)
-
+}
 }
 \author{
 O. Blarquez

@@ -34,7 +34,7 @@ If not, equality could be rejected at the confidence level specified by
 \code{alpha}.
 }
 \examples{
-
+\dontrun{
 ## Composite charcoal record for Western Boreal North America:
 ID=pfSiteSel(continent=="North America", long<(-100) & l12==1)
 plot(ID)
@@ -53,7 +53,7 @@ plot(comparison)
 # p=plot(comparison)
 # require(ggplot2)
 # p+ggtitle("my title")
-
+}
 }
 \seealso{
 \code{\link[paleofire]{pfKruskal}}

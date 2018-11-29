@@ -31,7 +31,7 @@ test the difference in biomass burning activity between different time
 periods.
 }
 \examples{
-
+\dontrun{
 ## Composite charcoal record for Western Boreal North America:
 ID=pfSiteSel(continent=="North America", long<(-100) & l12==1)
 plot(ID)
@@ -44,7 +44,7 @@ plot(comp)
 
 ## Kruskal Wallis Anova
 comparison=pfKruskal(comp)
-
+}
 }
 \seealso{
 \code{\link{plot.pfKruskal}},\code{\link[agricolae]{kruskal}}

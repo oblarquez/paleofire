@@ -46,7 +46,7 @@
 #' on separate pages (specified using FileName="myfile.pdf"")}
 #' @author O. Blarquez
 #' @examples
-#'
+#'\dontrun{
 #' # Select boreal sites from Levavasseur 2012 PNV in Western North America
 #' ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 #'
@@ -55,7 +55,7 @@
 #' pfDiagnostic(ID,method=c("Box-Cox", "SmoothSpline","Z-Score"),
 #'              span=0.3,BasePeriod=c(200,4000))
 #'
-#'
+#'}
 pfDiagnostic <- function(ID,
                          add=NULL,
                          Age=0,

@@ -50,7 +50,7 @@
 #' @return An object of the class "pfTransform".
 #' @author O. Blarquez
 #' @examples
-#'
+#' \dontrun{
 #' ## Select the site Pas-de-Fond
 #' ID=pfSiteSel(site_name=="Pas-de-Fond")
 #'
@@ -59,7 +59,7 @@
 #'
 #' ## Plot transformed data for the first site
 #' plot(tr$Age[,1],tr$TransData[,1],type="l")
-#'
+#' }
 #'
 pfTransform <- function(ID=NULL,
                         add=NULL,

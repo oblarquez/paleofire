@@ -32,7 +32,7 @@ calculated prior the bootstrap procedure. This procedure is equivalent to
 Power et al. 2008.
 }
 \examples{
-
+\dontrun{
 ## Composite charcoal record for boreal Canada:
 ID=pfSiteSel(country=="Canada" & l12==1)
 plot(ID)
@@ -42,7 +42,7 @@ res3=pfTransform(ID,method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,4000
 ## Composite
 comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))
 plot(comp)
-
+}
 }
 \references{
 Power, M., J. Marlon, N. Ortiz, P. Bartlein, S. Harrison, F.

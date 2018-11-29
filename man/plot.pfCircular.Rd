@@ -28,7 +28,7 @@
 Plot circular block bootstrap percentiles.
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(lat>49,lat<75,long>6,long<50)
 TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000))
 
@@ -36,7 +36,7 @@ TR1=pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"),BasePeriod=c(200,2000
 COMP=pfComposite(TR1, binning=TRUE, bins=seq(0,2000,100))
 circ=pfCircular(COMP,conf=c(0.005,0.025,0.975,0.995),nboot=100)
 plot(circ)
-
+}
 }
 \author{
 O. Blarquez

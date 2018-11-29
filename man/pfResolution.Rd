@@ -22,11 +22,11 @@ Calculates age resolution indicators for charcoal records selected using
 \code{\link{pfSiteSel}} or \code{\link{pfInteractive}} functions.
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(lat>40, lat<90, long>-100, long<=-50)
 Res=pfResolution(ID,AgeLim=c(-50,8000))
 head(Res)
-
+}
 }
 \author{
 O. Blarquez

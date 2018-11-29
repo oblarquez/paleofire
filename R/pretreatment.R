@@ -229,7 +229,7 @@ pretreatment <- function(params, serie, Int=TRUE, first=NULL, last=NULL, yrInter
 #' @param \dots \dots{}
 #' @author O. Blarquez
 #' @examples
-#'
+#' \dontrun{
 #' ## In this example we will use the charcoal record of the Lac du Loup (Blarquez et al. 2010)
 #' ## Load raw charcoal data in mm^2
 #' A=read.csv("http://blarquez.com/public/code/loupchar.csv")
@@ -240,7 +240,7 @@ pretreatment <- function(params, serie, Int=TRUE, first=NULL, last=NULL, yrInter
 #' ## Calculates charcoal accumulation rate (CHAR, mm2.cm-2.yr-1)
 #' CHAR=pretreatment(params=P_,serie=C_,Int=TRUE)
 #' plot(CHAR)
-#'
+#' }
 #'
 plot.CHAR <- function(x, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL, ...) {
 

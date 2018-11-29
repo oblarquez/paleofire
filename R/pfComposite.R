@@ -34,7 +34,7 @@
 #' the Last Glacial Maximum: an assessment based on a global synthesis and
 #' analysis of charcoal data. Climate Dynamics 30:887-907.
 #' @examples
-#'
+#' \dontrun{
 #' ## Composite charcoal record for boreal Canada:
 #' ID=pfSiteSel(country=="Canada" & l12==1)
 #' plot(ID)
@@ -44,7 +44,7 @@
 #' ## Composite
 #' comp=pfComposite(res3,bins=seq(from=0,to=12000,by=200))
 #' plot(comp)
-#'
+#'}
 pfComposite <- function(TR,
                         bins=NULL,
                         nboot=1000,
@@ -187,7 +187,7 @@ pfComposite <- function(TR,
 #' @param \dots \dots{}
 #' @author O. Blarquez
 #' @examples
-#'
+#'\dontrun{
 #' # Composite charcoal record for boreal Canada:
 #' ID=pfSiteSel(country=="Canada" & l12==1)
 #' ## Transform data
@@ -196,7 +196,7 @@ pfComposite <- function(TR,
 #' ## Composite
 #' comp=pfComposite(res3,bins=seq(0,5000,200))
 #' plot(comp,type="density",smoothing=TRUE,spar=0.3)
-#'
+#'}
 plot.pfComposite <- function(x, type="ci", conf=c(0.05, 0.95), palette="jet", add="NONE", text=FALSE, main=NULL, ...) {
   # Value for plotting:
   w <- (x$BinCentres[2] - x$BinCentres[1]) / 2

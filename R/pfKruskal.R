@@ -18,7 +18,7 @@
 #' @author O. Blarquez
 #' @seealso \code{\link{plot.pfKruskal}},\code{\link[agricolae]{kruskal}}
 #' @examples
-#'
+#' \dontrun{
 #' ## Composite charcoal record for Western Boreal North America:
 #' ID=pfSiteSel(continent=="North America", long<(-100) & l12==1)
 #' plot(ID)
@@ -31,7 +31,7 @@
 #'
 #' ## Kruskal Wallis Anova
 #' comparison=pfKruskal(comp)
-#'
+#' }
 pfKruskal <- function(data, p.adj="none",
                       alpha=0.05, bins=NULL,
                       verbose=TRUE) {
@@ -117,7 +117,7 @@ pfKruskal <- function(data, p.adj="none",
 #' @author O. Blarquez
 #' @seealso \code{\link[paleofire]{pfKruskal}}
 #' @examples
-#'
+#' \dontrun{
 #' ## Composite charcoal record for Western Boreal North America:
 #' ID=pfSiteSel(continent=="North America", long<(-100) & l12==1)
 #' plot(ID)
@@ -136,7 +136,7 @@ pfKruskal <- function(data, p.adj="none",
 #' # p=plot(comparison)
 #' # require(ggplot2)
 #' # p+ggtitle("my title")
-#'
+#' }
 plot.pfKruskal <- function(x, trend=FALSE, outliers=FALSE, xlim = NULL, ylim = NULL, ...) {
   y <- lpos <- lab <- NULL
   x$data <- na.omit(x$data)

@@ -14,11 +14,11 @@
 #' deviation}
 #' @author O. Blarquez
 #' @examples
-#'
+#' \dontrun{
 #' ID=pfSiteSel(lat>40, lat<90, long>-100, long<=-50)
 #' Res=pfResolution(ID,AgeLim=c(-50,8000))
 #' head(Res)
-#'
+#' }
 pfResolution <- function(ID, AgeLim=NULL) {
 
   # Temporal resolution of records

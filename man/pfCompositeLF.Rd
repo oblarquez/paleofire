@@ -47,7 +47,7 @@ are pre-binned prior to sites resampling. This procedure is equivalent to
 Daniau et al. (2012).
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 plot(ID, xlim=c(-180, -130), ylim=c(40,80))
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
@@ -60,7 +60,7 @@ plot(COMP1)
 ## Note: comparing confidence intervals based on 100 replicates is not recommended
 # (100 is used to decrease analysis time)
 
-
+}
 }
 \references{
 Daniau, A. L., P. J. Bartlein, S. P. Harrison, I. C. Prentice,
