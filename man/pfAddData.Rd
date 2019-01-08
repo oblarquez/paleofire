@@ -5,7 +5,8 @@
 \title{Add user defined charcoal data series to paleofire}
 \usage{
 pfAddData(files, metadata = NULL, type = "NULL", Int = TRUE,
-  first = NULL, last = NULL, yrInterp = NULL, sep = ",", dec = ".")
+  first = NULL, last = NULL, yrInterp = NULL, sep = ",",
+  dec = ".")
 }
 \arguments{
 \item{files}{Character, names and path to csv files.}

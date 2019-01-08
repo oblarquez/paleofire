@@ -31,12 +31,12 @@
 #' in central Europe over the past 500 years: Role of cyclone pathway “Zugstrasse Vb”.
 #'  Journal of Geophysical Research: Atmospheres (1984–2012), 109(D23).
 #' @examples
-#'
+#'  \dontrun{
 #'  set.seed(123)
 #'  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
 #'  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
 #'
-#'  \dontrun{
+#'  
 #'  # Estimate the frequency of armed conflicts from 1946 to 2014
 #'  # Data from the The Uppsala Conflict Data Program (UCDP) available at: https://www.prio.org
 #'

@@ -4,9 +4,9 @@
 \alias{kdffreq}
 \title{Fire frequency using kernel density}
 \usage{
-kdffreq(fevent, up = NULL, lo = NULL, interval = 10, bandwidth = NULL,
-  boot = "full", bootper = 0.1, nbboot = NULL, alpha = NULL,
-  pseudo = FALSE)
+kdffreq(fevent, up = NULL, lo = NULL, interval = 10,
+  bandwidth = NULL, boot = "full", bootper = 0.1, nbboot = NULL,
+  alpha = NULL, pseudo = FALSE)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
@@ -48,12 +48,12 @@ where a single fire event date is replicated n times which makes no sense for fi
 intervals are narrower and likely better reflect the long term fire regime variablility.
 }
 \examples{
-
+ \dontrun{
  set.seed(123)
  fevent=c(round(abs(rnorm(20,mean=7,sd=5))*1000),round(abs(rnorm(10,mean=8,sd=1))*1000))
  ff=kdffreq(fevent,bandwidth = 1000, nbboot=10)
 
- \dontrun{
+ 
  # Estimate the frequency of armed conflicts from 1946 to 2014
  # Data from the The Uppsala Conflict Data Program (UCDP) available at: https://www.prio.org
 

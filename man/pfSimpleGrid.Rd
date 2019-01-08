@@ -4,12 +4,13 @@
 \alias{pfSimpleGrid}
 \title{Produce simple gridded maps of paleofire data}
 \usage{
-pfSimpleGrid(TR, tarAge, hw, binhw = 0.5 * mean(diff(tarAge)), fun = mean,
-  n.boot = 0, prob.CI = c(0.025, 0.975), test.val = 0,
+pfSimpleGrid(TR, tarAge, hw, binhw = 0.5 * mean(diff(tarAge)),
+  fun = mean, n.boot = 0, prob.CI = c(0.025, 0.975), test.val = 0,
   proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", res = 5,
-  ext = c(-180, 180, -90, 90), fig.file.name = NULL, show.plots = TRUE,
-  title.text = "", cols = NULL, cuts = NULL, zlim = NULL,
-  base.map = "coasts", base.map.col = grey(0.7), base.map.lwd = 0.5)
+  ext = c(-180, 180, -90, 90), fig.file.name = NULL,
+  show.plots = TRUE, title.text = "", cols = NULL, cuts = NULL,
+  zlim = NULL, base.map = "coasts", base.map.col = grey(0.7),
+  base.map.lwd = 0.5)
 }
 \arguments{
 \item{TR}{An object returned by \code{\link{pfTransform}}}

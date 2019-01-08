@@ -4,9 +4,9 @@
 \alias{plot.pfCompositeLF}
 \title{plot.pfCompositeLF}
 \usage{
-\method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL", conf = c(0.05,
-  0.95), palette = "jet", xlim = NULL, ylim = NULL, main = "Composite",
-  text = FALSE, what = "locfit", ...)
+\method{plot}{pfCompositeLF}(x, type = "ci", add = "NULL",
+  conf = c(0.05, 0.95), palette = "jet", xlim = NULL, ylim = NULL,
+  main = "Composite", text = FALSE, what = "locfit", ...)
 }
 \arguments{
 \item{x}{A "pfCompositeLF" object.}
@@ -40,19 +40,17 @@ or median of the locfit relplicates given by the bootstrap procedure.}
 Plot pfCompositeLF object
 }
 \examples{
-
+\dontrun{
 ID=pfSiteSel(continent=="North America", l12==1, long>=-160 & long<=-140)
 
 TR=pfTransform(ID, method=c("MinMax","Box-Cox","MinMax","Z-Score"),
                BasePeriod=c(200,2000),QuantType="INFL")
 
-COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=100)
+COMP1=pfCompositeLF(TR, tarAge=seq(-50,4000,10), hw=200, nboot=999)
 
 plot(COMP1, type="density")
 
-## Note: comparing confidence intervals based on 100 replicates is not recommended
-# (100 is used to decrease analysis time)
-
+}
 
 }
 \author{

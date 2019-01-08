@@ -187,7 +187,7 @@ plot(ID, zoom="world")
 
 Charcoal values contained in the GCD can vary widely among and within sites due to multiple factors. For instance, variations in (absolute) charcoal abundances can be related to different analytical methods \citetext{i.e. sediment treatment; \citealp{Tinner2003}} as well as to unique physiographic site characteristics \cite{Marlon2006}. Variations in charcoal values may also be linked to differences in the types of records \citetext{pollen slide charcoals, sieved charcoals, charcoal/pollen ratios, \citealt{Carcaillet2001a}}. Lastly, differences in the original sample quantities (influx, concentration, percentage) could also contribute to variations in charcoal values. Consequently, transformation and standardization of different charcoal records is a highly recommended step in generating a synthesis. A methodology to standardize charcoal records was proposed by \citet{Power2008} and involved a three-step data transformation including a minimax data-rescaling, variance homogenization using \citet{Box1964} data transformation, and a final rescaling to Z-scores. Using the \texttt{pfTransform} function these transformations are done on influx using the following command:
 
-<<TRANSFORM, results=hide,echo=TRUE>>=
+<<TRANSFORM, results=hide,echo=TRUE, eval=FALSE>>=
 TR1 <- pfTransform(ID, method=c("MinMax","Box-Cox","Z-Score"))
 @
 
@@ -198,7 +198,7 @@ The types of filtering (smoothing or compositing) techniques implemented here in
 
 
 
-<<ADDDATA, results=hide>>=
+<<ADDDATA, results=hide, eval=FALSE>>=
 ## Add Ben lake and Small lake data to the 
 # analysis (Senici et al., 2013) 
 download.file(url="http://blarquez.com/public/data/data_cageo.zip", 
@@ -218,14 +218,14 @@ file.remove(c("Ben.csv","Small.csv","data_cageo.zip","metadata.csv"))
 
 Synthesizing or compositing charcoal series typically involves pooling the different series in order to calculate the mean charcoal value (across sites) at each time step. This simple operation could be performed in different ways using the \texttt{pfComposite} function. Alternatively, a data-binning procedure can be used to calculate a composite curve. The binning sequence must be supplied in order to allow the \texttt{pfComposite} function to calculate the mean charcoal value for each series within each binning interval and then calculate the mean for all series. This can be achieved using arbitrary 500-year bin widths:
 
-<<composite1, results=hide>>=
+<<composite1, results=hide, eval=FALSE>>=
 COMP1 <- pfComposite(TR2, binning=TRUE, 
                      bins=seq(from=0,to=11000, by=500))
 @
 
 This approach (\texttt{pfComposite}) is equivalent to \citet{Power2008} but \texttt{paleofire} also implements the methods proposed by \citet{Marlon2008} and \citet{Daniau2012}, which consists of a two-stage smoothing method (\texttt{pfCompositeLF}). The procedure implemented in the package was slightly modified compared to \citet{Marlon2008} but returns highly comparable results (see SI for details). The two-stage smoothing method first "pre-bins" individual charcoal series using non-overlapping bins in order to ensure that records with high sample resolution do not have a disproportionate influence on the composite record, and that data will be not interpolated for records with a lower resolution. The second step smooths the pre-binned series using a locally-weighted scatter plot smoother "LOWESS" \citep{Cleveland1979} with a pre-defined constant bandwidth (half-width) given in the years (\texttt{hw} argument). In the following example we will pre-bin the data with 20 year non-overlapping bins and a LOWESS smoother with a 500 year window half width (i.e., a 1000-year smoothing window).
 
-<<composite2, results=hide>>=
+<<composite2, results=hide, eval=FALSE>>=
 COMP2 <- pfCompositeLF(TR2, tarAge=seq(-50,12000,20), 
                        binhw=10, hw=500, nboot=100)
 @
@@ -240,20 +240,21 @@ The confidence intervals for the \texttt{pfComposite} function are calculated by
 Objects of the class \texttt{pfComposite} and \texttt{pfCompositeLF} can be plotted using the generic \texttt{plot} function. Confidence intervals are specified using the \texttt{conf} argument. The \texttt{add="sitenum"} plot function argument can be used to display the number of charcoal sites contributing to each composite value at each time step (Figure 2). 
 
 
-<<plotting>>=
+<<plottin, eval=FALSE>>=
 par(mfrow=c(2,1))
 plot(COMP1,conf=c(0.025,0.975),main="(a)")
 plot(COMP2,conf=c(0.05,0.95),main="(b)")
 @
+
 \begin{figure}[!ht]
 \centering
-<<label=fig2, fig=true,echo=false,width=9,height=12>>=
-par(mfrow=c(2,1))
-plot(COMP1,conf=c(0.025,0.975),main="(a)")
-plot(COMP2,conf=c(0.05,0.95),main="(b)")
-@
+\includegraphics{paleofire-paper-fig2}
+
 \caption{Composite charcoal series for North Eastern American sites. (a) Composite values and associated confidence intervals using the pfComposite function. (b) Composite values and associated confidence intervals using the pfCompositeLF function (b). Dashed lines correspond to the 97.5th, 2.5th and 95th, 0.5th percentiles respectively.}
 \end{figure}
+
+
+
 
 % --------------------------------------------
 
