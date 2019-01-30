@@ -360,6 +360,8 @@ pfTransform <- function(ID=NULL,
     cat("Percentage done: ")
   }
 
+  pb   <- txtProgressBar(1, length(method), style=3)
+  
   # Play with transformations!
   for (j in 1:length(method)) {
     methodj <- method[j]
@@ -444,12 +446,17 @@ pfTransform <- function(ID=NULL,
           tmp[, 2] <- round(pfMinMax(tmp[, 2]) * 100)
           transI[, k] <- approx(tmp[, 1], pscl::hurdle(tmp[, 2] ~ tmp[, 1])$fitted.values, Ages[, k])$y
         }
+      }    
+      Sys.sleep(0.00002)
+      
+      if (k %in% seq(0, length(ID)*length(method), 1) & verbose == TRUE) {
+        # cat(percent[values == k])
+        # cat(" ")
+        setTxtProgressBar(pb, k)
       }
-      if (k %in% values & verbose == TRUE & j == length(method)) {
-        cat(percent[values == k])
-        cat(" ")
-      }
+
     }
+
     ## j loop end
   }
   if (verbose == TRUE) cat("\n")

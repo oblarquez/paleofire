@@ -13,6 +13,8 @@
 #' autocorrelation coefficient of the serie (Adams, Mann & Ammann 2003).
 #' @param conf confidence intervals for the block bootstrap procedure.
 #' @param nboot number of bootstrap replicates.
+#' @param center logical, center each epoch by substracting values to each epoch's mean (default = FALSE). 
+#' @param normalize logical, normalize each epoch by calculating Z-Score (default = FALSE, see Adams, Mann & Ammann 2003)
 #' @param age type of ages used in x[,1] either "CE" for Common Era or "BP" for Before Present.
 #'
 #' @return
@@ -58,7 +60,8 @@
 #'}
 
 
-SEA=function(x, y, lag, b = NULL, conf = c(0.05, 0.95), nboot = 1000, age="CE"){
+SEA=function(x, y, lag, b = NULL, conf = c(0.05, 0.95), nboot = 1000, 
+             center=FALSE, normalize=FALSE, age="CE"){
   
   x=as.matrix(x)
   
@@ -90,7 +93,15 @@ SEA=function(x, y, lag, b = NULL, conf = c(0.05, 0.95), nboot = 1000, age="CE"){
   M=matrix(ncol=length(y), nrow=lag*2+1)  
   
   for(i in 1:length(y)){
-    M[,i]=x[seq(from=ou[i]-lag, to=ou[i]+lag, by=1),2]
+    if(normalize==FALSE && center==FALSE){
+      M[,i]=x[seq(from=ou[i]-lag, to=ou[i]+lag, by=1),2]
+    } 
+    if(center==TRUE){
+      M[,i]=x[seq(from=ou[i]-lag, to=ou[i]+lag, by=1),2]-mean(x[seq(from=ou[i]-lag, to=ou[i]+lag, by=1),2])
+    }
+    if(normalize==TRUE){
+      M[,i]=scale(x[seq(from=ou[i]-lag, to=ou[i]+lag, by=1),2])
+    }
   }
   
   obj=list()
@@ -103,6 +114,7 @@ SEA=function(x, y, lag, b = NULL, conf = c(0.05, 0.95), nboot = 1000, age="CE"){
   return(res)
   
 }
+
 
 
 

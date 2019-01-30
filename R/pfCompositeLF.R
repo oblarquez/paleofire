@@ -118,13 +118,14 @@ pfCompositeLF <- function(TR, hw=250,
   ## Prebinning procedure
 
   if (verbose == TRUE) {
-    percent <- seq(10, 100, by = 10)
+    percent <- seq(1, 100, by = 1)
     values <- round(percent * n / 100)
     cat("Prebinning...")
     cat("\n")
-    cat("Percentage done: ")
+    #cat("Percentage done: ")
   }
-
+  pb   <- txtProgressBar(1, n, style=3)
+  
   for (k in 1:n) {
     if (length(TR$TransData[is.na(TR$TransData[, k]) == FALSE, k]) != 0) {
       for (i in 1:length(tarAge)) {
@@ -133,9 +134,12 @@ pfCompositeLF <- function(TR, hw=250,
       }
     }
     ## print
+    Sys.sleep(0.00002)
     if (k %in% values & verbose == TRUE) {
-      cat(percent[values == k], " ", sep = "")
+      # cat(percent[values == k], " ", sep = "")
+      setTxtProgressBar(pb, k)
     }
+
   }
   if (verbose == TRUE) {
     cat("\n")
@@ -153,13 +157,14 @@ pfCompositeLF <- function(TR, hw=250,
   set.seed(1)
 
   if (verbose == TRUE) {
-    percent <- seq(10, 100, by = 10)
+    percent <- seq(1, 100, by = 1)
     values <- round(percent * nboot / 100)
     cat("Bootstrapping...")
     cat("\n")
     cat("Percentage done: ")
   }
-
+  pb   <- txtProgressBar(1, nboot, style=3)
+  
   ## Bootstrap procedure (with locfit)
   for (i in 1:nboot) {
     ne <- sample(seq(1, length(result[1, ]), 1), length(result[1, ]), replace = TRUE)
@@ -199,11 +204,13 @@ pfCompositeLF <- function(TR, hw=250,
     }
 
     # Verbose
+    Sys.sleep(0.00002)
     if (i %in% values & verbose == TRUE) {
-      cat(percent[values == i], " ", sep = "")
+      #cat(percent[values == i], " ", sep = "")
+      setTxtProgressBar(pb, i)
     }
   }
-
+  cat("\n")
   bootci <- t(apply(mboot, 1, quantile, probs = conf, na.rm = TRUE))
   bootmean <- t(apply(mboot, 1, mean, na.rm = TRUE))
   bootmed <- t(apply(mboot, 1, median, na.rm = TRUE))

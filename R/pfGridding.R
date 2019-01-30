@@ -203,15 +203,16 @@ pfGridding <- function(data, cell_sizex=NULL,
 
   ## Initiate a percentage counter
   if (verbose == TRUE) {
-    percent <- seq(10, 100, by = 10)
+    percent <- seq(1, 100, by = 1)
     values <- round(percent * length(dat1[, 1]) / 100)
     cat("Spatio-temporal weighted interpolation...")
     cat("\n")
-    cat("Percentage done: ")
+    #cat("Percentage done: ")
   }
 
   # ptm <- proc.time()
-
+  pb   <- txtProgressBar(1, length(dat1[, 1]), style=3)
+  
   ## Main loop time--distance weighting
   dat1[, 3] <- c()
   for (i in 1:length(dat1[, 1])) {
@@ -255,12 +256,14 @@ pfGridding <- function(data, cell_sizex=NULL,
     }
 
     ## Verbose
+    Sys.sleep(0.00002)
     if (i %in% values & verbose == TRUE) {
-      cat(percent[values == i], " ", sep = "")
+      #cat(percent[values == i], " ", sep = "")
+      setTxtProgressBar(pb, i)
     }
     # cat(i," ")
   }
-
+  cat("\n")
   r1 <- rasterize(dat1[, 1:2], r, dat1[, 3], fun = mean) # Fill raster with mean value
   #   plot(r1)
 
