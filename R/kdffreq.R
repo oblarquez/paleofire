@@ -14,6 +14,7 @@
 #' \code{\link[stats]{bandwidth}} for details
 #' @param pseudo Logical, apply (TRUE) or not (FALSE) Mann (2004) correction (default=FALSE)
 #' @author O. Blarquez
+#' @param pseudo_per percentage of actual data used in reflection in the Mann (2004) correction
 #' @param nbboot Numeric, number of bootstrap replicates
 #' @param alpha Numeric, confidence interval (default 0.01)
 #' @param boot Character, "full" or "partial" see @@details
@@ -55,13 +56,15 @@ kdffreq <- function(fevent,
                     bootper=0.1,
                     nbboot=NULL,
                     alpha=NULL,
-                    pseudo=FALSE) {
+                    pseudo=FALSE,
+                    pseudo_per=NULL) {
   if (is.null(up)) up <- min(fevent)
   if (is.null(lo)) lo <- max(fevent)
   if (is.null(bandwidth)) bandwidth <- 1000
   if (is.null(alpha)) alpha <- .01
   if (is.null(nbboot)) nbboot <- 999
-
+  if (is.null(pseudo_per)) pseudo_per <- .2
+  
 
   # Organize data
   fevent <- fevent[!is.na(fevent)]
@@ -75,7 +78,7 @@ kdffreq <- function(fevent,
     pseudo_lo <- fevent[fevent > lo]
   } else {
     pseudo_lo <- -((fevent) - rep((max(fevent)), length(fevent))) + max(fevent)
-    pseudo_lo <- pseudo_lo[(length(pseudo_lo) - round(length(pseudo_lo) * 0.2)):length(pseudo_lo)]
+    pseudo_lo <- pseudo_lo[(length(pseudo_lo) - round(length(pseudo_lo) * pseudo_per)):length(pseudo_lo)]
   }
 
   # for the lower edge
@@ -84,7 +87,7 @@ kdffreq <- function(fevent,
   } else { # if data exist use it
     # elseif generate mirored events
     pseudo_up <- -((fevent) - rep((min(fevent)), length(fevent))) + min(fevent)
-    pseudo_up <- pseudo_up[1:round(length(pseudo_up) * 0.2)]
+    pseudo_up <- pseudo_up[1:round(length(pseudo_up) * pseudo_per)]
   }
 
   ## Bandwidth selection using "bandwidth" function (see stats and density)
@@ -165,6 +168,7 @@ kdffreq <- function(fevent,
 #' @param main char, title of plot
 #' @param xlab char, x axis legend
 #' @param ylab char, y axis legend
+#' @param frame frame around plot 
 #' @param ... other arguments
 #' @seealso \code{\link[paleofire]{kdffreq}}
 #'  @examples
@@ -176,13 +180,14 @@ kdffreq <- function(fevent,
 #'  plot(ff)
 
 
-plot.kdffreq <- function(x, ylim=NULL, xlim=NULL, main=NULL, xlab="Age", ylab="FF (#.yr-1)", ...) {
+plot.kdffreq <- function(x, ylim=NULL, xlim=NULL, main=NULL, xlab="Age", ylab="FF (#.yr-1)", frame=T,...) {
   if (is.null(ylim)) ylim <- c(min(x$lo), max(x$up))
   if (is.null(xlim)) xlim <- c(min(x$age), max(x$age))
 
   plot(x$age, x$ff,
     type = "l", xlab = xlab, ylab = ylab,
-    xlim = xlim, ylim = ylim, main = main
+    xlim = xlim, ylim = ylim, main = main,
+    frame=frame
   )
 
   # lines(x$age,x$up)

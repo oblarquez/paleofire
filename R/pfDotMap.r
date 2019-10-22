@@ -191,7 +191,7 @@ pfDotMap = function(TR, tarAge, hw, binhw=0.5*mean(diff(tarAge)),
     # Run pfComposite. Not interested in the composite, but this will do the binning for us. 
     # (I've checked "by hand" and it is accurate and efficient.) 
     # No need for bootstraps--we're only going to use the actual composite for now. Will bootstrap by site later. 
-    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=1)
+    COMP = pfCompositeLF(TR, tarAge=tarAge, hw=hw, binhw=binhw, nboot=10)
     CHAR = t(COMP$BinnedData)
     n.bin = length(tarAge)
     cat("done!\n")

@@ -187,7 +187,7 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
   ## Chronology
   if(type=="Chronology"){
     data(paleofiredata,envir = environment())
-    paleofiredata=paleofiredata[paleofiredata$id_site %in% x$id_site,]
+    paleofiredata=paleofiredata[paleofiredata$ID_SITE %in% x$id_site,]
     
     IDsorted=data.frame(IDs = c(x$id_site),
                         Lat = c(paleofiresites[paleofiresites$id_site %in% x$id_site,]$lat),
@@ -203,7 +203,7 @@ plot.pfSiteSel=function(x,add=NULL,type="Map",zoom="Sites",pch="|",
          ylim = c(1,length(x$id_site)),xlim=xlim,axes=FALSE,ylab="",xlab="Age",main="Sampling resolution")
     n=c()
     for(i in 1:length(x$id_site)){
-      samples=paleofiredata$EST_AGE[paleofiredata$id_site %in% IDsorted$IDs[i]]
+      samples=paleofiredata$EST_AGE[paleofiredata$ID_SITE %in% IDsorted$IDs[i]]
       points(samples,rep(i,length(samples)),pch=pch,cex=cex)
       n[i]=length(samples)
     }

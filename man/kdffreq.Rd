@@ -6,7 +6,7 @@
 \usage{
 kdffreq(fevent, up = NULL, lo = NULL, interval = 10,
   bandwidth = NULL, boot = "full", bootper = 0.1, nbboot = NULL,
-  alpha = NULL, pseudo = FALSE)
+  alpha = NULL, pseudo = FALSE, pseudo_per = NULL)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}
@@ -30,6 +30,8 @@ bandwidth calculation (e.g. "bw.ucv" for unbiased cross validation) see
 \item{alpha}{Numeric, confidence interval (default 0.01)}
 
 \item{pseudo}{Logical, apply (TRUE) or not (FALSE) Mann (2004) correction (default=FALSE)}
+
+\item{pseudo_per}{percentage of actual data used in reflection in the Mann (2004) correction}
 }
 \value{
 ff data.frame, with fire frequency, bandwidth and CIs

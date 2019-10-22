@@ -5,7 +5,7 @@
 \title{plot.kdffreq}
 \usage{
 \method{plot}{kdffreq}(x, ylim = NULL, xlim = NULL, main = NULL,
-  xlab = "Age", ylab = "FF (#.yr-1)", ...)
+  xlab = "Age", ylab = "FF (#.yr-1)", frame = T, ...)
 }
 \arguments{
 \item{x}{Object returned by kdffreq}
@@ -19,6 +19,8 @@
 \item{xlab}{char, x axis legend}
 
 \item{ylab}{char, y axis legend}
+
+\item{frame}{frame around plot}
 
 \item{...}{other arguments}
 }
