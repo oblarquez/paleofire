@@ -76,9 +76,9 @@ pfTransform <- function(ID=NULL,
                         QuantType="INFL",
                         MethodType=NULL,
                         verbose=TRUE) {
-
-
-  ## TEST
+  
+  
+  # TEST
   # ID=NULL;
   # add=NULL;
   # Interpolate=FALSE;
@@ -94,31 +94,31 @@ pfTransform <- function(ID=NULL,
   # QuantType="INFL";
   # MethodType=NULL;
   # verbose=TRUE
-  ## TEST
-
-
+  # TEST
+  
+  
   ## Avoid no visible binding for global variable
   paleofiresites <- NULL
   rm(paleofiresites)
-
+  
   # Value for warnings
   IDChar <- ID
-
+  
   # Check methods
   methods <- c("stl", "Z-Score", "Box-Cox", "LOESS", "MinMax", "RunMed", "RunMean", "RunMin", "RunMax", "RunQuantile", "SmoothSpline", "Hurdle", "NULL")
   warnmethod <- method[(method %in% methods) == FALSE]
   if (length(warnmethod) != 0) {
     stop(paste(warnmethod, "is not a valid method for pfTransform", sep = " "))
   }
-
+  
   types <- c("BoxCox1964", "JohnDraper")
   warntype <- type[(type %in% types) == FALSE]
   if (length(warntype) != 0) {
     stop(paste(warntype, "is not a valid type for pfBoxCox", sep = " "))
   }
-
+  
   if (method == "RunMean" || method == "RunMin" || method == "RunMed" || method == "RunMax" ||
-    method == "RunQuantile") {
+      method == "RunQuantile") {
     if ("caTools" %in% rownames(installed.packages()) == FALSE) {
       install.packages("caTools")
     }
@@ -126,11 +126,11 @@ pfTransform <- function(ID=NULL,
       install.packages("gtools")
     }
   }
-
+  
   if (identical(method, "Hurdle")) {
     install.packages("pscl")
   }
-
+  
   ## 0 Save parameters
   params <- list(
     ID = ID,
@@ -145,24 +145,24 @@ pfTransform <- function(ID=NULL,
     type = type,
     alpha = alpha
   )
-
+  
   ## 1 Load charcoal paleofiredata
   if (verbose == TRUE) {
     cat("Loading and preparing data...")
     cat("\n")
   }
-
+  
   if (is.null(ID) == FALSE) {
     if (is.list(ID) & length(ID) == 2) {
       data(paleofiredata, envir = environment())
       data(paleofiresites, envir = environment())
-
+      
       # paleofiredata=na.omit(paleofiredata)
       # Sites are:
       ID <- ID$id_site
       # Use only paleofiredata corresponding to ID
       paleofiredata <- paleofiredata[paleofiredata[, 1] %in% ID, ]
-
+      
       ## 1 Use Pref_Units
       if (is.null(MethodType)) {
         # Drop Non pref Units
@@ -174,8 +174,8 @@ pfTransform <- function(ID=NULL,
         if (QuantType == "INFL") {
           for (i in ID)
             if (!(unique(paleofiredata[paleofiredata[, 1] == i, 7]) %in% "INFL") &
-              is.na(sum(paleofiredata[paleofiredata[, 1] == i, 2])) == FALSE &
-              sum(paleofiredata[paleofiredata[, 1] == i, 2]) > 0) { # Mod 28 02 2018 avoid influx calculus when depth not in database (occur for v 4.0.0)
+                is.na(sum(paleofiredata[paleofiredata[, 1] == i, 2])) == FALSE &
+                sum(paleofiredata[paleofiredata[, 1] == i, 2]) > 0) { # Mod 28 02 2018 avoid influx calculus when depth not in database (occur for v 4.0.0)
               infl <- influx(paleofiredata[paleofiredata[, 1] == i, ])
               paleofiredata[paleofiredata[, 1] == i, 4] <- c(infl)
             }
@@ -187,7 +187,7 @@ pfTransform <- function(ID=NULL,
         for (i in ID) {
           if (length(unique(paleofiredata[paleofiredata[, 1] %in% i, 5])) >= 2) {
             paleofiredata[paleofiredata[, 1] %in% i &
-              !(paleofiredata[, 5] %in% paleofiresites$pref_units[paleofiresites[, 1] == i]), 7] <- NA
+                            !(paleofiredata[, 5] %in% paleofiresites$pref_units[paleofiresites[, 1] == i]), 7] <- NA
           }
         }
         paleofiredata <- paleofiredata[!is.na(paleofiredata$TYPE), ]
@@ -201,7 +201,7 @@ pfTransform <- function(ID=NULL,
         if (QuantType == "INFL") {
           for (i in ID)
             if (!(unique(paleofiredata[paleofiredata[, 1] == i, 7]) %in% "INFL") &
-              is.na(sum(paleofiredata[paleofiredata[, 1] == i, 2])) == FALSE) {
+                is.na(sum(paleofiredata[paleofiredata[, 1] == i, 2])) == FALSE) {
               infl <- influx(paleofiredata[paleofiredata[, 1] == i, ])
               paleofiredata[paleofiredata[, 1] == i, 4] <- c(infl)
             }
@@ -222,9 +222,9 @@ pfTransform <- function(ID=NULL,
     paleofiredata <- add$data
     ID <- c(unique(add$data[, 1]))
   }
-
-
-
+  
+  
+  
   if (is.character(ID)) {
     paleofiredata <- read.csv(ID)
     ID <- unique(paleofiredata[, 1])
@@ -250,7 +250,7 @@ pfTransform <- function(ID=NULL,
     paleofiredata <- ID
     ID <- unique(paleofiredata[, 1])
   }
-
+  
   # 2 Interpolate TRUE
   if (Interpolate == TRUE) {
     # Interpolation procedure
@@ -275,10 +275,10 @@ pfTransform <- function(ID=NULL,
       # paleofiredata=paleofiredata[paleofiredata[,1] %in% ID,]
       ID <- unique(paleofiredata[, 1])
     }
-
+    
     # Use linear interpolation to reconstruct a matrix of raw paleofiredata
     rawI <- matrix(nrow = length(AgeN), ncol = length(ID))
-
+    
     for (k in 1:length(ID)) {
       if (length(paleofiredata[paleofiredata[, 1] == ID[k], 3]) >= 3) {
         rawI[, k] <- approx(paleofiredata[paleofiredata[, 1] == ID[k], 3], paleofiredata[paleofiredata[, 1] == ID[k], 4], AgeN, method = "linear")$y
@@ -286,21 +286,21 @@ pfTransform <- function(ID=NULL,
         print(paste(IDChar$site_name[k], "has < 3 charcoal values and was excluded", sep = " "))
       }
     }
-
+    
     # Calculates Interpolated depths
     depthI <- matrix(nrow = length(AgeN), ncol = length(ID))
     for (k in 1:length(ID)) {
       if (is.na(sum(paleofiredata[paleofiredata[, 1] == ID[k], 2])) == F) {
         if (length(paleofiredata[paleofiredata[, 1] == ID[k], 3]) >= 3) {
           depthI[, k] <- approx(paleofiredata[paleofiredata[, 1] == ID[k], 3], paleofiredata[paleofiredata[, 1] == ID[k], 2], AgeN,
-            method = "linear"
+                                method = "linear"
           )$y
         }
       } else {
         depthI[, k] <- NA
       }
     }
-
+    
     ## Remove sites with less than 3 data values
     supp <- c()
     for (i in 1:length(rawI[1, ])) {
@@ -310,7 +310,7 @@ pfTransform <- function(ID=NULL,
         supp[i] <- 0
       }
     }
-
+    
     rawI <- rawI[, supp == 0]
     SuppSites <- ID[supp == 1]
     ID <- ID[supp == 0]
@@ -322,7 +322,7 @@ pfTransform <- function(ID=NULL,
       Ages[, k] <- c(AgeN)
     }
   }
-
+  
   ## 3 No Interpolation:
   if (Interpolate == FALSE) {
     # Which is the longest record?
@@ -331,13 +331,13 @@ pfTransform <- function(ID=NULL,
       lengths[k] <- c(length(paleofiredata[paleofiredata[, 1] %in% ID[k], 1]))
     }
     m <- max(lengths)
-
+    
     # Space for paleofiredata
     transI <- matrix(nrow = m, ncol = length(ID))
     rawI <- matrix(nrow = m, ncol = length(ID))
     depthI <- matrix(nrow = m, ncol = length(ID))
     Ages <- matrix(ncol = length(ID), nrow = m)
-
+    
     # Matrix of Ages, rawData and depths
     for (k in 1:length(ID)) {
       forNA <- m - length(paleofiredata[paleofiredata[, 1] %in% ID[k], 3])
@@ -350,7 +350,7 @@ pfTransform <- function(ID=NULL,
     }
     ## End No Int
   }
-
+  
   ## % Cat to see where we are
   if (verbose == TRUE) {
     percent <- seq(10, 100, by = 10)
@@ -359,7 +359,7 @@ pfTransform <- function(ID=NULL,
     cat("\n")
     cat("Percentage done: ")
   }
-
+  
   pb   <- txtProgressBar(1, length(method), style=3)
   
   # Play with transformations!
@@ -368,13 +368,13 @@ pfTransform <- function(ID=NULL,
     if (j >= 2) {
       rawI <- transI
     }
-
+    
     # Transformations
     for (k in 1:length(ID)) {
       tmp <- cbind(Ages[, k], rawI[, k])
       tmp <- na.omit(tmp)
       ## At least 3 data values!
-      if (sum(tmp[, 1]) > 3 & ID[k] != 882) {
+      if (length(tmp[, 1]) > 3 & ID[k] != 882) {
         # Not Tamagaucia site (882)!
         if (methodj == "stl") {
           agesI <- seq(tmp[1, 1], tmp[length(tmp[, 1]), 1], 1)
@@ -454,13 +454,13 @@ pfTransform <- function(ID=NULL,
         # cat(" ")
         setTxtProgressBar(pb, k)
       }
-
+      
     }
-
+    
     ## j loop end
   }
   if (verbose == TRUE) cat("\n")
-
+  
   ### End Return Results
   colnames(transI) <- ID
   output <- structure(list(
@@ -473,7 +473,7 @@ pfTransform <- function(ID=NULL,
   ))
   class(output) <- "pfTransform"
   return(output)
-
+  
   ###
 }
 
