@@ -4,8 +4,7 @@
 \alias{plot.pfKruskal}
 \title{Plot a "pfKruskal" object.}
 \usage{
-\method{plot}{pfKruskal}(x, trend = FALSE, outliers = FALSE,
-  xlim = NULL, ylim = NULL, ...)
+\method{plot}{pfKruskal}(x, trend = FALSE, outliers = FALSE, xlim = NULL, ylim = NULL, ...)
 }
 \arguments{
 \item{x}{An object returned by \code{\link[paleofire]{pfKruskal}}.}

@@ -4,9 +4,19 @@
 \alias{plot.pfSiteSel}
 \title{plot.pfSiteSel}
 \usage{
-\method{plot}{pfSiteSel}(x, add = NULL, type = "Map", zoom = "Sites",
-  pch = "|", xlim = NULL, ylim = NULL, cex = 1,
-  plot_countries = FALSE, main = NULL, ...)
+\method{plot}{pfSiteSel}(
+  x,
+  add = NULL,
+  type = "Map",
+  zoom = "Sites",
+  pch = "|",
+  xlim = NULL,
+  ylim = NULL,
+  cex = 1,
+  plot_countries = FALSE,
+  main = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of the class "pfSiteSel".}

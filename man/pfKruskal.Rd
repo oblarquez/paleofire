@@ -4,8 +4,7 @@
 \alias{pfKruskal}
 \title{Analyse composite records by a Kruskal-Wallis ANOVA}
 \usage{
-pfKruskal(data, p.adj = "none", alpha = 0.05, bins = NULL,
-  verbose = TRUE)
+pfKruskal(data, p.adj = "none", alpha = 0.05, bins = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data}{An object returned by \code{\link[paleofire]{pfComposite}} or

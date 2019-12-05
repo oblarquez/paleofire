@@ -4,9 +4,19 @@
 \alias{kdffreq}
 \title{Fire frequency using kernel density}
 \usage{
-kdffreq(fevent, up = NULL, lo = NULL, interval = 10,
-  bandwidth = NULL, boot = "full", bootper = 0.1, nbboot = NULL,
-  alpha = NULL, pseudo = FALSE, pseudo_per = NULL)
+kdffreq(
+  fevent,
+  up = NULL,
+  lo = NULL,
+  interval = 10,
+  bandwidth = NULL,
+  boot = "full",
+  bootper = 0.1,
+  nbboot = NULL,
+  alpha = NULL,
+  pseudo = FALSE,
+  pseudo_per = NULL
+)
 }
 \arguments{
 \item{fevent}{Numeric vector, set of dates}

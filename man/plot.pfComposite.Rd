@@ -4,8 +4,16 @@
 \alias{plot.pfComposite}
 \title{plot.pfComposite}
 \usage{
-\method{plot}{pfComposite}(x, type = "ci", conf = c(0.05, 0.95),
-  palette = "jet", add = "NONE", text = FALSE, main = NULL, ...)
+\method{plot}{pfComposite}(
+  x,
+  type = "ci",
+  conf = c(0.05, 0.95),
+  palette = "jet",
+  add = "NONE",
+  text = FALSE,
+  main = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A "pfComposite" object.}

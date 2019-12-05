@@ -18,7 +18,6 @@
 #' \code{install_github("GCD",username="paleofire",ref="master")}
 #'
 #' @author O. Blarquez
-#' @keywords ~kwd1 ~kwd2
 #' @examples
 #'
 #' \dontrun{checkGCDversion()}

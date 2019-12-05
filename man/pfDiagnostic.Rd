@@ -4,11 +4,22 @@
 \alias{pfDiagnostic}
 \title{Print diagnostic pdf for individual transformed series}
 \usage{
-pfDiagnostic(ID, add = NULL, Age = 0, Interpolate = FALSE,
-  method = "Box-Cox", BasePeriod = c(-100, 1e+09), span = 0.3,
-  RunWidth = 500, RunQParam = 0.5, stlYears = 500, alpha = 0.01,
-  type = "BoxCox1964", FileName = "Diagnostic.pdf",
-  QuantType = "ALL")
+pfDiagnostic(
+  ID,
+  add = NULL,
+  Age = 0,
+  Interpolate = FALSE,
+  method = "Box-Cox",
+  BasePeriod = c(-100, 1e+09),
+  span = 0.3,
+  RunWidth = 500,
+  RunQParam = 0.5,
+  stlYears = 500,
+  alpha = 0.01,
+  type = "BoxCox1964",
+  FileName = "Diagnostic.pdf",
+  QuantType = "ALL"
+)
 }
 \arguments{
 \item{ID}{An object returned by \code{\link{pfSiteSel}} or

@@ -4,11 +4,21 @@
 \alias{pfDotMap}
 \title{Produce maps of paleofire data}
 \usage{
-pfDotMap(TR, tarAge, hw, binhw = 0.5 * mean(diff(tarAge)),
-  fig.base.name = NULL, base.map = "coasts", grd.res = 5,
-  grd.ext = c(-180, 180, -90, 90), grd.lonlat = NULL,
+pfDotMap(
+  TR,
+  tarAge,
+  hw,
+  binhw = 0.5 * mean(diff(tarAge)),
+  fig.base.name = NULL,
+  base.map = "coasts",
+  grd.res = 5,
+  grd.ext = c(-180, 180, -90, 90),
+  grd.lonlat = NULL,
   proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-  n.boot = 1000, cx.minsize = 0.3, cx.mult = 1)
+  n.boot = 1000,
+  cx.minsize = 0.3,
+  cx.mult = 1
+)
 }
 \arguments{
 \item{TR}{An object returned by \code{\link{pfTransform}}}
@@ -96,7 +106,7 @@ the Global Charcoal Database.
 Takes any pfTransform object as input, and allows any set of one or more
 time bins to be specified for plotting (one plot per bin). Time bins are 
 specified as for pfCompositeLF (which is called by pfSimpleGrid. The extent, 
-resolution, and projection of the desired grid are also user-specified.
+resolution, and projection of the desired grid are also user-specified. 
 
 Results will be plotted on a regular lon/lat grid. To determine which sites
 contribute to each grid cell value, the code searches within a specified

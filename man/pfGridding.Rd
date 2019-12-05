@@ -4,10 +4,21 @@
 \alias{pfGridding}
 \title{Produce gridded maps of transformed charcoal values.}
 \usage{
-pfGridding(data, cell_sizex = NULL, cell_sizey = NULL, age = 0,
-  cell_size = NULL, time_buffer = NULL, distance_buffer = NULL,
-  raster_extent = NULL, elevation_buffer = NULL, proj4 = NULL,
-  sea_mask = TRUE, other_mask = NULL, verbose = TRUE)
+pfGridding(
+  data,
+  cell_sizex = NULL,
+  cell_sizey = NULL,
+  age = 0,
+  cell_size = NULL,
+  time_buffer = NULL,
+  distance_buffer = NULL,
+  raster_extent = NULL,
+  elevation_buffer = NULL,
+  proj4 = NULL,
+  sea_mask = TRUE,
+  other_mask = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{An object returned by \code{\link{pfTransform}}.}

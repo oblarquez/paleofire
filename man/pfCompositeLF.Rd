@@ -5,9 +5,16 @@
 \title{Produce a composite serie from multiple charcoal records using a local
 regression procedure (from the locfit package)}
 \usage{
-pfCompositeLF(TR, hw = 250, tarAge = NULL, binhw = NULL,
-  nboot = 1000, conf = c(0.05, 0.95), pseudodata = FALSE,
-  verbose = TRUE)
+pfCompositeLF(
+  TR,
+  hw = 250,
+  tarAge = NULL,
+  binhw = NULL,
+  nboot = 1000,
+  conf = c(0.05, 0.95),
+  pseudodata = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{TR}{An object returned by \code{\link[paleofire]{pfTransform}}}

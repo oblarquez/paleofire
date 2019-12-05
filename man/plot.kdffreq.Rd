@@ -4,8 +4,16 @@
 \alias{plot.kdffreq}
 \title{plot.kdffreq}
 \usage{
-\method{plot}{kdffreq}(x, ylim = NULL, xlim = NULL, main = NULL,
-  xlab = "Age", ylab = "FF (#.yr-1)", frame = T, ...)
+\method{plot}{kdffreq}(
+  x,
+  ylim = NULL,
+  xlim = NULL,
+  main = NULL,
+  xlab = "Age",
+  ylab = "FF (#.yr-1)",
+  frame = T,
+  ...
+)
 }
 \arguments{
 \item{x}{Object returned by kdffreq}

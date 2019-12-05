@@ -4,8 +4,13 @@
 \alias{pfComposite}
 \title{Produce a composite serie from multiple charcoal records}
 \usage{
-pfComposite(TR, bins = NULL, nboot = 1000, binning = TRUE,
-  conf = c(0.05, 0.95))
+pfComposite(
+  TR,
+  bins = NULL,
+  nboot = 1000,
+  binning = TRUE,
+  conf = c(0.05, 0.95)
+)
 }
 \arguments{
 \item{TR}{An object returned by \code{\link{pfTransform}}}

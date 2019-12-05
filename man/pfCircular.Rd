@@ -5,8 +5,7 @@
 \title{Circular block bootstrap procedure applied to charcoal records compositing
 results}
 \usage{
-pfCircular(comp, b = NULL, conf = c(0.05, 0.95), nboot = 1000,
-  AgeLim = NULL)
+pfCircular(comp, b = NULL, conf = c(0.05, 0.95), nboot = 1000, AgeLim = NULL)
 }
 \arguments{
 \item{comp}{A "pfComposite" object}

@@ -4,8 +4,14 @@
 \alias{pretreatment}
 \title{Calculate particules accumulation rates for sediment records}
 \usage{
-pretreatment(params, serie, Int = TRUE, first = NULL, last = NULL,
-  yrInterp = NULL)
+pretreatment(
+  params,
+  serie,
+  Int = TRUE,
+  first = NULL,
+  last = NULL,
+  yrInterp = NULL
+)
 }
 \arguments{
 \item{params}{A matrix with the following colums: CmTop, CmBot, AgeTop,

@@ -27,5 +27,3 @@ Last GCD database version is donwloaded and installed using:
 \author{
 O. Blarquez
 }
-\keyword{~kwd1}
-\keyword{~kwd2}

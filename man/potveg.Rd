@@ -49,5 +49,3 @@ potential vegetation distribution. Environmental Research Letters 7:044019.
 \author{
 O. Blarquez
 }
-\keyword{~kwd1}
-\keyword{~kwd2}

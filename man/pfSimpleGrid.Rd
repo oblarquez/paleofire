@@ -4,13 +4,28 @@
 \alias{pfSimpleGrid}
 \title{Produce simple gridded maps of paleofire data}
 \usage{
-pfSimpleGrid(TR, tarAge, hw, binhw = 0.5 * mean(diff(tarAge)),
-  fun = mean, n.boot = 0, prob.CI = c(0.025, 0.975), test.val = 0,
-  proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", res = 5,
-  ext = c(-180, 180, -90, 90), fig.file.name = NULL,
-  show.plots = TRUE, title.text = "", cols = NULL, cuts = NULL,
-  zlim = NULL, base.map = "coasts", base.map.col = grey(0.7),
-  base.map.lwd = 0.5)
+pfSimpleGrid(
+  TR,
+  tarAge,
+  hw,
+  binhw = 0.5 * mean(diff(tarAge)),
+  fun = mean,
+  n.boot = 0,
+  prob.CI = c(0.025, 0.975),
+  test.val = 0,
+  proj4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+  res = 5,
+  ext = c(-180, 180, -90, 90),
+  fig.file.name = NULL,
+  show.plots = TRUE,
+  title.text = "",
+  cols = NULL,
+  cuts = NULL,
+  zlim = NULL,
+  base.map = "coasts",
+  base.map.col = grey(0.7),
+  base.map.lwd = 0.5
+)
 }
 \arguments{
 \item{TR}{An object returned by \code{\link{pfTransform}}}
@@ -98,13 +113,13 @@ data from the Global Charcoal Database.
 Takes any pfTransform object as input, and allows any set of one or more
 time bins to be specified for plotting (one plot per bin). Time bins are 
 specified as for pfCompositeLF (which is called by pfSimpleGrid. The extent, 
-resolution, and projection of the desired grid are also user-specified.
+resolution, and projection of the desired grid are also user-specified. 
 
 Records are first composited, and then aggregated with other sites falling 
 in the same grid cell according to the specified function 'fun' (defauts to 
 mean). This is a considerably simpler approach than the distance-based spatial
 binning used by pfDotMap, although it has its own tradeoffs (e.g. grid cells
-are unlikely to represent equal area).
+are unlikely to represent equal area). 
 
 A flexible bootstrapped significance test is implemented. Within each time 
 bin X grid cell combination, composite z-score values are randomly sampled 

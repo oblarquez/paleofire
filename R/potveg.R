@@ -20,7 +20,6 @@
 #' Biogeochemical Cycles 13(4), 997-1027.\cr \cr Levavasseur, G., M. Vrac, D.
 #' M. Roche, and D. Paillard. 2012. Statistical modelling of a new global
 #' potential vegetation distribution. Environmental Research Letters 7:044019.
-#' @keywords ~kwd1 ~kwd2
 #' @examples
 #'
 #'

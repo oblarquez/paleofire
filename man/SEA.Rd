@@ -4,8 +4,17 @@
 \alias{SEA}
 \title{Superposed Epoch Analysis}
 \usage{
-SEA(x, y, lag, b = NULL, conf = c(0.05, 0.95), nboot = 1000,
-  center = FALSE, normalize = FALSE, age = "CE")
+SEA(
+  x,
+  y,
+  lag,
+  b = NULL,
+  conf = c(0.05, 0.95),
+  nboot = 1000,
+  center = FALSE,
+  normalize = FALSE,
+  age = "CE"
+)
 }
 \arguments{
 \item{x}{data frame or matrix with ages and proxy values, younger ages on top.}

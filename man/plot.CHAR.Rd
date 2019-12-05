@@ -4,8 +4,16 @@
 \alias{plot.CHAR}
 \title{Plot CHAR}
 \usage{
-\method{plot}{CHAR}(x, xlim = NULL, ylim = NULL, xlab = NULL,
-  ylab = NULL, frame = TRUE, ...)
+\method{plot}{CHAR}(
+  x,
+  xlim = NULL,
+  ylim = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  frame = TRUE,
+  main = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of the class "CHAR".}
@@ -19,6 +27,8 @@
 \item{ylab}{y axis label.}
 
 \item{frame}{TRUE by default}
+
+\item{main}{main plot title}
 
 \item{\dots}{\dots{}}
 }

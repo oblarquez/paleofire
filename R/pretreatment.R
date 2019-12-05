@@ -226,6 +226,7 @@ pretreatment <- function(params, serie, Int=TRUE, first=NULL, last=NULL, yrInter
 #' @param ylim ylim...
 #' @param xlab x axis label.
 #' @param ylab y axis label.
+#' @param main main plot title
 #' @param frame TRUE by default
 #' @param \dots \dots{}
 #' @author O. Blarquez
