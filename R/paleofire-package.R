@@ -19,7 +19,11 @@
 #' M. J., Brewer, S., & Bartlein, P. J. (2014). paleofire: an R package to
 #' analyse sedimentary charcoal records from the Global Charcoal Database to
 #' reconstruct past biomass burning. Computers & Geosciences, 72, 255-261.
-#' @keywords fire, global, charcoal, sediments, paleo
+#' @concept  fire 
+#' @concept global 
+#' @concept charcoal 
+#' @concept sediments 
+#' @concept paleo
 #' @examples
 #'
 #' \dontrun{

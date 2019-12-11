@@ -96,8 +96,8 @@ reconstruct past biomass burning. Computers & Geosciences, 72, 255-261.
 \seealso{
 \url{http://gpwg.paleofire.org}
 }
-\keyword{charcoal,}
-\keyword{fire,}
-\keyword{global,}
-\keyword{paleo}
-\keyword{sediments,}
+\concept{charcoal}
+\concept{fire}
+\concept{global}
+\concept{paleo}
+\concept{sediments}
