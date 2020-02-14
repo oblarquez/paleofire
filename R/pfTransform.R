@@ -65,7 +65,7 @@ pfTransform <- function(ID=NULL,
                         add=NULL,
                         Interpolate=FALSE,
                         Age=NULL,
-                        method="Z-Score",
+                        method="NULL",
                         BasePeriod=c(-100, 1e+09),
                         span=0.3,
                         RunWidth=500,
@@ -80,20 +80,20 @@ pfTransform <- function(ID=NULL,
   
   # TEST
   # ID=NULL;
-  # add=NULL;
-  # Interpolate=FALSE;
-  # Age=NULL;
-  # method="NULL";
-  # BasePeriod=c(-100,1e+09);
-  # span=0.3;
-  # RunWidth=500;
-  # RunQParam=0.5;
-  # stlYears=500;
-  # type="BoxCox1964";
-  # alpha=0.01;
-  # QuantType="INFL";
-  # MethodType=NULL;
-  # verbose=TRUE
+  add=NULL;
+  Interpolate=FALSE;
+  Age=NULL;
+  method="NULL";
+  BasePeriod=c(-100,1e+09);
+  span=0.3;
+  RunWidth=500;
+  RunQParam=0.5;
+  stlYears=500;
+  type="BoxCox1964";
+  alpha=0.01;
+  QuantType="INFL";
+  MethodType=NULL;
+  verbose=TRUE
   # TEST
   
   
@@ -360,106 +360,116 @@ pfTransform <- function(ID=NULL,
     cat("Percentage done: ")
   }
   
-  pb   <- txtProgressBar(1, length(method), style=3)
-  
-  # Play with transformations!
-  for (j in 1:length(method)) {
-    methodj <- method[j]
-    if (j >= 2) {
-      rawI <- transI
+  if(method!="NULL"){
+    
+    if(length(method)>1){
+      pb   <- txtProgressBar(1, length(method), style=3)
     }
     
-    # Transformations
-    for (k in 1:length(ID)) {
-      tmp <- cbind(Ages[, k], rawI[, k])
-      tmp <- na.omit(tmp)
-      ## At least 3 data values!
-      if (length(tmp[, 1]) > 3 & ID[k] != 882) {
-        # Not Tamagaucia site (882)!
-        if (methodj == "stl") {
-          agesI <- seq(tmp[1, 1], tmp[length(tmp[, 1]), 1], 1)
-          # Stl requires evenly spaced data
-          forTS <- approx(tmp[, 1], tmp[, 2], agesI)$y
-          x <- ts(forTS, start = 1, frequency = stlYears)
-          dim(x) <- NULL
-          stlResult <- stl(x, "per")$time.series[, 2]
-          transI[, k] <- approx(agesI, stlResult, Ages[, k])$y
-        }
-        if (methodj == "NULL") {
-          transI[, k] <- approx(tmp[, 1], tmp[, 2], Ages[, k])$y
-        }
-        if (methodj == "Z-Score") {
-          mu <- mean(tmp[tmp[, 1] >= BasePeriod[1] & tmp[, 1] <= BasePeriod[2], 2])
-          sigma <- sd(tmp[tmp[, 1] >= BasePeriod[1] & tmp[, 1] <= BasePeriod[2], 2])
-          # No data in BasePeriod return scale:
-          # Single value in BasePeriod return scale:
-          if (is.na(mu) | is.na(sigma) | sigma == 0) {
-            transI[, k] <- approx(tmp[, 1], scale(tmp[, 2]), Ages[, k])$y
-          }
-          # Z-Score otherwise
-          else {
-            transI[, k] <- approx(tmp[, 1], (tmp[, 2] - mu) / sigma, Ages[, k])$y
-          }
-        }
-        if (methodj == "Box-Cox") {
-          transI[, k] <- approx(tmp[, 1], pfBoxCox(tmp[, 2], alpha = alpha, type = type), Ages[, k])$y
-        }
-        if (methodj == "LOESS") {
-          transI[, k] <- approx(tmp[, 1], predict(loess(tmp[, 2] ~ tmp[, 1], span = span)), Ages[, k])$y
-        }
-        if (methodj == "MinMax") {
-          transI[, k] <- approx(tmp[, 1], pfMinMax(tmp[, 2]), Ages[, k])$y
-        }
-        if (methodj == "RunMed") {
-          w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
-          if (gtools::odd(w)) w <- w else w <- w + 1
-          transI[, k] <- approx(tmp[, 1], runmed(tmp[, 2], w), Ages[, k])$y
-        }
-        if (methodj == "RunMean") {
-          w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
-          if (gtools::odd(w)) w <- w else w <- w + 1
-          transI[, k] <- approx(tmp[, 1], caTools::runmean(tmp[, 2], w), Ages[, k])$y
-        }
-        if (methodj == "RunMin") {
-          w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
-          if (gtools::odd(w)) w <- w else w <- w + 1
-          transI[, k] <- approx(tmp[, 1], caTools::runmin(tmp[, 2], w), Ages[, k])$y
-        }
-        if (methodj == "RunMax") {
-          w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
-          if (gtools::odd(w)) w <- w else w <- w + 1
-          transI[, k] <- approx(tmp[, 1], caTools::runmax(tmp[, 2], w), Ages[, k])$y
-        }
-        if (methodj == "RunQuantile") {
-          w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
-          if (gtools::odd(w)) w <- w else w <- w + 1
-          transI[, k] <- approx(tmp[, 1], caTools::runquantile(tmp[, 2], w, RunQParam), Ages[, k])$y
-        }
-        if (methodj == "SmoothSpline") {
-          transI[, k] <- approx(tmp[, 1], smooth.spline(tmp[, 1], tmp[, 2], spar = span)$y, Ages[, k])$y
-        }
-        #         if (methodj=="GAM"){
-        #           transI[,k]=approx(tmp[,1],gam(tmp[,2]~s(tmp[,1]))$fitted.values,Ages[,k])$y
-        #         }
-        if (methodj == "Hurdle") {
-          # Transform data to count using pfMinMax
-          tmp[, 2] <- round(pfMinMax(tmp[, 2]) * 100)
-          transI[, k] <- approx(tmp[, 1], pscl::hurdle(tmp[, 2] ~ tmp[, 1])$fitted.values, Ages[, k])$y
-        }
-      }    
-      Sys.sleep(0.00002)
-      
-      if (k %in% seq(0, length(ID)*length(method), 1) & verbose == TRUE) {
-        # cat(percent[values == k])
-        # cat(" ")
-        setTxtProgressBar(pb, k)
+    # Play with transformations!
+    for (j in 1:length(method)) {
+      methodj <- method[j]
+      if (j >= 2) {
+        rawI <- transI
       }
       
+      # Transformations
+      for (k in 1:length(ID)) {
+        tmp <- cbind(Ages[, k], rawI[, k])
+        tmp <- na.omit(tmp)
+        ## At least 3 data values!
+        if (length(tmp[, 1]) > 3 & ID[k] != 882) {
+          # Not Tamagaucia site (882)!
+          if (methodj == "stl") {
+            agesI <- seq(tmp[1, 1], tmp[length(tmp[, 1]), 1], 1)
+            # Stl requires evenly spaced data
+            forTS <- approx(tmp[, 1], tmp[, 2], agesI)$y
+            x <- ts(forTS, start = 1, frequency = stlYears)
+            dim(x) <- NULL
+            stlResult <- stl(x, "per")$time.series[, 2]
+            transI[, k] <- approx(agesI, stlResult, Ages[, k])$y
+          }
+          if (methodj == "NULL") {
+            transI[, k] <- approx(tmp[, 1], tmp[, 2], Ages[, k])$y
+          }
+          if (methodj == "Z-Score") {
+            mu <- mean(tmp[tmp[, 1] >= BasePeriod[1] & tmp[, 1] <= BasePeriod[2], 2])
+            sigma <- sd(tmp[tmp[, 1] >= BasePeriod[1] & tmp[, 1] <= BasePeriod[2], 2])
+            # No data in BasePeriod return scale:
+            # Single value in BasePeriod return scale:
+            if (is.na(mu) | is.na(sigma) | sigma == 0) {
+              transI[, k] <- approx(tmp[, 1], scale(tmp[, 2]), Ages[, k])$y
+            }
+            # Z-Score otherwise
+            else {
+              transI[, k] <- approx(tmp[, 1], (tmp[, 2] - mu) / sigma, Ages[, k])$y
+            }
+          }
+          if (methodj == "Box-Cox") {
+            transI[, k] <- approx(tmp[, 1], pfBoxCox(tmp[, 2], alpha = alpha, type = type), Ages[, k])$y
+          }
+          if (methodj == "LOESS") {
+            transI[, k] <- approx(tmp[, 1], predict(loess(tmp[, 2] ~ tmp[, 1], span = span)), Ages[, k])$y
+          }
+          if (methodj == "MinMax") {
+            transI[, k] <- approx(tmp[, 1], pfMinMax(tmp[, 2]), Ages[, k])$y
+          }
+          if (methodj == "RunMed") {
+            w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
+            if (gtools::odd(w)) w <- w else w <- w + 1
+            transI[, k] <- approx(tmp[, 1], runmed(tmp[, 2], w), Ages[, k])$y
+          }
+          if (methodj == "RunMean") {
+            w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
+            if (gtools::odd(w)) w <- w else w <- w + 1
+            transI[, k] <- approx(tmp[, 1], caTools::runmean(tmp[, 2], w), Ages[, k])$y
+          }
+          if (methodj == "RunMin") {
+            w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
+            if (gtools::odd(w)) w <- w else w <- w + 1
+            transI[, k] <- approx(tmp[, 1], caTools::runmin(tmp[, 2], w), Ages[, k])$y
+          }
+          if (methodj == "RunMax") {
+            w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
+            if (gtools::odd(w)) w <- w else w <- w + 1
+            transI[, k] <- approx(tmp[, 1], caTools::runmax(tmp[, 2], w), Ages[, k])$y
+          }
+          if (methodj == "RunQuantile") {
+            w <- round(RunWidth / ((max(tmp[, 1]) - min(tmp[, 1])) / length(tmp[, 1])))
+            if (gtools::odd(w)) w <- w else w <- w + 1
+            transI[, k] <- approx(tmp[, 1], caTools::runquantile(tmp[, 2], w, RunQParam), Ages[, k])$y
+          }
+          if (methodj == "SmoothSpline") {
+            transI[, k] <- approx(tmp[, 1], smooth.spline(tmp[, 1], tmp[, 2], spar = span)$y, Ages[, k])$y
+          }
+          #         if (methodj=="GAM"){
+          #           transI[,k]=approx(tmp[,1],gam(tmp[,2]~s(tmp[,1]))$fitted.values,Ages[,k])$y
+          #         }
+          if (methodj == "Hurdle") {
+            # Transform data to count using pfMinMax
+            tmp[, 2] <- round(pfMinMax(tmp[, 2]) * 100)
+            transI[, k] <- approx(tmp[, 1], pscl::hurdle(tmp[, 2] ~ tmp[, 1])$fitted.values, Ages[, k])$y
+          }
+        }    
+        Sys.sleep(0.00002)
+        
+        if (k %in% seq(0, length(ID)*length(method), 1) & verbose == TRUE) {
+          # cat(percent[values == k])
+          # cat(" ")
+          if(length(method)>1){
+            setTxtProgressBar(pb, k)
+          }
+        }
+        
+      }
+      
+      ## j loop end
     }
-    
-    ## j loop end
+    if (verbose == TRUE) cat("\n")
   }
-  if (verbose == TRUE) cat("\n")
+  if(method=="NULL"){
+    transI=rawI
+  }
   
   ### End Return Results
   colnames(transI) <- ID
