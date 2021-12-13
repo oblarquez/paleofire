@@ -41,8 +41,10 @@
 #'
 pretreatment <- function(params, serie, Int=TRUE, first=NULL, last=NULL, yrInterp=NULL) {
 
-  ## This is the R version of the CharAnalysis CharPretreatment.m function
-  ## originally develloped by P. Higuera and available at https://sites.google.com/site/charanalysis
+  ## This is the R version of the CharAnalysis Matlab CharPretreatment.m function
+  ## originally implemented by P. Higuera and available at https://sites.google.com/site/charanalysis,
+  ## The Matlab code was translated to R language here by Olivier Blarquez,
+  ## then modified by Walter Finsinger to get the full output.
   ## Requires a matrix as input with the following columns
   ## CmTop CmBot AgeTop AgeBot Volume
   ## And a serie from which to calculate accumulation rates
@@ -203,7 +205,10 @@ pretreatment <- function(params, serie, Int=TRUE, first=NULL, last=NULL, yrInter
   # multiply by Charcoal.conI to get Charcoal.accI
 
   ## Return values
-  output <- structure(list(cmI = cmI, ybpI = ybpI, accI = accI, ageTop = ageTop, ageBot = ageBot, yrInterp = yrInterp, acc = acc))
+  output <- structure(list(
+    cmI = cmI, ybpI = ybpI, countI = countI, volI = volI, conI = conI,
+    accI = accI, ageTop = ageTop, ageBot = ageBot, yrInterp = yrInterp, acc = acc
+  ))
   class(output) <- "CHAR"
   return(output)
   ## Et Hop
